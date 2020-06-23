@@ -5,6 +5,10 @@
 
 cmake_minimum_required(VERSION 3.4.1)
 
+##官方标准配置
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fno-rtti -fno-exceptions -Wall")
+
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds them for you.
@@ -38,7 +42,9 @@ find_library( # Sets the name of the path variable.
 
 target_link_libraries( # Specifies the target library.
                        native-lib
-
+                       android
+                       EGL
+                       GLESv3
                        # Links the target library to the log library
                        # included in the NDK.
                        ${log-lib} )

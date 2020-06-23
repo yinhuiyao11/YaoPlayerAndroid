@@ -7,20 +7,16 @@ import android.widget.TextView;
 import android.opengl.GLSurfaceView;
 
 public class MainActivity extends AppCompatActivity {
-
-    // Used to load the 'native-lib' library on application startup.
-    static {
-        System.loadLibrary("native-lib");
-    }
-
+    private GLESJNIView view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        view = new GLESJNIView(getApplication());
+        setContentView(view);
 
         // Example of a call to a native method
-        TextView tv = findViewById(R.id.sample_text);
-        tv.setText(stringFromJNI());
+        /*TextView tv = findViewById(R.id.sample_text);
+        tv.setText(stringFromJNI());*/
     }
 
     /**
