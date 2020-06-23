@@ -21,7 +21,12 @@ add_library( # Sets the name of the library.
              SHARED
 
              # Provides a relative path to your source file(s).
-             native-lib.cpp )
+             native-lib.cpp
+             gl/YaoGLProgram.cpp
+             gl/YaoGLShader.cpp
+             #gl/YaoVAO.cpp
+             #gl/YaoGLTexture.cpp
+        )
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -44,7 +49,8 @@ target_link_libraries( # Specifies the target library.
                        native-lib
                        android
                        EGL
-                       GLESv3
+                        GLESv3
+                        GLESv2
                        # Links the target library to the log library
                        # included in the NDK.
                        ${log-lib} )
