@@ -3,6 +3,7 @@
 #include <GLES3/gl3.h>
 #include <GLES3/gl3ext.h>
 #include <android/log.h>
+#include "gl/YaoGL.h"
 
 #ifndef LOG_TAG
 #define LOG_TAG "stone.stone"
@@ -153,6 +154,9 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_yao_yaoplayerandroid_GLRender_surfaceChanged(JNIEnv *env, jobject thiz, jint w, jint h) {
     printGLString("Version", GL_VERSION);
+    YaoGLProgram program((char *)gl_vertexShader_source, (char *)gl_fragmentShader_source);
+    
+
     //编译着色器源码
     GLuint vertexShader = compileShader(GL_VERTEX_SHADER, gl_vertexShader_source);
     GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, gl_fragmentShader_source);
