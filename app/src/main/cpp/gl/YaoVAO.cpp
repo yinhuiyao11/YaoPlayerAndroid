@@ -81,6 +81,12 @@ int YaoVAO::bindTexture(char * imgPath)
     }
 }
 
+int YaoVAO::bindTextureWithData(unsigned char* _imgData)
+{
+    yaoGlTexture->imgData = _imgData
+}
+
+
 int YaoVAO::draw()
 {
     bindVAO();

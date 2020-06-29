@@ -12,8 +12,6 @@
 #include <stdio.h>
 #include <string>
 
-#include "../../../../../../../NDK/android-ndk-r21d/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/GLES3/gl3.h"
-
 #ifndef LOG_TAG
 #define LOG_TAG "stone.stone"
 #define LOGE(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
@@ -69,6 +67,7 @@ public:
     int bindVAO();
     int setIndex(unsigned int * index, int indexCount);
     int bindTexture(char * imgPath);
+    int bindTextureWithData(unsigned char* imgData);
     int draw();
 private:
     YaoGLTexture * yaoGlTexture = nullptr;

@@ -88,6 +88,7 @@ Java_com_yao_yaoplayerandroid_GLRender_surfaceChanged(JNIEnv *env, jobject thiz,
     vao = new YaoVAO();
     vao->addVertex3D(vVertex, 4, 0);
     vao->setIndex(index, 6);
+
     //设置程序窗口
     glViewport(0, 0, w, h);
     checkGlError("glViewport");
