@@ -83,7 +83,12 @@ int YaoVAO::bindTexture(char * imgPath)
 
 int YaoVAO::bindTextureWithData(unsigned char* _imgData)
 {
-    yaoGlTexture->imgData = _imgData
+    //yaoGlTexture->setImgData(_imgData);
+    yaoGlTexture->imgData = _imgData;
+    int ret = yaoGlTexture->createTexImage2D();
+    if (ret) {
+        return -1;
+    }
 }
 
 

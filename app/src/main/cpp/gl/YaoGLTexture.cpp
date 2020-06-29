@@ -1,4 +1,5 @@
 #include "YaoGL.h"
+#include "../../../../../../../NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1/cstring"
 //#include "YaoImg/stb_image.h"
 
 YaoGLTexture::YaoGLTexture()
@@ -50,5 +51,13 @@ int YaoGLTexture::createTexImage2D()
 int YaoGLTexture::bindTexture()
 {
     glBindTexture(GL_TEXTURE_2D, texture);
+    return 0;
+}
+
+int YaoGLTexture::setImgData(unsigned char* _imgData)
+{
+    /*int _strLen = strlen(_imgData) + 1;
+    imgData = (unsigned char *)malloc(_strLen);
+    memcpy(imgData, _imgData, _strLen);*/
     return 0;
 }

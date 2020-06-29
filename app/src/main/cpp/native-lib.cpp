@@ -20,10 +20,13 @@
 auto gl_vertexShader_source =
         "#version 300 es\n"
         "layout(location = 0) in vec3 vPosition;\n"
+        "layout(location = 1) in vec3 aTexCoord;\n"
+        "out vec3 TexCoord;\n"
         "out vec3 outPos;\n"
         "void main() {\n"
         "   gl_Position = vec4(vPosition, 1.0);\n"
         "   outPos = vPosition;\n"
+        "   TexCoord = aTexCoord;\n"
         "}\n";
 
 /**
@@ -34,8 +37,11 @@ auto gl_fragmentShader_source =
         "precision mediump float;\n"
         "out vec4 fragColor;\n"
         "in vec3 outPos;\n"
+        "in vec3 TexCoord;\n"
+        "uniform sampler2D t;\n"
         "void main() {\n"
-        "   fragColor = vec4(outPos,1.0);\n"
+        "   vec2 uv = vec2(TexCoord.x, TexCoord.y);\n"
+        "   fragColor = texture(t, uv);\n"
         "}\n";
 
 /**
@@ -67,6 +73,14 @@ float vVertex[] = {
         1.0f, -1.0f, 0.0f,
 };
 
+//纹理坐标
+float vertexsUV[] = {
+        1.0f,  1.0f, 0.0f,
+        0.0f,  1.0f, 0.0f,
+        0.0f,  0.0f, 0.0f,
+        1.0f,   0.0f, 0.0f,
+};
+
 unsigned int index[] = {
         0,1,2,
         2,3,0
@@ -87,7 +101,13 @@ Java_com_yao_yaoplayerandroid_GLRender_surfaceChanged(JNIEnv *env, jobject thiz,
     program = new YaoGLProgram((char *)gl_vertexShader_source, (char *)gl_fragmentShader_source);
     vao = new YaoVAO();
     vao->addVertex3D(vVertex, 4, 0);
+    vao->addVertex3D(vertexsUV, 4, 1);
     vao->setIndex(index, 6);
+    unsigned char imgData[] ={
+        255,0,0,  0,255,0,
+        0,0,255,  127,127,127
+    };
+    vao->bindTextureWithData(imgData);
 
     //设置程序窗口
     glViewport(0, 0, w, h);

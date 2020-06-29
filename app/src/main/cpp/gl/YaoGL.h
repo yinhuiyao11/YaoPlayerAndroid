@@ -11,6 +11,8 @@
 #include <vector>
 #include <stdio.h>
 #include <string>
+#include <string.h>
+#include <stdlib.h>
 
 #ifndef LOG_TAG
 #define LOG_TAG "stone.stone"
@@ -29,10 +31,13 @@ public:
     int loadImg(char* imgPath);
     int createTexImage2D();
     int bindTexture();
+    int setImgData(unsigned char* _imgData);
+
+public:
+    unsigned char* imgData = nullptr;
 
 private:
     GLuint texture = 0;
-    unsigned char* imgData = nullptr;
     int width = 0;
     int height = 0;
     int nrChannels = 0;
