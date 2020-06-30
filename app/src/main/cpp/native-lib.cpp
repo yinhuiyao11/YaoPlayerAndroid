@@ -18,7 +18,7 @@
  * 顶点着色器源码
  */
 auto gl_vertexShader_source =
-        "#version 300 es\n"
+        "#version 330\n"
         "layout(location = 0) in vec3 vPosition;\n"
         "layout(location = 1) in vec3 aTexCoord;\n"
         "out vec3 TexCoord;\n"
@@ -33,8 +33,7 @@ auto gl_vertexShader_source =
  * 片段着色器源码
  */
 auto gl_fragmentShader_source =
-        "#version 300 es\n"
-        "precision mediump float;\n"
+        "#version 330\n"
         "out vec4 fragColor;\n"
         "in vec3 outPos;\n"
         "in vec3 TexCoord;\n"
@@ -83,7 +82,7 @@ float vertexsUV[] = {
 
 unsigned int index[] = {
         0,1,2,
-        2,3,0
+        2,0,3
 };
 
 extern "C" JNIEXPORT jstring JNICALL
@@ -107,7 +106,7 @@ Java_com_yao_yaoplayerandroid_GLRender_surfaceChanged(JNIEnv *env, jobject thiz,
         255,0,0,  0,255,0,
         0,0,255,  127,127,127
     };
-    vao->bindTextureWithData(imgData);
+    vao->bindTextureWithData(imgData, 2, 2);
 
     //设置程序窗口
     glViewport(0, 0, w, h);

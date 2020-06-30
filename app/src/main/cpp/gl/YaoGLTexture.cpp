@@ -56,8 +56,6 @@ int YaoGLTexture::bindTexture()
 
 int YaoGLTexture::setImgData(unsigned char* _imgData)
 {
-    /*int _strLen = strlen(_imgData) + 1;
-    imgData = (unsigned char *)malloc(_strLen);
-    memcpy(imgData, _imgData, _strLen);*/
+    imgData = _imgData;
     return 0;
 }

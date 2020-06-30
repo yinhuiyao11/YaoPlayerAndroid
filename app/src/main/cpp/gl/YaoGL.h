@@ -35,11 +35,11 @@ public:
 
 public:
     unsigned char* imgData = nullptr;
+    int width = 0;
+    int height = 0;
 
 private:
     GLuint texture = 0;
-    int width = 0;
-    int height = 0;
     int nrChannels = 0;
 };
 
@@ -72,7 +72,7 @@ public:
     int bindVAO();
     int setIndex(unsigned int * index, int indexCount);
     int bindTexture(char * imgPath);
-    int bindTextureWithData(unsigned char* imgData);
+    int bindTextureWithData(unsigned char* imgData, int _width, int _height);
     int draw();
 private:
     YaoGLTexture * yaoGlTexture = nullptr;
