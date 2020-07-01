@@ -18,7 +18,7 @@
  * 顶点着色器源码
  */
 auto gl_vertexShader_source =
-        "#version 330\n"
+        "#version 300 es\n"
         "layout(location = 0) in vec3 vPosition;\n"
         "layout(location = 1) in vec3 aTexCoord;\n"
         "out vec3 TexCoord;\n"
@@ -33,15 +33,16 @@ auto gl_vertexShader_source =
  * 片段着色器源码
  */
 auto gl_fragmentShader_source =
-        "#version 330\n"
-        "out vec4 fragColor;\n"
-        "in vec3 outPos;\n"
-        "in vec3 TexCoord;\n"
-        "uniform sampler2D t;\n"
-        "void main() {\n"
-        "   vec2 uv = vec2(TexCoord.x, TexCoord.y);\n"
-        "   fragColor = texture(t, uv);\n"
-        "}\n";
+    "#version 300 es\n"
+    "precision mediump float;\n"
+    "out vec4 fragColor;\n"
+    "in vec3 outPos;\n"
+    "in vec3 TexCoord;\n"
+    "uniform sampler2D t;\n"
+    "void main() {\n"
+    "vec2 uv = vec2(TexCoord.x, TexCoord.y);\n"
+    "   fragColor = texture(t, uv);\n"
+    "}\n";
 
 /**
  * 输出GL的属性值

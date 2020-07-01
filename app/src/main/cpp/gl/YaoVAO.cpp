@@ -79,6 +79,7 @@ int YaoVAO::bindTexture(char * imgPath)
     if (ret) {
         return -1;
     }
+    return 0;
 }
 
 int YaoVAO::bindTextureWithData(unsigned char* _imgData, int _width, int _height)
@@ -90,6 +91,7 @@ int YaoVAO::bindTextureWithData(unsigned char* _imgData, int _width, int _height
     if (ret) {
         return -1;
     }
+    return 0;
 }
 
 
