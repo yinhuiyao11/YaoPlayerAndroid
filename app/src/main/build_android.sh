@@ -68,9 +68,9 @@ make install
 
 cd ${basepath}
 
-if [ -d ./Lib ];then
-    rm -rf Lib
+if [ -d ./jniLibs ];then
+    rm -rf jniLibs
 fi
 
-mkdir Lib
-cp -r 3rdpart/ffmpeg_3.2.14/ffmpeg_install Lib/ffmpeg_install
+mkdir jniLibs
+cp -r 3rdpart/ffmpeg_3.2.14/ffmpeg_install jniLibs/armeabi-v7a/ffmpeg_install

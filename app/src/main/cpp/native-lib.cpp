@@ -10,6 +10,13 @@
 #define LOGE(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 #endif
 
+
+extern "C" {
+#include "../jniLibs/armeabi-v7a/ffmpeg_install/include/libavcodec/avcodec.h"
+#include "../jniLibs/armeabi-v7a/ffmpeg_install/include/libavformat/avformat.h"
+#include "../jniLibs/armeabi-v7a/ffmpeg_install/include/libavfilter/avfilter.h"
+#include "../jniLibs/armeabi-v7a/ffmpeg_install/include/libavutil/avutil.h"
+}
 /*
 #define STRINGIZE(x) #x
 #define SHADER(shader) "" STRINGIZE(shader)
@@ -90,7 +97,8 @@ extern "C" JNIEXPORT jstring JNICALL
 Java_com_yao_yaoplayerandroid_MainActivity_stringFromJNI(
         JNIEnv* env,
         jobject /* this */) {
-    std::string hello = "Hello from C++";
+    //std::string hello = "Hello from C++";
+    std::string hello = avcodec_configuration();
     return env->NewStringUTF(hello.c_str());
 }
 
