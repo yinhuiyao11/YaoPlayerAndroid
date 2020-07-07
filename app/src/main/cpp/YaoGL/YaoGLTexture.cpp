@@ -1,5 +1,4 @@
 #include "YaoGL.h"
-#include "../../../../../../../NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/c++/v1/cstring"
 //#include "YaoImg/stb_image.h"
 
 YaoGLTexture::YaoGLTexture()

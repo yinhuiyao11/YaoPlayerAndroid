@@ -3,8 +3,9 @@
 #include <GLES3/gl3.h>
 #include <GLES3/gl3ext.h>
 #include <android/log.h>
-#include "gl/YaoGL.h"
+#include "YaoGL/YaoGL.h"
 #include "YaoAV/YaoAV.h"
+#include "YaoPlayer/YaoPlayer.h"
 
 #ifndef LOG_TAG
 #define LOG_TAG "stone.stone"
@@ -141,26 +142,84 @@ Java_com_yao_yaoplayerandroid_GLRender_drawFrame(JNIEnv *env, jobject thiz) {
 
 extern "C"
 JNIEXPORT jlong JNICALL
-Java_com_yao_yaoplayerandroid_av_AVReader_avreader_1init(JNIEnv *env, jclass clazz, jstring url) {
-    // TODO: implement avreader_init()
-}extern "C"
+Java_com_yao_yaoplayerandroid_av_AVReader_avreader_1init(JNIEnv *env, jclass clazz) {
+    YaoAVReader * reader = new YaoAVReader();
+    return (long)reader;
+}
+
+extern "C"
 JNIEXPORT jint JNICALL
 Java_com_yao_yaoplayerandroid_av_AVReader_avreader_1uninit(JNIEnv *env, jclass clazz,
                                                            jlong avreader) {
     // TODO: implement avreader_uninit()
-}extern "C"
+}
+
+extern "C"
 JNIEXPORT jint JNICALL
 Java_com_yao_yaoplayerandroid_av_AVReader_avreader_1open(JNIEnv *env, jclass clazz, jlong avreader,
                                                          jstring url) {
     // TODO: implement avreader_open()
-}extern "C"
+}
+
+extern "C"
 JNIEXPORT jint JNICALL
 Java_com_yao_yaoplayerandroid_av_AVReader_avreader_1close(JNIEnv *env, jclass clazz,
                                                           jlong avreader) {
     // TODO: implement avreader_close()
-}extern "C"
+}
+
+extern "C"
 JNIEXPORT jint JNICALL
 Java_com_yao_yaoplayerandroid_av_AVReader_avreader_1print_1info(JNIEnv *env, jclass clazz,
                                                                 jlong avreader) {
     // TODO: implement avreader_print_info()
+}
+
+extern "C"
+JNIEXPORT jlong JNICALL
+Java_com_yao_yaoplayerandroid_player_Player_player_1init(JNIEnv *env, jclass clazz, jstring path) {
+    /*char * pathChar = jstringtochar(env, path);
+    YaoPlayer * player = new YaoPlayer(path);*/
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_yao_yaoplayerandroid_player_Player_player_1uninit(JNIEnv *env, jclass clazz,
+                                                           jlong avreader) {
+    // TODO: implement player_uninit()
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_yao_yaoplayerandroid_player_Player_player_1open(JNIEnv *env, jclass clazz, jlong avreader,
+                                                         jdouble time) {
+    // TODO: implement player_open()
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_yao_yaoplayerandroid_player_Player_player_1play(JNIEnv *env, jclass clazz,
+                                                         jlong avreader) {
+    // TODO: implement player_play()
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_yao_yaoplayerandroid_player_Player_player_1stop(JNIEnv *env, jclass clazz,
+                                                         jlong avreader) {
+    // TODO: implement player_stop()
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_yao_yaoplayerandroid_player_Player_player_1pause(JNIEnv *env, jclass clazz,
+                                                          jlong avreader) {
+    // TODO: implement player_pause()
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_yao_yaoplayerandroid_player_Player_player_1seek(JNIEnv *env, jclass clazz, jlong avreader,
+                                                         jdouble time) {
+    // TODO: implement player_seek()
 }
