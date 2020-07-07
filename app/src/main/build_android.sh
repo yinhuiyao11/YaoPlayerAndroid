@@ -73,4 +73,7 @@ if [ -d ./jniLibs ];then
 fi
 
 mkdir jniLibs
-cp -r 3rdpart/ffmpeg_3.2.14/ffmpeg_install jniLibs/armeabi-v7a/ffmpeg_install
+cd jniLibs
+mkdir armeabi-v7a
+
+cp -r ../../3rdpart/ffmpeg_3.2.14/ffmpeg_install ./ffmpeg_install

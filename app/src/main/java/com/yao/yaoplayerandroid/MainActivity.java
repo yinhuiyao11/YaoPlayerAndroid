@@ -7,6 +7,9 @@ import android.widget.TextView;
 import android.opengl.GLSurfaceView;
 
 public class MainActivity extends AppCompatActivity {
+    static {
+        System.loadLibrary("native-lib");
+    }
     private GLESJNIView view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,9 +17,10 @@ public class MainActivity extends AppCompatActivity {
         /*view = new GLESJNIView(getApplication());
         setContentView(view);*/
 
+        setContentView(R.layout.activity_main);
         // Example of a call to a native method
-        /*TextView tv = findViewById(R.id.sample_text);
-        tv.setText(stringFromJNI());*/
+        TextView tv = findViewById(R.id.sample_text);
+        tv.setText(stringFromJNI());
     }
 
     /**

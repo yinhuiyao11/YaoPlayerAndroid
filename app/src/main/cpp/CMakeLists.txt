@@ -16,9 +16,24 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fno-rtti -fno-exceptions -Wa
 
 set(distribution_DIR ${CMAKE_SOURCE_DIR}/../jniLibs/armeabi-v7a/ffmpeg_install)
 
-include_directories (${distribution_DIR}/include)
+include_directories (../)
+include_directories (./)
+add_library( # Sets the name of the library.
+        native-lib
 
-add_library( avutil
+        # Sets the library as a shared library.
+        SHARED
+
+        # Provides a relative path to your source file(s).
+        native-lib.cpp
+        gl/YaoGLProgram.cpp
+        gl/YaoGLShader.cpp
+        gl/YaoVAO.cpp
+        gl/YaoGLTexture.cpp
+        )
+
+include_directories (${distribution_DIR}/include)
+#[[add_library( avutil
         STATIC
         IMPORTED )
 set_target_properties( avutil
@@ -65,21 +80,8 @@ add_library( swscale
         IMPORTED )
 set_target_properties( swscale
         PROPERTIES IMPORTED_LOCATION
-        ${distribution_DIR}/lib/libswscale.a)
+        ${distribution_DIR}/lib/libswscale.a)]]
 
-add_library( # Sets the name of the library.
-             native-lib
-
-             # Sets the library as a shared library.
-             SHARED
-
-             # Provides a relative path to your source file(s).
-             native-lib.cpp
-             gl/YaoGLProgram.cpp
-             gl/YaoGLShader.cpp
-             gl/YaoVAO.cpp
-             gl/YaoGLTexture.cpp
-        )
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -104,14 +106,17 @@ target_link_libraries( # Specifies the target library.
                        EGL
                        GLESv3
 
-                       avutil
-                       avcodec
-                       avfilter
-                       avformat
-                       postproc
-                       swresample
-                       swscale
+        ${distribution_DIR}/lib/libavcodec.a
+        ${distribution_DIR}/lib/libavfilter.a
+        ${distribution_DIR}/lib/libavformat.a
+        ${distribution_DIR}/lib/libavutil.a
+        ${distribution_DIR}/lib/libpostproc.a
+        ${distribution_DIR}/lib/libswresample.a
+        ${distribution_DIR}/lib/libswscale.a
+
 
                        # Links the target library to the log library
                        # included in the NDK.
                        ${log-lib} )
+target_link_libraries (native-lib dl)
+target_link_libraries (native-lib z)

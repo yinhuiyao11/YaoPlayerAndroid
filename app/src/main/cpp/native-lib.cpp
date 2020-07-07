@@ -4,18 +4,19 @@
 #include <GLES3/gl3ext.h>
 #include <android/log.h>
 #include "gl/YaoGL.h"
+#include "YaoAV/YaoAV.h"
 
 #ifndef LOG_TAG
 #define LOG_TAG "stone.stone"
 #define LOGE(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 #endif
 
-
 extern "C" {
-#include "../jniLibs/armeabi-v7a/ffmpeg_install/include/libavcodec/avcodec.h"
-#include "../jniLibs/armeabi-v7a/ffmpeg_install/include/libavformat/avformat.h"
-#include "../jniLibs/armeabi-v7a/ffmpeg_install/include/libavfilter/avfilter.h"
-#include "../jniLibs/armeabi-v7a/ffmpeg_install/include/libavutil/avutil.h"
+#include "libavcodec/avcodec.h"
+#include "libavformat/avformat.h"
+#include "libavutil/avutil.h"
+#include "libavfilter/avfilter.h"
+#include "libswscale/swscale.h"
 }
 /*
 #define STRINGIZE(x) #x
@@ -136,23 +137,34 @@ Java_com_yao_yaoplayerandroid_GLRender_drawFrame(JNIEnv *env, jobject thiz) {
 
     vao->draw();
 
-}extern "C"
+}
+
+extern "C"
 JNIEXPORT jlong JNICALL
 Java_com_yao_yaoplayerandroid_AVReader_avreader_1init(JNIEnv *env, jclass clazz, jstring url) {
-    // TODO: implement avreader_init()
-}extern "C"
+    //YaoAVReader * reader = new YaoAVReader();
+
+}
+
+extern "C"
 JNIEXPORT jint JNICALL
 Java_com_yao_yaoplayerandroid_AVReader_avreader_1uninit(JNIEnv *env, jclass clazz, jlong avreader) {
     // TODO: implement avreader_uninit()
-}extern "C"
+}
+
+extern "C"
 JNIEXPORT jint JNICALL
 Java_com_yao_yaoplayerandroid_AVReader_avreader_1open(JNIEnv *env, jclass clazz, jlong avreader) {
     // TODO: implement avreader_open()
-}extern "C"
+}
+
+extern "C"
 JNIEXPORT jint JNICALL
 Java_com_yao_yaoplayerandroid_AVReader_avreader_1close(JNIEnv *env, jclass clazz, jlong avreader) {
     // TODO: implement avreader_close()
-}extern "C"
+}
+
+extern "C"
 JNIEXPORT jint JNICALL
 Java_com_yao_yaoplayerandroid_AVReader_avreader_1print_1info(JNIEnv *env, jclass clazz,
                                                              jlong avreader) {
