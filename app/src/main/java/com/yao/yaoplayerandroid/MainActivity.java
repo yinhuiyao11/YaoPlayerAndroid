@@ -8,19 +8,19 @@ import android.opengl.GLSurfaceView;
 
 public class MainActivity extends AppCompatActivity {
     static {
-        System.loadLibrary("native-lib");
+        System.loadLibrary("YaoPlayerJni");
     }
     private GLESJNIView view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*view = new GLESJNIView(getApplication());
-        setContentView(view);*/
+        view = new GLESJNIView(getApplication());
+        setContentView(view);
 
-        setContentView(R.layout.activity_main);
+        /*setContentView(R.layout.activity_main);
         // Example of a call to a native method
         TextView tv = findViewById(R.id.sample_text);
-        tv.setText(stringFromJNI());
+        tv.setText(stringFromJNI());*/
     }
 
     /**

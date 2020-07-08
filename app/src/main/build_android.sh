@@ -26,7 +26,7 @@ export TARGET=armv7a-linux-androideabi
 
 
 # Set this to your minSdkVersion.
-export API=21
+export API=18
 
 export CC=$TOOLCHAIN/bin/$TARGET$API-clang
 export CXX=$TOOLCHAIN/bin/$TARGET$API-clang++
@@ -75,5 +75,6 @@ fi
 mkdir jniLibs
 cd jniLibs
 mkdir armeabi-v7a
+cd armeabi-v7a
 
 cp -r ../../3rdpart/ffmpeg_3.2.14/ffmpeg_install ./ffmpeg_install

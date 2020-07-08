@@ -22,10 +22,10 @@ extern "C" {
 /*
 #define STRINGIZE(x) #x
 #define SHADER(shader) "" STRINGIZE(shader)
-*/
-/**
+*//*
+*//**
  * 顶点着色器源码
- */
+ *//*
 auto gl_vertexShader_source =
         "#version 300 es\n"
         "layout(location = 0) in vec3 vPosition;\n"
@@ -38,9 +38,9 @@ auto gl_vertexShader_source =
         "   TexCoord = aTexCoord;\n"
         "}\n";
 
-/**
+*//**
  * 片段着色器源码
- */
+ *//*
 auto gl_fragmentShader_source =
     "#version 300 es\n"
     "precision mediump float;\n"
@@ -53,9 +53,9 @@ auto gl_fragmentShader_source =
     "   fragColor = texture(t, uv);\n"
     "}\n";
 
-/**
+*//**
  * 输出GL的属性值
- */
+ *//*
 static void printGLString(const char *name, GLenum s) {
     const char *glName = reinterpret_cast<const char *>(glGetString(s));
     LOGE("GL %s = %s", name, glName);
@@ -67,14 +67,14 @@ static void checkGlError(const char *op) {
     }
 }
 
-/**
+*//**
  * 着色器程序
- */
+ *//*
 YaoGLProgram * program;
 YaoVAO * vao;
-/**
+*//**
  * 顶点坐标
- */
+ *//*
 float vVertex[] = {
         1.0f, 1.0f, 0.0f,
         -1.0f, 1.0f, 0.0f,
@@ -93,7 +93,7 @@ float vertexsUV[] = {
 unsigned int index[] = {
         0,1,2,
         2,0,3
-};
+};*/
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_yao_yaoplayerandroid_MainActivity_stringFromJNI(
@@ -104,6 +104,7 @@ Java_com_yao_yaoplayerandroid_MainActivity_stringFromJNI(
     return env->NewStringUTF(hello.c_str());
 }
 
+/*
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_yao_yaoplayerandroid_GLRender_surfaceChanged(JNIEnv *env, jobject thiz, jint w, jint h) {
@@ -139,6 +140,7 @@ Java_com_yao_yaoplayerandroid_GLRender_drawFrame(JNIEnv *env, jobject thiz) {
     vao->draw();
 
 }
+*/
 
 extern "C"
 JNIEXPORT jlong JNICALL

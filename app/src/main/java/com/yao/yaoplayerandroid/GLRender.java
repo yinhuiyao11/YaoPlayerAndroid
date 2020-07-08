@@ -7,7 +7,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class GLRender implements GLSurfaceView.Renderer {
     static {
-        System.loadLibrary("native-lib");
+        System.loadLibrary("YaoPlayerJni");
     }
 
     public native void surfaceChanged(int w, int h);

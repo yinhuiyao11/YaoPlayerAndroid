@@ -1,4 +1,3 @@
-/*
 #include <jni.h>
 #include <string>
 #include <android/log.h>
@@ -9,11 +8,43 @@
 #define LOGE(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 #endif
 
+/*
+#define STRINGIZE(x) #x
+#define SHADER(shader) "" STRINGIZE(shader)
 */
 /**
- * 输出GL的属性值
- *//*
+ * 顶点着色器源码
+ */
+auto gl_vertexShader_source =
+        "#version 300 es\n"
+        "layout(location = 0) in vec3 vPosition;\n"
+        "layout(location = 1) in vec3 aTexCoord;\n"
+        "out vec3 TexCoord;\n"
+        "out vec3 outPos;\n"
+        "void main() {\n"
+        "   gl_Position = vec4(vPosition, 1.0);\n"
+        "   outPos = vPosition;\n"
+        "   TexCoord = aTexCoord;\n"
+        "}\n";
 
+/**
+ * 片段着色器源码
+ */
+auto gl_fragmentShader_source =
+        "#version 300 es\n"
+        "precision mediump float;\n"
+        "out vec4 fragColor;\n"
+        "in vec3 outPos;\n"
+        "in vec3 TexCoord;\n"
+        "uniform sampler2D t;\n"
+        "void main() {\n"
+        "vec2 uv = vec2(TexCoord.x, TexCoord.y);\n"
+        "   fragColor = texture(t, uv);\n"
+        "}\n";
+
+/**
+ * 输出GL的属性值
+ */
 static void printGLString(const char *name, GLenum s) {
     const char *glName = reinterpret_cast<const char *>(glGetString(s));
     LOGE("GL %s = %s", name, glName);
@@ -24,6 +55,34 @@ static void checkGlError(const char *op) {
         LOGE("after %s() glError (0x%x)\n", op, error);
     }
 }
+
+/**
+ * 着色器程序
+ */
+YaoGLProgram * program;
+YaoVAO * vao;
+/**
+ * 顶点坐标
+ */
+float vVertex[] = {
+        1.0f, 1.0f, 0.0f,
+        -1.0f, 1.0f, 0.0f,
+        -1.0f, -1.0f, 0.0f,
+        1.0f, -1.0f, 0.0f,
+};
+
+//纹理坐标
+float vertexsUV[] = {
+        1.0f,  1.0f, 0.0f,
+        0.0f,  1.0f, 0.0f,
+        0.0f,  0.0f, 0.0f,
+        1.0f,   0.0f, 0.0f,
+};
+
+unsigned int index[] = {
+        0,1,2,
+        2,0,3
+};
 
 extern "C"
 JNIEXPORT void JNICALL
@@ -60,4 +119,3 @@ checkGlError("glUseProgram");
 vao->draw();
 
 }
-*/

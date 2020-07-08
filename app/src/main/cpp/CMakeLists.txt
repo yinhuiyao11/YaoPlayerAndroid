@@ -43,8 +43,8 @@ target_link_libraries(
         ${distribution_DIR}/lib/libavformat.a
         ${distribution_DIR}/lib/libavcodec.a
         ${distribution_DIR}/lib/libswresample.a
-#        ${distribution_DIR}/lib/libswscale.a
-#        ${distribution_DIR}/lib/libpostproc.a
+        #[[${distribution_DIR}/lib/libswscale.a
+        ${distribution_DIR}/lib/libpostproc.a]]
         ${distribution_DIR}/lib/libavutil.a
 
         ${log-lib}
