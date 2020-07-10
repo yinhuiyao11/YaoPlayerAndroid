@@ -11,6 +11,9 @@ add_library(
         YaoPlayerJni
         SHARED
         playerJniGL.cpp
+        playerJniPlay.cpp
+
+        playerJniUtil.cpp
 )
 
 target_link_libraries(
@@ -18,6 +21,8 @@ target_link_libraries(
 
         YaoAV
         YaoGL
+        YaoPlayer
+        YaoThread
 
         android
         EGL
