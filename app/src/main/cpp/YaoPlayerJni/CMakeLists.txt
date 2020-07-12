@@ -23,6 +23,7 @@ target_link_libraries(
         YaoGL
         YaoPlayer
         YaoThread
+        EyerCore
 
         android
         EGL

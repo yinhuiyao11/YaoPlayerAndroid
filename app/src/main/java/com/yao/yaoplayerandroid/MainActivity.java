@@ -24,12 +24,26 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         // Example of a call to a native method
-        TextView tv = findViewById(R.id.sample_text);
-        tv.setText(stringFromJNI());
 
-        /*File dir = Environment.getExternalStorageDirectory();
+
+        File dir = Environment.getExternalStorageDirectory();
         String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
-        Player player = new Player(videoPath);*/
+        System.out.println("+++++++++path:" + videoPath);
+
+        Player player = new Player(videoPath);
+        player.open(0);
+        player.play();
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        player.stop();
+        player.destory();
+
+
+        /*TextView tv = findViewById(R.id.sample_text);
+        tv.setText(stringFromJNI());*/
     }
 
     /**

@@ -2,12 +2,15 @@
 #include <cpp/YaoPlayer/YaoPlayer.h>
 #include "playerJniUtil.hpp"
 #include "../YaoAV/YaoAV.h"
+#include "../EyerCore/EyerLog.hpp"
 
 extern "C"
 JNIEXPORT jlong JNICALL
 Java_com_yao_yaoplayerandroid_player_Player_player_1init(JNIEnv *env, jclass clazz, jstring path) {
     char * pathChar = jstringtochar(env, path);
     YaoPlayer * player = new YaoPlayer(pathChar);
+    EyerLog("=============================player create cuccess \n");
+
     return (jlong)player;
 }
 

@@ -15,3 +15,9 @@ add_library(
     YaoPlayerCtr.cpp
 )
 
+target_link_libraries(
+        YaoPlayer
+
+        YaoAV
+
+)

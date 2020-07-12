@@ -3,9 +3,7 @@ package com.yao.yaoplayerandroid.player;
 import com.yao.yaoplayerandroid.base.YaoObject;
 
 public class Player extends YaoObject {
-    static {
-        System.loadLibrary("native-lib");
-    }
+
     // AV Reader
     public static native long                   player_init                                 (String path);
     public static native int                    player_uninit                               (long player);
@@ -17,6 +15,7 @@ public class Player extends YaoObject {
 
     public Player(String path){
         nativeId = player_init(path);
+        System.out.println("+++++++++++++++int Player");
     }
 
     public int open(double time){
@@ -45,6 +44,8 @@ public class Player extends YaoObject {
             player_uninit(nativeId);
             nativeId = 0L;
         }
+        System.out.println("+++++++++in destory:");
+
         return 0;
     }
 }
