@@ -81,8 +81,13 @@ public:
 	int pause();
 
 	int seek(double time);
+
+	int pushFrame(YaoAVFrame * frame);
+	int packetFrameSize();
 private:
 	std::string path;
 	YaoPlayerCtr * playerCtr = nullptr;
+	YaoQueue<YaoAVFrame> frameQueue;
+
 };
 
