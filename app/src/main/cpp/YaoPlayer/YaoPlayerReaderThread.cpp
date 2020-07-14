@@ -1,5 +1,7 @@
+#include <cpp/EyerCore/EyerLog.hpp>
 #include "YaoPlayer.h"
 #include "YaoAV/YaoAV.h"
+#include "../EyerCore/EyerLog.hpp"
 
 YaoPlayerReaderThread::YaoPlayerReaderThread(std::string _path, YaoPlayerCtr* _ctrThread)
 {
@@ -14,10 +16,12 @@ void YaoPlayerReaderThread::run()
 	YaoAVReader reader;
 	int ret = reader.Open(path.c_str());
 	if (ret) {
+		EyerLog("=============================read file fail , %s, %d\n", path.c_str(), ret);
 		return;
 	}
 
 	reader.seek(ctrThread->seekTime);
+	EyerLog("=============================YaoPlayerReaderThread getStreamCount \n", reader.getStreamCount());
 
 	int videoStreamIndex = reader.getVideoStreamIndex();
 	int audioStreamIndex = reader.getAudioStreamIndex();

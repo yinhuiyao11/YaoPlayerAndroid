@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         player.open(0);
         player.play();
         try {
-            Thread.sleep(10000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

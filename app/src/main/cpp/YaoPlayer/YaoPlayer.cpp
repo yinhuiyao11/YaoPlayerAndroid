@@ -13,7 +13,7 @@ YaoPlayer::~YaoPlayer()
 int YaoPlayer::open(double time)
 {
 	if (playerCtr == nullptr) {
-		playerCtr = new YaoPlayerCtr(time);
+		playerCtr = new YaoPlayerCtr(path, time);
 		playerCtr->start();
 		return 0;
 	}

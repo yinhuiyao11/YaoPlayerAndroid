@@ -15,14 +15,16 @@ public class Player extends YaoObject {
 
     public Player(String path){
         nativeId = player_init(path);
-        System.out.println("+++++++++++++++int Player");
+        System.out.println("+++++++++++++++in Player");
     }
 
     public int open(double time){
+        System.out.println("+++++++++++++++in open");
         return player_open(nativeId, time);
     }
 
     public int stop(){
+        System.out.println("+++++++++++++++in stop");
         return player_stop(nativeId);
     }
 

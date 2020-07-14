@@ -21,7 +21,7 @@ enum YaoPlayerStatus
 class YaoPlayerCtr : public YaoThread
 {
 public:
-	YaoPlayerCtr(double _time = 0.0);
+	YaoPlayerCtr(std::string _path, double _time = 0.0);
 	~YaoPlayerCtr();
 
 	virtual void run();
@@ -34,12 +34,20 @@ public:
 	int play();
 	int pause();
 
+	int pushFrameplayVideoFrame(YaoAVFrame * frame);
+	int playVideoFrameSize();
+
+	int pushFrameplayAudioFrame(YaoAVFrame * frame);
+	int playAudioFrameSize();
 public:
 	double seekTime = 0.0;
+    std::string path;
 private:
 	YaoQueue<YaoAVFrame> videoFrameQueue;
 	YaoQueue<YaoAVFrame> audioFrameQueue;
 	YaoPlayerStatus status = YaoPlayerStatus::YAOPLAYERSTATUS_PLAYING;
+	YaoQueue<YaoAVFrame> playVideoFrameQueue;
+	YaoQueue<YaoAVFrame> playAudioFrameQueue;
 };
 
 class YaoPlayerReaderThread : public YaoThread
@@ -82,12 +90,9 @@ public:
 
 	int seek(double time);
 
-	int pushFrame(YaoAVFrame * frame);
-	int packetFrameSize();
 private:
 	std::string path;
 	YaoPlayerCtr * playerCtr = nullptr;
-	YaoQueue<YaoAVFrame> frameQueue;
 
 };
 
