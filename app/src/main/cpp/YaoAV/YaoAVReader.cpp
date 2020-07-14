@@ -1,3 +1,4 @@
+#include "EyerCore/EyerLog.hpp"
 #include "YaoAV.h"
 #include "YaoAVReaderPrivate.h"
 #include "YaoAVPacketPrivate.h"
@@ -24,6 +25,7 @@ int YaoAVReader::Open(const char* path)
 	if (formatContextPrivate->formatContext == nullptr) {
 		return -1;
 	}
+	EyerLog("fff: %s\n", path);
 	int ret = avformat_open_input(&formatContextPrivate->formatContext, path, nullptr, nullptr);
 	if (!ret) {
 		avformat_find_stream_info(formatContextPrivate->formatContext, nullptr);
