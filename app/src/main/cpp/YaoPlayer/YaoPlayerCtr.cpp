@@ -23,6 +23,10 @@ void YaoPlayerCtr::run()
 	YaoAVFrame* videoFrame = nullptr;
 	YaoAVFrame* audioFrame = nullptr;
 	long long pauseDurationAll = 0;
+
+	//FILE* fout;
+	//fout = fopen("/storage/emulated/0/ST/ads.yuv", "wb");
+
 	while (!stopFlag) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
@@ -48,7 +52,7 @@ void YaoPlayerCtr::run()
 		if (videoFrame == nullptr) {
 			videoFrameQueue.pop(&videoFrame);
 		} 
-        //EyerLog("=====videoFrameQueue.size:%d\n", getVideoFrameQueueSize());
+        EyerLog("++++videoFrameQueue.size:%d\n", getVideoFrameQueueSize());
 		if (videoFrame != nullptr) {
 			//pts小于seektime，丢帧
 			if (videoFrame->getPts() < (long long)(seekTime * 1000)) {
@@ -58,13 +62,34 @@ void YaoPlayerCtr::run()
 		}
 
         if (videoFrame != nullptr) {
-            EyerLog("=============================videoFrame->getPts():%lld  dTime:%lld\n", videoFrame->getPts(), dTime);
             //如果 framePts <= dTime
 			if (videoFrame->getPts() <= dTime) {
 				//该帧立即播放
-				EyerLog("video frame videoFrame->getPts():%lld\n", videoFrame->getPts());
-				pushVideoFrameQueue(videoFrame);
+				EyerLog("++++video frame videoFrame->getPts():%d, heigt:%d\n", videoFrame->getW(), videoFrame->getH());
+				pushFrameplayVideoFrame(videoFrame);
 
+				/*int width = videoFrame->getW();
+				int height = videoFrame->getH();
+
+				unsigned char* y;
+				unsigned char* u;
+				unsigned char* v;
+
+				y = (unsigned char*)malloc(width * height);
+				u = (unsigned char*)malloc(width / 2 * height / 2);
+				v = (unsigned char*)malloc(width / 2 * height / 2);
+
+				videoFrame->getY(y);
+				videoFrame->getU(u);
+				videoFrame->getV(v);
+
+				fwrite(y, width * height, 1, fout);
+				fwrite(u, width / 2 * height / 2, 1, fout);
+				fwrite(v, width / 2 * height / 2, 1, fout);
+
+				free(y);
+				free(u);
+				free(v);*/
 				/*delete videoFrame;
 				videoFrame = nullptr;*/
 			}
@@ -78,14 +103,13 @@ void YaoPlayerCtr::run()
 		if (audioFrame == nullptr) {
 			audioFrameQueue.pop(&audioFrame);
 		}
+		//EyerLog("~~~audio.size:%d\n", getAudioFrameQueueSize());
 		if (audioFrame != nullptr) {
-            EyerLog("=============================audioFrame->getPts():%lld  dTime:%lld\n", audioFrame->getPts(), dTime);
-
             //如果 framePts <= dTime，
 			if (audioFrame->getPts() <= dTime) {
 				//该帧立即播放
-				EyerLog("~~~~~~~~audio frame audioFrame->getPts():%lld\n", audioFrame->getPts());
-				pushAudioFrameQueue(audioFrame);
+				//EyerLog("~~~~~~~~audio frame audioFrame->getPts():%lld\n", audioFrame->audioPrint());
+				pushFrameplayAudioFrame(audioFrame);
 
 				/*delete audioFrame;
 				audioFrame = nullptr;*/

@@ -57,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         File dir = Environment.getExternalStorageDirectory();
-        // String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
-        String videoPath = dir.getAbsolutePath() + "/" + "ST/w.mp4";
+        //String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
+        String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
         System.out.println("+++++++++path:" + videoPath);
 
         File f = new File(videoPath);
@@ -67,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
         Player player = new Player(videoPath);
         player.open(0);
         player.play();
+
+        try {
+            Thread.sleep(1*1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         player.stop();
         player.destory();

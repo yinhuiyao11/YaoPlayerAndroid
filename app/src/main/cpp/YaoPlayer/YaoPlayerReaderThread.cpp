@@ -21,7 +21,7 @@ void YaoPlayerReaderThread::run()
 	}
 
 	reader.seek(ctrThread->seekTime);
-	EyerLog("=============================YaoPlayerReaderThread getStreamCount \n", reader.getStreamCount());
+	EyerLog("=============================YaoPlayerReaderThread getStreamCount: %d\n", reader.getStreamCount());
 
 	int videoStreamIndex = reader.getVideoStreamIndex();
 	int audioStreamIndex = reader.getAudioStreamIndex();
