@@ -91,6 +91,7 @@ public:
 
 	int seek(double time);
 
+	static YaoQueue<YaoAVFrame> playVideoFrameQueueStatic;
 private:
 	std::string path;
 	YaoPlayerCtr * playerCtr = nullptr;

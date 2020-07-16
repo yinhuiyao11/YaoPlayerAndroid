@@ -29,10 +29,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*view = new GLESJNIView(getApplication());
-        setContentView(view);*/
+        view = new GLESJNIView(this);
+        setContentView(view);
 
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
         // Example of a call to a native method
         verifyStoragePermissions(this);
 

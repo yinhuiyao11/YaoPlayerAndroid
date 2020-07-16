@@ -1,5 +1,7 @@
 #include "YaoPlayer.h"
 
+YaoQueue<YaoAVFrame> YaoPlayer::playVideoFrameQueueStatic;
+
 YaoPlayer::YaoPlayer(std::string _path)
 {
 	path = _path;

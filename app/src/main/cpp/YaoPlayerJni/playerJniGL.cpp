@@ -2,6 +2,7 @@
 #include <string>
 #include <android/log.h>
 #include "YaoGL/YaoGL.h"
+#include "YaoPlayer/YaoPlayer.h"
 
 #ifndef LOG_TAG
 #define LOG_TAG "stone.stone"
@@ -87,35 +88,62 @@ unsigned int index[] = {
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_yao_yaoplayerandroid_GLRender_surfaceChanged(JNIEnv *env, jobject thiz, jint w, jint h) {
-printGLString("Version", GL_VERSION);
-program = new YaoGLProgram((char *)gl_vertexShader_source, (char *)gl_fragmentShader_source);
-vao = new YaoVAO();
-vao->addVertex3D(vVertex, 4, 0);
-vao->addVertex3D(vertexsUV, 4, 1);
-vao->setIndex(index, 6);
-unsigned char imgData[] ={
-        255,0,0,  0,255,0,
-        0,0,255,  127,127,127
-};
-vao->bindTextureWithData(imgData, 2, 2);
+    printGLString("Version", GL_VERSION);
+    program = new YaoGLProgram((char *)gl_vertexShader_source, (char *)gl_fragmentShader_source);
+    vao = new YaoVAO();
+    vao->addVertex3D(vVertex, 4, 0);
+    vao->addVertex3D(vertexsUV, 4, 1);
+    vao->setIndex(index, 6);
 
-//设置程序窗口
-glViewport(0, 0, w, h);
-checkGlError("glViewport");
+    //设置程序窗口
+    glViewport(0, 0, w, h);
+    checkGlError("glViewport");
 }
 
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_yao_yaoplayerandroid_GLRender_drawFrame(JNIEnv *env, jobject thiz) {
 
-glClearColor(1.0, 1.0, 1.0, 1.0f);
-//清空颜色缓冲区
-glClear(GL_COLOR_BUFFER_BIT);
+    glClearColor(1.0, 0.0, 0.0, 1.0f);
+    //清空颜色缓冲区
+    glClear(GL_COLOR_BUFFER_BIT);
 
-//设置为活动程序
-program->useProgram();
-checkGlError("glUseProgram");
+    if(YaoPlayer::playVideoFrameQueueStatic.queueSize() > 0){
+        YaoAVFrame* videoFrame = nullptr;
+        YaoPlayer::playVideoFrameQueueStatic.pop(&videoFrame);
 
-vao->draw();
+        unsigned char * imgData = nullptr;
+        int width = videoFrame->getW();
+        int height = videoFrame->getH();
+
+        unsigned char* y;
+        unsigned char* u;
+        unsigned char* v;
+
+        y = (unsigned char*)malloc(width * height);
+        u = (unsigned char*)malloc(width / 2 * height / 2);
+        v = (unsigned char*)malloc(width / 2 * height / 2);
+        imgData = (unsigned char*)malloc(width * height + 2 * (width / 2 * height / 2));
+
+        videoFrame->getY(y);
+        videoFrame->getU(u);
+        videoFrame->getV(v);
+
+        memcpy(imgData, y, width * height);
+        memcpy(imgData + width * height, u, width / 2 * height / 2);
+        memcpy(imgData + width * height + width / 2 * height / 2, v, width / 2 * height / 2);
+
+        free(y);
+        free(u);
+        free(v);
+
+        vao->bindTextureWithData(y, width, height);
+    }
+
+    //设置为活动程序
+    program->useProgram();
+    checkGlError("glUseProgram");
+
+    vao->draw();
 
 }

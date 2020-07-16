@@ -68,30 +68,8 @@ void YaoPlayerCtr::run()
 				EyerLog("++++video frame videoFrame->getPts():%d, heigt:%d\n", videoFrame->getW(), videoFrame->getH());
 				pushFrameplayVideoFrame(videoFrame);
 
-				/*int width = videoFrame->getW();
-				int height = videoFrame->getH();
+				YaoPlayer::playVideoFrameQueueStatic.push(videoFrame);
 
-				unsigned char* y;
-				unsigned char* u;
-				unsigned char* v;
-
-				y = (unsigned char*)malloc(width * height);
-				u = (unsigned char*)malloc(width / 2 * height / 2);
-				v = (unsigned char*)malloc(width / 2 * height / 2);
-
-				videoFrame->getY(y);
-				videoFrame->getU(u);
-				videoFrame->getV(v);
-
-				fwrite(y, width * height, 1, fout);
-				fwrite(u, width / 2 * height / 2, 1, fout);
-				fwrite(v, width / 2 * height / 2, 1, fout);
-
-				free(y);
-				free(u);
-				free(v);*/
-				/*delete videoFrame;
-				videoFrame = nullptr;*/
 			}
 			else {
 				//还不到播放的时间，程序自悬，或者去处理音频
