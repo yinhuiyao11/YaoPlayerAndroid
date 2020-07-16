@@ -36,18 +36,6 @@ public class MainActivity extends AppCompatActivity {
         // Example of a call to a native method
         verifyStoragePermissions(this);
 
-
-
-        /*
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-         */
-
-
         /*TextView tv = findViewById(R.id.sample_text);
         tv.setText(stringFromJNI());*/
     }

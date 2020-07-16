@@ -10,3 +10,4 @@ public abstract class YaoObject {
 
     public abstract int destory();
 }
+

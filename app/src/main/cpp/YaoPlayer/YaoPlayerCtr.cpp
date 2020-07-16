@@ -176,3 +176,8 @@ int YaoPlayerCtr::playAudioFrameSize()
 {
 	return playAudioFrameQueue.queueSize();
 }
+
+YaoQueue<YaoAVFrame> * YaoPlayerCtr::getPlayVideoFrameQ()
+{
+    return  &playVideoFrameQueue;
+}

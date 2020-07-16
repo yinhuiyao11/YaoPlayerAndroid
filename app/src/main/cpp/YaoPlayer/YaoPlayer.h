@@ -36,6 +36,7 @@ public:
 
 	int pushFrameplayVideoFrame(YaoAVFrame * frame);
 	int playVideoFrameSize();
+	YaoQueue<YaoAVFrame> * getPlayVideoFrameQ();
 
 	int pushFrameplayAudioFrame(YaoAVFrame * frame);
 	int playAudioFrameSize();
