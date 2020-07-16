@@ -56,14 +56,10 @@ public class MainActivity extends AppCompatActivity {
         player.open(0);
         player.play();
 
-        try {
-            Thread.sleep(1*1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
-        player.stop();
-        player.destory();
+
+        //player.stop();
+        //player.destory();
     }
 
     public static void verifyStoragePermissions(Activity activity) {

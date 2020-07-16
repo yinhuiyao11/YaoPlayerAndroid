@@ -12,7 +12,7 @@ public class Player extends YaoObject {
     public static native int                    player_play                                 (long player);
     public static native int                    player_pause                                (long player);
     public static native int                    player_seek                                 (long player, double time);
-    public static native long                   player_get_play_video_frame                 (long player);
+    //public static native long                   player_get_play_video_frame                 (long player);
 
     public Player(String path){
         nativeId = player_init(path);
