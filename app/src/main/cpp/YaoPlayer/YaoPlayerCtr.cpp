@@ -63,15 +63,16 @@ void YaoPlayerCtr::run()
 
         if (videoFrame != nullptr) {
             //如果 framePts <= dTime
+			EyerLog("++++pts:%lld   dTime:%lld\n", videoFrame->getPts(), dTime);
 			if (videoFrame->getPts() <= dTime) {
 				//该帧立即播放
 				EyerLog("++++video frame videoFrame->getPts():%lld, weight:%d, heigt:%d\n", videoFrame->getPts(), videoFrame->getW(), videoFrame->getH());
 				pushFrameplayVideoFrame(videoFrame);
 
 				YaoPlayer::playVideoFrameQueueStatic.push(videoFrame);
-				EyerLog("===playVideoFrameQueueStatic size:%d\n", YaoPlayer::playVideoFrameQueueStatic.queueSize());
-				delete videoFrame;
-				videoFrame = nullptr;
+				EyerLog("===in player playVideoFrameQueueStatic size:%d\n", YaoPlayer::playVideoFrameQueueStatic.queueSize());
+				/*delete videoFrame;
+				videoFrame = nullptr;*/
 
 			}
 			else {
