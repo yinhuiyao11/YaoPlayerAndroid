@@ -14,7 +14,6 @@ YaoPlayerCtr::~YaoPlayerCtr()
 
 void YaoPlayerCtr::run()
 {
-    EyerLog("=============================YaoPlayerCtr run \n");
     YaoPlayerReaderThread readerThread(path, this);
 	readerThread.start();
 
@@ -23,9 +22,6 @@ void YaoPlayerCtr::run()
 	YaoAVFrame* videoFrame = nullptr;
 	YaoAVFrame* audioFrame = nullptr;
 	long long pauseDurationAll = 0;
-
-	//FILE* fout;
-	//fout = fopen("/storage/emulated/0/ST/ads.yuv", "wb");
 
 	while (!stopFlag) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -55,8 +51,9 @@ void YaoPlayerCtr::run()
         EyerLog("++++videoFrameQueue.size:%d\n", getVideoFrameQueueSize());
 		if (videoFrame != nullptr) {
 			//pts小于seektime，丢帧
-			if (videoFrame->getPts() < (long long)(seekTime * 1000)) {
-				delete videoFrame;
+
+            if (videoFrame->getPts() < (long long)(seekTime * 1000)) {
+                delete videoFrame;
 				videoFrame = nullptr;
 			}
 		}
@@ -69,10 +66,10 @@ void YaoPlayerCtr::run()
 				pushFrameplayVideoFrame(videoFrame);
 
 				YaoPlayer::playVideoFrameQueueStatic.push(videoFrame);
-				EyerLog("===playVideoFrameQueueStatic size:%d\n", YaoPlayer::playVideoFrameQueueStatic.queueSize());
-				delete videoFrame;
-				videoFrame = nullptr;
+				// delete videoFrame;
+				// videoFrame = nullptr;
 
+                videoFrame = nullptr;
 			}
 			else {
 				//还不到播放的时间，程序自悬，或者去处理音频

@@ -3,6 +3,7 @@
 #include <android/log.h>
 #include "YaoGL/YaoGL.h"
 #include "YaoPlayer/YaoPlayer.h"
+#include "../EyerCore/EyerLog.hpp"
 
 #ifndef LOG_TAG
 #define LOG_TAG "stone.stone"
@@ -110,6 +111,7 @@ Java_com_yao_yaoplayerandroid_GLRender_drawFrame(JNIEnv *env, jobject thiz) {
 
     if(YaoPlayer::playVideoFrameQueueStatic.queueSize() > 0){
         YaoAVFrame* videoFrame = nullptr;
+
         YaoPlayer::playVideoFrameQueueStatic.pop(&videoFrame);
 
         unsigned char * imgData = nullptr;
@@ -133,11 +135,14 @@ Java_com_yao_yaoplayerandroid_GLRender_drawFrame(JNIEnv *env, jobject thiz) {
         memcpy(imgData + width * height, u, width / 2 * height / 2);
         memcpy(imgData + width * height + width / 2 * height / 2, v, width / 2 * height / 2);
 
+        vao->bindTextureWithData(y, width, height);
+
+        delete videoFrame;
+        videoFrame = nullptr;
+
         free(y);
         free(u);
         free(v);
-
-        vao->bindTextureWithData(y, width, height);
     }
 
     //设置为活动程序

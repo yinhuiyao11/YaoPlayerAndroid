@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         File dir = Environment.getExternalStorageDirectory();
-        //String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
-        String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
+        String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
+        //String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
         System.out.println("+++++++++path:" + videoPath);
 
         File f = new File(videoPath);
