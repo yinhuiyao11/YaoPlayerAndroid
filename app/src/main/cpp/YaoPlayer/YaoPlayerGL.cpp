@@ -1,9 +1,11 @@
-/*
-#include <jni.h>
-#include <string>
+//
+// Created by yaoyao on 20-7-19.
+//
+
+#include <string.h>
 #include <android/log.h>
-#include "YaoGL/YaoGL.h"
-#include "YaoPlayer/YaoPlayer.h"
+#include "../YaoGL/YaoGL.h"
+#include "YaoPlayer.h"
 #include "../EyerCore/EyerLog.hpp"
 
 #ifndef LOG_TAG
@@ -11,17 +13,13 @@
 #define LOGE(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 #endif
 
-*/
 /*
 #define STRINGIZE(x) #x
 #define SHADER(shader) "" STRINGIZE(shader)
-*//*
-
 */
 /**
  * 顶点着色器源码
- *//*
-
+ */
 auto gl_vertexShader_source =
         "#version 300 es\n"
         "layout(location = 0) in vec3 vPosition;\n"
@@ -34,11 +32,9 @@ auto gl_vertexShader_source =
         "   TexCoord = aTexCoord;\n"
         "}\n";
 
-*/
 /**
  * 片段着色器源码
- *//*
-
+ */
 auto gl_fragmentShader_source =
         "#version 300 es\n"
         "precision mediump float;\n"
@@ -51,11 +47,9 @@ auto gl_fragmentShader_source =
         "   fragColor = texture(t, uv);\n"
         "}\n";
 
-*/
 /**
  * 输出GL的属性值
- *//*
-
+ */
 static void printGLString(const char *name, GLenum s) {
     const char *glName = reinterpret_cast<const char *>(glGetString(s));
     LOGE("GL %s = %s", name, glName);
@@ -67,18 +61,9 @@ static void checkGlError(const char *op) {
     }
 }
 
-*/
-/**
- * 着色器程序
- *//*
-
-YaoGLProgram * program;
-YaoVAO * vao;
-*/
 /**
  * 顶点坐标
- *//*
-
+ */
 float vVertex[] = {
         1.0f, 1.0f, 0.0f,
         -1.0f, 1.0f, 0.0f,
@@ -99,10 +84,17 @@ unsigned int index[] = {
         2,0,3
 };
 
-extern "C"
-JNIEXPORT void JNICALL
-Java_com_yao_yaoplayerandroid_GLRender_surfaceChanged(JNIEnv *env, jobject thiz, jint w, jint h) {
-    printGLString("Version", GL_VERSION);
+YaoPlayerGL::YaoPlayerGL(YaoQueue<YaoAVFrame> * playVideoFrameQueue)
+{
+    playVideoFrameQueueGL = playVideoFrameQueue;
+
+}
+
+YaoPlayerGL::~YaoPlayerGL(){
+
+}
+
+int YaoPlayerGL::surfaceChanged(int w, int h){
     program = new YaoGLProgram((char *)gl_vertexShader_source, (char *)gl_fragmentShader_source);
     vao = new YaoVAO();
     vao->addVertex3D(vVertex, 4, 0);
@@ -112,20 +104,25 @@ Java_com_yao_yaoplayerandroid_GLRender_surfaceChanged(JNIEnv *env, jobject thiz,
     //设置程序窗口
     glViewport(0, 0, w, h);
     checkGlError("glViewport");
+
+    return 0;
 }
 
-extern "C"
-JNIEXPORT void JNICALL
-Java_com_yao_yaoplayerandroid_GLRender_drawFrame(JNIEnv *env, jobject thiz) {
-
+int YaoPlayerGL::drawFrame(){
     glClearColor(1.0, 0.0, 0.0, 1.0f);
     //清空颜色缓冲区
     glClear(GL_COLOR_BUFFER_BIT);
 
-    if(YaoPlayer::playVideoFrameQueueStatic.queueSize() > 0){
+
+    if(playVideoFrameQueueGL == nullptr){
+        EyerLog("+++++++++++++++++++++++++++++playVideoFrameQueueGL is null\n");
+
+    }
+    /*if(playVideoFrameQueueGL->queueSize() > 0){
+
         YaoAVFrame* videoFrame = nullptr;
 
-        YaoPlayer::playVideoFrameQueueStatic.pop(&videoFrame);
+        playVideoFrameQueueGL->pop(&videoFrame);
 
         unsigned char * imgData = nullptr;
         int width = videoFrame->getW();
@@ -156,7 +153,7 @@ Java_com_yao_yaoplayerandroid_GLRender_drawFrame(JNIEnv *env, jobject thiz) {
         free(y);
         free(u);
         free(v);
-    }
+    }*/
 
     //设置为活动程序
     program->useProgram();
@@ -164,5 +161,5 @@ Java_com_yao_yaoplayerandroid_GLRender_drawFrame(JNIEnv *env, jobject thiz) {
 
     vao->draw();
 
+    return 0;
 }
-*/

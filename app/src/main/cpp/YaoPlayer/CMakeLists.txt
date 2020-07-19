@@ -13,11 +13,12 @@ add_library(
     YaoPlayerReaderThread.cpp
     YaoDecodeThread.cpp
     YaoPlayerCtr.cpp
+    YaoPlayerGL.cpp
 )
 
 target_link_libraries(
         YaoPlayer
 
         YaoAV
-
+        YaoGL
 )

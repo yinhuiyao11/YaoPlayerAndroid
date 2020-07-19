@@ -25,6 +25,11 @@ public:
 		}
 	}
 
+	YaoQueue & operator = (YaoQueue & yaoQueue)
+	{
+
+	}
+
 	int push(T* t) {
 		std::lock_guard<std::mutex> lck(mut);
 		queue.push(t);

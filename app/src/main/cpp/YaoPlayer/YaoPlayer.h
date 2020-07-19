@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-
+#include "../YaoGL/YaoGL.h"
 #include "YaoThread/YaoThread.h"
 #include "YaoAV/YaoAV.h"
 #include "YaoQueue/Queue.h"
@@ -35,20 +35,19 @@ public:
 	int pause();
 
 	int pushFrameplayVideoFrame(YaoAVFrame * frame);
-	int playVideoFrameSize();
-	YaoQueue<YaoAVFrame> * getPlayVideoFrameQ();
 
 	int pushFrameplayAudioFrame(YaoAVFrame * frame);
 	int playAudioFrameSize();
 public:
 	double seekTime = 0.0;
     std::string path;
+	YaoQueue<YaoAVFrame> playVideoFrameQueue;
+	YaoQueue<YaoAVFrame> playAudioFrameQueue;
 private:
 	YaoQueue<YaoAVFrame> videoFrameQueue;
 	YaoQueue<YaoAVFrame> audioFrameQueue;
 	YaoPlayerStatus status = YaoPlayerStatus::YAOPLAYERSTATUS_PLAYING;
-	YaoQueue<YaoAVFrame> playVideoFrameQueue;
-	YaoQueue<YaoAVFrame> playAudioFrameQueue;
+
 };
 
 class YaoPlayerReaderThread : public YaoThread
@@ -78,6 +77,23 @@ private:
 	YaoDecoderType type;
 };
 
+class YaoPlayerGL
+{
+public:
+    YaoPlayerGL(YaoQueue<YaoAVFrame> * playVideoFrameQueue);
+    ~YaoPlayerGL();
+    int surfaceChanged(int w, int h);
+    int drawFrame();
+
+public:
+	YaoQueue<YaoAVFrame> * playVideoFrameQueueGL = nullptr;
+
+private:
+    //着色器程序
+    YaoGLProgram * program = nullptr;
+    YaoVAO * vao = nullptr;
+};
+
 class YaoPlayer
 {
 public:
@@ -91,10 +107,12 @@ public:
 
 	int seek(double time);
 
-	static YaoQueue<YaoAVFrame> playVideoFrameQueueStatic;
+	int printQueueSize();
+
+	YaoPlayerGL * playerGl = nullptr;
+
 private:
 	std::string path;
 	YaoPlayerCtr * playerCtr = nullptr;
-
 };
 

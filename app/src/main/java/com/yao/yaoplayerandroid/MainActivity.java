@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         System.loadLibrary("YaoPlayerJni");
     }
     private GLESJNIView view;
+    private Player player;
 
     private static String[] PERMISSIONS_STORAGE = {
             "android.permission.READ_EXTERNAL_STORAGE",
@@ -29,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        view = new GLESJNIView(this);
-        setContentView(view);
 
         //setContentView(R.layout.activity_main);
         // Example of a call to a native method
@@ -45,21 +44,23 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         File dir = Environment.getExternalStorageDirectory();
-        String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
-        //String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
+        //String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
+        String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
         System.out.println("+++++++++path:" + videoPath);
 
-        File f = new File(videoPath);
-        System.out.println("f:" + f.canRead());
+  /*      File f = new File(videoPath);
+        System.out.println("f:" + f.canRead());*/
 
-        Player player = new Player(videoPath);
+        player = new Player(videoPath);
         player.open(0);
         player.play();
 
-
-
         //player.stop();
         //player.destory();
+        //player.print_queue_size();
+        view = new GLESJNIView(this, player);
+        setContentView(view);
+
     }
 
     public static void verifyStoragePermissions(Activity activity) {

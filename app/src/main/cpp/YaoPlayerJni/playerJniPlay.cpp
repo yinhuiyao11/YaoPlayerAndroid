@@ -62,3 +62,28 @@ Java_com_yao_yaoplayerandroid_player_Player_player_1seek(JNIEnv *env, jclass cla
     YaoPlayer * player = (YaoPlayer *)avreader;
     return player->seek(time);
 }
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_yao_yaoplayerandroid_player_Player_player_1gl_1drawFrame(JNIEnv *env, jclass clazz,
+                                                                  jlong _player) {
+    YaoPlayer * player = (YaoPlayer *)_player;
+    return player->playerGl->drawFrame();
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_yao_yaoplayerandroid_player_Player_player_1gl_1surfaceChanged(JNIEnv *env, jclass clazz,
+                                                                       jlong _player, jint width,
+                                                                       jint height) {
+    YaoPlayer * player = (YaoPlayer *)_player;
+    return player->playerGl->surfaceChanged(width, height);
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_yao_yaoplayerandroid_player_Player_player_1print_1queue_1size(JNIEnv *env, jclass clazz,
+                                                                       jlong _player) {
+    YaoPlayer * player = (YaoPlayer *)_player;
+    return player->printQueueSize();
+}

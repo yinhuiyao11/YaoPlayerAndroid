@@ -14,6 +14,13 @@ YaoPlayerCtr::~YaoPlayerCtr()
 
 void YaoPlayerCtr::run()
 {
+	/*if(&playVideoFrameQueue == nullptr){
+		EyerLog("+++++++++++++++++++++++++++++playVideoFrameQueueGL is null\n");
+
+	}
+	EyerLog("+++++++++++++++++++++++++++++playVideoFrameQueueGL is not null\n");
+
+	EyerLog("+++++++++++++++++++++++++++++playVideoFrameQueueGL->size:%d\n", playVideoFrameQueue.queueSize());*/
     YaoPlayerReaderThread readerThread(path, this);
 	readerThread.start();
 
@@ -64,10 +71,6 @@ void YaoPlayerCtr::run()
 				//¸ÃÖ¡Á¢¼´²¥·Å
 				EyerLog("++++video frame videoFrame->getPts():%lld, weight:%d, heigt:%d\n", videoFrame->getPts(), videoFrame->getW(), videoFrame->getH());
 				pushFrameplayVideoFrame(videoFrame);
-
-				YaoPlayer::playVideoFrameQueueStatic.push(videoFrame);
-				// delete videoFrame;
-				// videoFrame = nullptr;
 
                 videoFrame = nullptr;
 			}
@@ -140,11 +143,6 @@ int YaoPlayerCtr::pushFrameplayVideoFrame(YaoAVFrame * frame){
 	return playVideoFrameQueue.push(frame);
 }
 
-int YaoPlayerCtr::playVideoFrameSize()
-{
-	return playVideoFrameQueue.queueSize();
-}
-
 int YaoPlayerCtr::pushFrameplayAudioFrame(YaoAVFrame * frame)
 {
 	return playAudioFrameQueue.push(frame);
@@ -155,7 +153,3 @@ int YaoPlayerCtr::playAudioFrameSize()
 	return playAudioFrameQueue.queueSize();
 }
 
-YaoQueue<YaoAVFrame> * YaoPlayerCtr::getPlayVideoFrameQ()
-{
-    return  &playVideoFrameQueue;
-}
