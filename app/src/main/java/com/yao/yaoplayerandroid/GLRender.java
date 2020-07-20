@@ -14,17 +14,11 @@ public class GLRender implements GLSurfaceView.Renderer {
 
     private Player player;
 
-    /*public native void surfaceChanged(int w, int h);
-    public native void drawFrame(long player);*/
-
     public GLRender(){
     }
 
     public GLRender(Player _player){
         this.player = _player;
-        //test
-        //player.seek(0);
-
     }
 
     @Override

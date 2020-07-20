@@ -14,13 +14,6 @@ YaoPlayerCtr::~YaoPlayerCtr()
 
 void YaoPlayerCtr::run()
 {
-	/*if(&playVideoFrameQueue == nullptr){
-		EyerLog("+++++++++++++++++++++++++++++playVideoFrameQueueGL is null\n");
-
-	}
-	EyerLog("+++++++++++++++++++++++++++++playVideoFrameQueueGL is not null\n");
-
-	EyerLog("+++++++++++++++++++++++++++++playVideoFrameQueueGL->size:%d\n", playVideoFrameQueue.queueSize());*/
     YaoPlayerReaderThread readerThread(path, this);
 	readerThread.start();
 

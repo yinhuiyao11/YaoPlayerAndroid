@@ -31,12 +31,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //setContentView(R.layout.activity_main);
-        // Example of a call to a native method
         verifyStoragePermissions(this);
 
-        /*TextView tv = findViewById(R.id.sample_text);
-        tv.setText(stringFromJNI());*/
     }
 
     @Override
@@ -53,13 +49,16 @@ public class MainActivity extends AppCompatActivity {
 
         player = new Player(videoPath);
         player.open(0);
+
+        view = new GLESJNIView(this, player);
+        setContentView(view);
+
         player.play();
 
         //player.stop();
         //player.destory();
+        //
         //player.print_queue_size();
-        view = new GLESJNIView(this, player);
-        setContentView(view);
 
     }
 

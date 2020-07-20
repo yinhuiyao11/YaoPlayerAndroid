@@ -87,7 +87,6 @@ unsigned int index[] = {
 YaoPlayerGL::YaoPlayerGL(YaoQueue<YaoAVFrame> * playVideoFrameQueue)
 {
     playVideoFrameQueueGL = playVideoFrameQueue;
-
 }
 
 YaoPlayerGL::~YaoPlayerGL(){
@@ -118,7 +117,8 @@ int YaoPlayerGL::drawFrame(){
         EyerLog("+++++++++++++++++++++++++++++playVideoFrameQueueGL is null\n");
 
     }
-    /*if(playVideoFrameQueueGL->queueSize() > 0){
+
+    if(playVideoFrameQueueGL->queueSize() > 0){
 
         YaoAVFrame* videoFrame = nullptr;
 
@@ -153,7 +153,7 @@ int YaoPlayerGL::drawFrame(){
         free(y);
         free(u);
         free(v);
-    }*/
+    }
 
     //设置为活动程序
     program->useProgram();
