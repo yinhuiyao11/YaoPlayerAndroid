@@ -13,6 +13,11 @@ YaoGLProgram::YaoGLProgram(char* vertexShaderStr, char* fragmentShaderStr)
 
     glLinkProgram(program);
 
+    redTexture = new YaoGLTexture();
+    greenTexture = new YaoGLTexture();
+    blueTexture = new YaoGLTexture();
+
+
     GLint logLen = 0;
     glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLen);
     if (logLen > 1) {

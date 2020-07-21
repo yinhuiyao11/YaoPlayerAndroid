@@ -31,6 +31,15 @@ int YaoGLTexture::loadImg(char* imgPath)
     return 0;
 }
 
+int YaoGLTexture::SetRedData(unsigned char * data, int width, int height)
+{
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, data);
+
+    return 0;
+}
+
 int YaoGLTexture::createTexImage2D()
 {
     if (imgData == nullptr) {

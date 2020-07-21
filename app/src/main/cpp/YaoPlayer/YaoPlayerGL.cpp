@@ -126,8 +126,8 @@ int YaoPlayerGL::drawFrame(){
         YaoAVFrame* videoFrame = nullptr;
 
         playVideoFrameQueueGL->pop(&videoFrame);
+        EyerLog("video frame videoFrame->getPts():%lld, weight:%d, heigt:%d\n", videoFrame->getPts(), videoFrame->getW(), videoFrame->getH());
 
-        unsigned char * imgData = nullptr;
         int width = videoFrame->getW();
         int height = videoFrame->getH();
 
@@ -138,18 +138,44 @@ int YaoPlayerGL::drawFrame(){
         y = (unsigned char*)malloc(width * height);
         u = (unsigned char*)malloc(width / 2 * height / 2);
         v = (unsigned char*)malloc(width / 2 * height / 2);
-        imgData = (unsigned char*)malloc(width * height + 2 * (width / 2 * height / 2));
 
         videoFrame->getY(y);
         videoFrame->getU(u);
         videoFrame->getV(v);
 
-        memcpy(imgData, y, width * height);
-        memcpy(imgData + width * height, u, width / 2 * height / 2);
-        memcpy(imgData + width * height + width / 2 * height / 2, v, width / 2 * height / 2);
+        glActiveTexture(GL_TEXTURE0);
+        program->redTexture->SetRedData(y, width,height);
+        program->setInt("y", 0);
 
-        vao->bindTextureWithData(y, width, height);
-        ///////program->setInt()
+        glActiveTexture(GL_TEXTURE1);
+        program->greenTexture->SetRedData(u, width / 2 , height / 2);
+        program->setInt("u", 1);
+
+        glActiveTexture(GL_TEXTURE2);
+        program->blueTexture->SetRedData(v, width / 2 , height / 2);
+        program->setInt("v", 2);
+
+
+        /*
+        vao->bindTextureWithData(y, width, height, 0);
+        glActiveTexture(GL_TEXTURE0);
+        vao->yaoGlTextures[0]->bindTexture();
+        program->setInt("y", 0);
+
+
+        vao->bindTextureWithData(u, width / 2 , height / 2, 1);
+        glActiveTexture(GL_TEXTURE1);
+        vao->yaoGlTextures[1]->bindTexture();
+        program->setInt("u", 1);
+
+
+        vao->bindTextureWithData(v, width / 2 , height / 2, 2);
+        glActiveTexture(GL_TEXTURE2);
+        vao->yaoGlTextures[2]->bindTexture();
+        program->setInt("v", 2);
+
+        */
+
 
         delete videoFrame;
         videoFrame = nullptr;

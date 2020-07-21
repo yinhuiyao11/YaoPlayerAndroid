@@ -33,6 +33,8 @@ public:
     int bindTexture();
     int setImgData(unsigned char* _imgData);
 
+    int SetRedData(unsigned char * data, int width, int height);
+
 public:
     unsigned char* imgData = nullptr;
     int width = 0;
@@ -61,6 +63,10 @@ public:
     int setInt(const char* name, int value);
 private:
     GLuint program = 0;
+public:
+    YaoGLTexture * redTexture = nullptr;
+    YaoGLTexture * greenTexture = nullptr;
+    YaoGLTexture * blueTexture = nullptr;
 };
 
 class YaoVAO
@@ -72,10 +78,12 @@ public:
     int bindVAO();
     int setIndex(unsigned int * index, int indexCount);
     int bindTexture(char * imgPath);
-    int bindTextureWithData(unsigned char* imgData, int _width, int _height);
+    int bindTextureWithData(unsigned char* imgData, int _width, int _height, int texture_num);
     int draw();
+
+    std::vector<YaoGLTexture *> yaoGlTextures;
+
 private:
-    YaoGLTexture * yaoGlTexture = nullptr;
     GLuint vao = 0;
     GLuint ebo = 0;
     std::vector<GLuint> vboList;

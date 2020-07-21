@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
         String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
         System.out.println("+++++++++path:" + videoPath);
 
-  /*      File f = new File(videoPath);
-        System.out.println("f:" + f.canRead());*/
+        File f = new File(videoPath);
+        System.out.println("f:" + f.canRead());
 
         player = new Player(videoPath);
         player.open(0);
@@ -59,8 +59,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
         player.destory();
     }
 

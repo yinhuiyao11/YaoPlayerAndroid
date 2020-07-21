@@ -62,7 +62,7 @@ void YaoPlayerCtr::run()
             //如果 framePts <= dTime
 			if (videoFrame->getPts() <= dTime) {
 				//该帧立即播放
-				EyerLog("++++video frame videoFrame->getPts():%lld, weight:%d, heigt:%d\n", videoFrame->getPts(), videoFrame->getW(), videoFrame->getH());
+				//EyerLog("++++video frame videoFrame->getPts():%lld, weight:%d, heigt:%d\n", videoFrame->getPts(), videoFrame->getW(), videoFrame->getH());
 				pushFrameplayVideoFrame(videoFrame);
 
                 videoFrame = nullptr;
