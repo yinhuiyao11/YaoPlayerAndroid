@@ -56,11 +56,14 @@ public class MainActivity extends AppCompatActivity {
         player.play();
 
         //player.stop();
-        //player.destory();
-        //
-        //player.print_queue_size();
-
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        player.destory();
+    }
+
 
     public static void verifyStoragePermissions(Activity activity) {
         try {
