@@ -11,8 +11,8 @@
 #include <vector>
 #include <stdio.h>
 #include <string>
-
-#include "../../../../../../../NDK/android-ndk-r21d/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/GLES3/gl3.h"
+#include <string.h>
+#include <stdlib.h>
 
 #ifndef LOG_TAG
 #define LOG_TAG "stone.stone"
@@ -31,12 +31,15 @@ public:
     int loadImg(char* imgPath);
     int createTexImage2D();
     int bindTexture();
+    int setImgData(unsigned char* _imgData);
 
-private:
-    GLuint texture = 0;
+public:
     unsigned char* imgData = nullptr;
     int width = 0;
     int height = 0;
+
+private:
+    GLuint texture = 0;
     int nrChannels = 0;
 };
 
@@ -69,6 +72,7 @@ public:
     int bindVAO();
     int setIndex(unsigned int * index, int indexCount);
     int bindTexture(char * imgPath);
+    int bindTextureWithData(unsigned char* imgData, int _width, int _height);
     int draw();
 private:
     YaoGLTexture * yaoGlTexture = nullptr;

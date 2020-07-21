@@ -2,16 +2,24 @@ package com.yao.yaoplayerandroid;
 
 import android.opengl.GLSurfaceView;
 
+import com.yao.yaoplayerandroid.player.Player;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 public class GLRender implements GLSurfaceView.Renderer {
     static {
-        System.loadLibrary("native-lib");
+        System.loadLibrary("YaoPlayerJni");
     }
 
-    public native void surfaceChanged(int w, int h);
-    public native void drawFrame();
+    private Player player;
+
+    public GLRender(){
+    }
+
+    public GLRender(Player _player){
+        this.player = _player;
+    }
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
@@ -20,11 +28,11 @@ public class GLRender implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
-        surfaceChanged(width, height);
+        player.gl_surfaceChanged(width, height);
     }
 
     @Override
     public void onDrawFrame(GL10 gl) {
-        drawFrame();
+        player.gl_drawFrame();
     }
 }

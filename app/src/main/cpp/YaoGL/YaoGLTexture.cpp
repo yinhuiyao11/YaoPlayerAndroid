@@ -3,7 +3,7 @@
 
 YaoGLTexture::YaoGLTexture()
 {
-    /*glGenTextures(1, &texture);
+    glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
 
     // 为当前绑定的纹理对象设置环绕、过滤方式
@@ -13,7 +13,7 @@ YaoGLTexture::YaoGLTexture()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     //设置一字节对齐
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);*/
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 }
 
 YaoGLTexture::~YaoGLTexture()
@@ -38,9 +38,9 @@ int YaoGLTexture::createTexImage2D()
         return -1;
     };
     //用图片生成纹理
-    //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, imgData);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, imgData);
     //在生成纹理之后调用glGenerateMipmap。会为当前绑定的纹理自动生成所有需要的多级渐远纹理
-    //glGenerateMipmap(GL_TEXTURE_2D);
+    glGenerateMipmap(GL_TEXTURE_2D);
     //生成纹理后，释放图像的内存
     //stbi_image_free(imgData);
 
@@ -49,6 +49,12 @@ int YaoGLTexture::createTexImage2D()
 
 int YaoGLTexture::bindTexture()
 {
-    //glBindTexture(GL_TEXTURE_2D, texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    return 0;
+}
+
+int YaoGLTexture::setImgData(unsigned char* _imgData)
+{
+    imgData = _imgData;
     return 0;
 }
