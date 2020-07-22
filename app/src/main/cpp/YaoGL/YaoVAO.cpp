@@ -5,7 +5,6 @@
 YaoVAO::YaoVAO()
 {
     glGenVertexArrays(1, &vao);
-    yaoGlTexture = new YaoGLTexture();
 }
 
 YaoVAO::~YaoVAO()
@@ -24,11 +23,6 @@ YaoVAO::~YaoVAO()
     if (vao != NULL) {
         glDeleteVertexArrays(1, &vao);
         vao = NULL;
-    }
-
-    if (yaoGlTexture != nullptr) {
-        delete yaoGlTexture;
-        yaoGlTexture = NULL;
     }
 }
 
@@ -69,36 +63,9 @@ int YaoVAO::setIndex(unsigned int * index, int _indexCount)
     return 0;
 }
 
-int YaoVAO::bindTexture(char * imgPath)
-{
-    int ret = yaoGlTexture->loadImg(imgPath);
-    if (ret) {
-        return -1;
-    }
-    ret = yaoGlTexture->createTexImage2D();
-    if (ret) {
-        return -1;
-    }
-    return 0;
-}
-
-int YaoVAO::bindTextureWithData(unsigned char* _imgData, int _width, int _height)
-{
-    yaoGlTexture->setImgData(_imgData);
-    yaoGlTexture->width = _width;
-    yaoGlTexture->height = _height;
-    int ret = yaoGlTexture->createTexImage2D();
-    if (ret) {
-        return -1;
-    }
-    return 0;
-}
-
-
 int YaoVAO::draw()
 {
     bindVAO();
-    yaoGlTexture->bindTexture();
     glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
     return 0;
 }

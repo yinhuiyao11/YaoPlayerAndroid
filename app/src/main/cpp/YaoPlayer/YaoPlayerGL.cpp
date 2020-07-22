@@ -41,10 +41,19 @@ auto gl_fragmentShader_source =
         "out vec4 fragColor;\n"
         "in vec3 outPos;\n"
         "in vec3 TexCoord;\n"
-        "uniform sampler2D t;\n"
+        "uniform sampler2D y;\n"
+        "uniform sampler2D u;\n"
+        "uniform sampler2D v;\n"
         "void main() {\n"
-        "vec2 uv = vec2(TexCoord.x, TexCoord.y);\n"
-        "   fragColor = texture(t, uv);\n"
+            "vec2 uv = vec2(TexCoord.x, TexCoord.y);\n"
+            "vec3 yuv;\n"
+            "vec3 rgb;\n"
+            "yuv.x = texture(y, uv).r;\n"
+            "yuv.y = texture(u, uv).r - 0.5;\n"
+            "yuv.z = texture(v, uv).r - 0.5;\n"
+
+            "rgb = mat3(1,1,1, 0,-0.39465,2.03211, 1.13983, -0.58060,0) * yuv;\n"
+            "fragColor = vec4(rgb, 1.0);\n"
         "}\n";
 
 /**
@@ -73,10 +82,10 @@ float vVertex[] = {
 
 //纹理坐标
 float vertexsUV[] = {
-        1.0f,  1.0f, 0.0f,
-        0.0f,  1.0f, 0.0f,
-        0.0f,  0.0f, 0.0f,
         1.0f,   0.0f, 0.0f,
+        0.0f,  0.0f, 0.0f,
+        0.0f,  1.0f, 0.0f,
+        1.0f,  1.0f, 0.0f,
 };
 
 unsigned int index[] = {
@@ -112,19 +121,13 @@ int YaoPlayerGL::drawFrame(){
     //清空颜色缓冲区
     glClear(GL_COLOR_BUFFER_BIT);
 
-
-    if(playVideoFrameQueueGL == nullptr){
-        EyerLog("+++++++++++++++++++++++++++++playVideoFrameQueueGL is null\n");
-
-    }
-
     if(playVideoFrameQueueGL->queueSize() > 0){
 
         YaoAVFrame* videoFrame = nullptr;
 
         playVideoFrameQueueGL->pop(&videoFrame);
+        EyerLog("video frame videoFrame->getPts():%lld, weight:%d, heigt:%d\n", videoFrame->getPts(), videoFrame->getW(), videoFrame->getH());
 
-        unsigned char * imgData = nullptr;
         int width = videoFrame->getW();
         int height = videoFrame->getH();
 
@@ -135,20 +138,22 @@ int YaoPlayerGL::drawFrame(){
         y = (unsigned char*)malloc(width * height);
         u = (unsigned char*)malloc(width / 2 * height / 2);
         v = (unsigned char*)malloc(width / 2 * height / 2);
-        imgData = (unsigned char*)malloc(width * height + 2 * (width / 2 * height / 2));
 
         videoFrame->getY(y);
         videoFrame->getU(u);
         videoFrame->getV(v);
 
-        memcpy(imgData, y, width * height);
-        memcpy(imgData + width * height, u, width / 2 * height / 2);
-        memcpy(imgData + width * height + width / 2 * height / 2, v, width / 2 * height / 2);
+        glActiveTexture(GL_TEXTURE0);
+        program->redTexture->setRedData(y, width,height);
+        program->setInt("y", 0);
 
-        vao->bindTextureWithData(y, width, height);
+        glActiveTexture(GL_TEXTURE1);
+        program->greenTexture->setRedData(u, width / 2 , height / 2);
+        program->setInt("u", 1);
 
-        delete videoFrame;
-        videoFrame = nullptr;
+        glActiveTexture(GL_TEXTURE2);
+        program->blueTexture->setRedData(v, width / 2 , height / 2);
+        program->setInt("v", 2);
 
         free(y);
         free(u);

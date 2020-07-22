@@ -10,7 +10,6 @@ include_directories (${distribution_DIR}/include)
 add_library(
         YaoPlayerJni
         SHARED
-        playerJniGL.cpp
         playerJniPlay.cpp
 
         playerJniUtil.cpp
