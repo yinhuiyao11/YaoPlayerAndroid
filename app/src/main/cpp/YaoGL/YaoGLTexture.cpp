@@ -31,28 +31,12 @@ int YaoGLTexture::loadImg(char* imgPath)
     return 0;
 }
 
-int YaoGLTexture::SetRedData(unsigned char * data, int width, int height)
+int YaoGLTexture::setRedData(unsigned char * data, int width, int height)
 {
+    //操作texture前，先bind
     glBindTexture(GL_TEXTURE_2D, texture);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, data);
-
-    return 0;
-}
-
-int YaoGLTexture::createTexImage2D()
-{
-    if (imgData == nullptr) {
-        printf("Failed to load texture\n");
-        return -1;
-    };
-    //用图片生成纹理
-    //glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, imgData);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width, height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, imgData);
-    //在生成纹理之后调用glGenerateMipmap。会为当前绑定的纹理自动生成所有需要的多级渐远纹理
-    glGenerateMipmap(GL_TEXTURE_2D);
-    //生成纹理后，释放图像的内存
-    //stbi_image_free(imgData);
 
     return 0;
 }
@@ -63,8 +47,3 @@ int YaoGLTexture::bindTexture()
     return 0;
 }
 
-int YaoGLTexture::setImgData(unsigned char* _imgData)
-{
-    imgData = _imgData;
-    return 0;
-}

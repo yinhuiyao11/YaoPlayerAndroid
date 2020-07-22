@@ -17,7 +17,6 @@ YaoGLProgram::YaoGLProgram(char* vertexShaderStr, char* fragmentShaderStr)
     greenTexture = new YaoGLTexture();
     blueTexture = new YaoGLTexture();
 
-
     GLint logLen = 0;
     glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLen);
     if (logLen > 1) {
@@ -40,6 +39,19 @@ YaoGLProgram::~YaoGLProgram()
     if (program != 0) {
         glDeleteProgram(program);
         program = 0;
+    }
+
+    if(redTexture != 0){
+        delete redTexture;
+        redTexture = nullptr;
+    }
+    if(greenTexture != 0){
+        delete greenTexture;
+        greenTexture = nullptr;
+    }
+    if(blueTexture != 0){
+        delete blueTexture;
+        blueTexture = nullptr;
     }
 }
 

@@ -144,41 +144,16 @@ int YaoPlayerGL::drawFrame(){
         videoFrame->getV(v);
 
         glActiveTexture(GL_TEXTURE0);
-        program->redTexture->SetRedData(y, width,height);
+        program->redTexture->setRedData(y, width,height);
         program->setInt("y", 0);
 
         glActiveTexture(GL_TEXTURE1);
-        program->greenTexture->SetRedData(u, width / 2 , height / 2);
+        program->greenTexture->setRedData(u, width / 2 , height / 2);
         program->setInt("u", 1);
 
         glActiveTexture(GL_TEXTURE2);
-        program->blueTexture->SetRedData(v, width / 2 , height / 2);
+        program->blueTexture->setRedData(v, width / 2 , height / 2);
         program->setInt("v", 2);
-
-
-        /*
-        vao->bindTextureWithData(y, width, height, 0);
-        glActiveTexture(GL_TEXTURE0);
-        vao->yaoGlTextures[0]->bindTexture();
-        program->setInt("y", 0);
-
-
-        vao->bindTextureWithData(u, width / 2 , height / 2, 1);
-        glActiveTexture(GL_TEXTURE1);
-        vao->yaoGlTextures[1]->bindTexture();
-        program->setInt("u", 1);
-
-
-        vao->bindTextureWithData(v, width / 2 , height / 2, 2);
-        glActiveTexture(GL_TEXTURE2);
-        vao->yaoGlTextures[2]->bindTexture();
-        program->setInt("v", 2);
-
-        */
-
-
-        delete videoFrame;
-        videoFrame = nullptr;
 
         free(y);
         free(u);

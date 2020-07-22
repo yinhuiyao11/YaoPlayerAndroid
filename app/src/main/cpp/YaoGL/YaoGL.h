@@ -29,11 +29,8 @@ public:
     YaoGLTexture();
     ~YaoGLTexture();
     int loadImg(char* imgPath);
-    int createTexImage2D();
     int bindTexture();
-    int setImgData(unsigned char* _imgData);
-
-    int SetRedData(unsigned char * data, int width, int height);
+    int setRedData(unsigned char * data, int width, int height);
 
 public:
     unsigned char* imgData = nullptr;
@@ -80,8 +77,6 @@ public:
     int bindTexture(char * imgPath);
     int bindTextureWithData(unsigned char* imgData, int _width, int _height, int texture_num);
     int draw();
-
-    std::vector<YaoGLTexture *> yaoGlTextures;
 
 private:
     GLuint vao = 0;
