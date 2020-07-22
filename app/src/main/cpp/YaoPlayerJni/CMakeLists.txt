@@ -27,6 +27,7 @@ target_link_libraries(
         android
         EGL
         GLESv3
+        OpenSLES
 
         ${distribution_DIR}/lib/libavformat.a
         ${distribution_DIR}/lib/libavcodec.a

@@ -95,14 +95,7 @@ unsigned int index[] = {
         2,0,3
 };*/
 
-extern "C" JNIEXPORT jstring JNICALL
-Java_com_yao_yaoplayerandroid_MainActivity_stringFromJNI(
-        JNIEnv* env,
-        jobject /* this */) {
-    //std::string hello = "Hello from C++";
-    std::string hello = avcodec_configuration();
-    return env->NewStringUTF(hello.c_str());
-}
+
 
 /*
 extern "C"
@@ -142,6 +135,7 @@ Java_com_yao_yaoplayerandroid_GLRender_drawFrame(JNIEnv *env, jobject thiz) {
 }
 */
 
+/*
 extern "C"
 JNIEXPORT jlong JNICALL
 Java_com_yao_yaoplayerandroid_av_AVReader_avreader_1init(JNIEnv *env, jclass clazz) {
@@ -176,4 +170,5 @@ Java_com_yao_yaoplayerandroid_av_AVReader_avreader_1print_1info(JNIEnv *env, jcl
                                                                 jlong avreader) {
     // TODO: implement avreader_print_info()
 }
+*/
 
