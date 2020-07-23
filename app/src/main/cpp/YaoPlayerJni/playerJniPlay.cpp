@@ -3,9 +3,8 @@
 #include "playerJniUtil.hpp"
 #include "../YaoAV/YaoAV.h"
 #include "../EyerCore/EyerLog.hpp"
+#include "../YaoSL/YaoSL.h"
 
-#include <SLES/OpenSLES.h>
-#include <SLES/OpenSLES_Android.h>
 
 extern "C"
 JNIEXPORT jlong JNICALL
