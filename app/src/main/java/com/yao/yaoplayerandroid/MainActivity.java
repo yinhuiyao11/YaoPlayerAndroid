@@ -31,10 +31,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        File dir = Environment.getExternalStorageDirectory();
-        //String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
-        String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
-        System.out.println("+++++++++path:" + videoPath);
         setContentView(R.layout.activity_main);
         // Example of a call to a native method
         TextView tv = (TextView) findViewById(R.id.sample_text);

@@ -20,6 +20,7 @@ target_link_libraries(
 
         YaoAV
         YaoGL
+        YaoSL
         YaoPlayer
         YaoThread
         EyerCore

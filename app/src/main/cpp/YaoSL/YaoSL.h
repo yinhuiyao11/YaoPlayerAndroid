@@ -12,20 +12,21 @@ class YaoSL{
 public:
     int createEngin();
     int createMix();
-    int setDataSource();
+    int setDataSource(SLuint32 bufferNums);
     int createAudioPlayer();
 
     int setPcmQueData();
+    //void pcmCallBack(SLAndroidSimpleBufferQueueItf bf, void*contex);
 private:
     SLObjectItf engineObject = NULL;
-    SLEngineItf engineSL = NULL;
+    SLEngineItf engineI = NULL;
 
-    SLObjectItf playerObject = NULL;
-
+    SLObjectItf mixObject = NULL;
+    SLDataSink audioSink = {};
     SLDataSource dataSource = {};
 
-    SLObjectItf player = NULL;
-    SLPlayItf playerInterface = NULL;
+    SLObjectItf playerObject = NULL;
+    SLPlayItf playerI = NULL;
     SLAndroidSimpleBufferQueueItf pcmQue = NULL;
 
 
