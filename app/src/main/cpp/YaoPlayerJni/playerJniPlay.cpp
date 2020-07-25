@@ -96,7 +96,9 @@ Java_com_yao_yaoplayerandroid_MainActivity_stringFromJNI(
         jobject /* this */) {
 
     std::string hello = "Hello from C++";
-    YaoSL sl;
+    YaoQueue<YaoAVFrame> * playAudioFrameQueue = nullptr;
+
+    YaoSL sl(playAudioFrameQueue);
     //1 创建引擎
     sl.createEngin();
 

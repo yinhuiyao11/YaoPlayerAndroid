@@ -3,8 +3,6 @@
 //
 #include "YaoSL.h"
 #include "../EyerCore/EyerLog.hpp"
-#include "../../../../../../../NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/SLES/OpenSLES.h"
-#include "../../../../../../../NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/SLES/OpenSLES_Android.h"
 #include "stdio.h"
 
 //回调函数
@@ -38,6 +36,16 @@ void pcmCallBack(SLAndroidSimpleBufferQueueItf bf, void*contex)
         }
 
     }
+}
+
+YaoSL::YaoSL(YaoQueue<YaoAVFrame> * playAudioFrameQueue)
+{
+
+}
+
+YaoSL::~YaoSL()
+{
+
 }
 
 int YaoSL::createEngin()
@@ -86,7 +94,7 @@ int YaoSL::createMix()
     }
 
     //c 输出
-    SLDataLocator_OutputMix outMix = {SL_DATALOCATOR_OUTPUTMIX,mixObject};
+    outMix = {SL_DATALOCATOR_OUTPUTMIX,mixObject};
     audioSink = {&outMix, 0};
     return 0;
 }
@@ -94,10 +102,10 @@ int YaoSL::createMix()
 int YaoSL::setDataSource(SLuint32 bufferNums)
 {
     //创建缓冲队列
-    SLDataLocator_AndroidSimpleBufferQueue que = {SL_DATALOCATOR_ANDROIDSIMPLEBUFFERQUEUE,bufferNums};
+    que = {SL_DATALOCATOR_ANDROIDSIMPLEBUFFERQUEUE,bufferNums};
 
     //音频格式配置（要和测试文件一致，实际使用中音频重采样成同样的格式）
-    SLDataFormat_PCM pcm = {
+    pcm = {
             SL_DATAFORMAT_PCM,
             2,//通道数
             SL_SAMPLINGRATE_44_1,//采样率
@@ -123,27 +131,6 @@ int YaoSL::createAudioPlayer()
     const SLboolean  req[] = {SL_BOOLEAN_TRUE};//接口开放
     //sizeof(ids)/sizeof(SLInterfaceID) 参数个数
     re = (*engineI)->CreateAudioPlayer(engineI,&playerObject,&dataSource,&audioSink, sizeof(ids)/sizeof(SLInterfaceID),ids,req);
-    if(engineI == NULL){
-        EyerLog("engineI is null\n");
-    }
-    if(playerObject == NULL){
-        EyerLog("playerObject is null\n");
-    }
-    if(dataSource.pLocator == nullptr){
-        EyerLog("dataSource is null\n");
-    }
-    if(dataSource.pFormat == nullptr){
-        EyerLog("dataSource.pFormat is null\n");
-    }
-    if(audioSink.pLocator == nullptr){
-        EyerLog("audioSink is null\n");
-    }
-    if(audioSink.pFormat == nullptr){
-        EyerLog("audioSink.pFormat is null\n");
-    }
-
-    EyerLog("sizeof(ids)/sizeof(SLInterfaceID) : %d\n", sizeof(ids)/sizeof(SLInterfaceID));
-
     if (re != SL_RESULT_SUCCESS) {
         EyerLog("CreateAudioPlayer  failed!, re:%d", re);
     }
