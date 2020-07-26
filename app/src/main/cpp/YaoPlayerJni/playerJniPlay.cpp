@@ -96,20 +96,22 @@ Java_com_yao_yaoplayerandroid_MainActivity_stringFromJNI(
         jobject /* this */) {
 
     std::string hello = "Hello from C++";
-    YaoQueue<YaoAVFrame> * playAudioFrameQueue = nullptr;
-
-    YaoSL sl(playAudioFrameQueue);
-    //1 创建引擎
-    sl.createEngin();
-
-    //2 创建混音器
-    sl.createMix();
-
-    //3 配置音频信息
-    sl.setDataSource(10);
-
-    // 4 创建播放器
-    sl.createAudioPlayer();
-
     return env->NewStringUTF(hello.c_str());
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_yao_yaoplayerandroid_player_Player_player_1sl(JNIEnv *env, jclass clazz, jlong _player) {
+    YaoPlayer * player = (YaoPlayer *)_player;
+
+    //1 创建引擎
+    player->playerSl->createEngin();
+    //2 创建混音器
+    player->playerSl->createMix();
+    //3 配置音频信息
+    player->playerSl->setDataSource(10);
+    // 4 创建播放器
+    player->playerSl->createAudioPlayer();
+
+    return 0;
 }

@@ -13,6 +13,11 @@ YaoPlayer::~YaoPlayer()
 		delete playerGl;
 		playerGl = nullptr;
 	}
+
+	if(playerSl != nullptr){
+		delete playerSl;
+		playerSl = nullptr;
+	}
 }
 
 int YaoPlayer::open(double time)
@@ -21,6 +26,7 @@ int YaoPlayer::open(double time)
 		playerCtr = new YaoPlayerCtr(path, time);
 		playerCtr->start();
 		playerGl = new YaoPlayerGL(&(playerCtr->playVideoFrameQueue));
+		playerSl = new YaoSL(&(playerCtr->playAudioFrameQueue));
 		return 0;
 	}
 	return -1;

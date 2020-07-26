@@ -12,8 +12,6 @@
 
 class YaoSL{
 public:
-   /* YaoSL(YaoQueue<YaoAVFrame> * playAudioFrameQueue);
-    ~YaoSL();*/
     YaoSL(YaoQueue<YaoAVFrame> * playAudioFrameQueue);
     ~YaoSL();
     int createEngin();

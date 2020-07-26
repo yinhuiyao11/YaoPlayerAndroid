@@ -2,6 +2,7 @@
 
 #include <string>
 #include "../YaoGL/YaoGL.h"
+#include "../YaoSL/YaoSL.h"
 #include "YaoThread/YaoThread.h"
 #include "YaoAV/YaoAV.h"
 #include "YaoQueue/Queue.h"
@@ -110,6 +111,7 @@ public:
 	int printQueueSize();
 
 	YaoPlayerGL * playerGl = nullptr;
+	YaoSL * playerSl = nullptr;
 
 private:
 	std::string path;

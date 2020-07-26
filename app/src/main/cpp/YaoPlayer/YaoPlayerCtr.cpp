@@ -48,7 +48,7 @@ void YaoPlayerCtr::run()
 		if (videoFrame == nullptr) {
 			videoFrameQueue.pop(&videoFrame);
 		} 
-        EyerLog("++++videoFrameQueue.size:%d\n", getVideoFrameQueueSize());
+        //EyerLog("++++videoFrameQueue.size:%d\n", getVideoFrameQueueSize());
 		if (videoFrame != nullptr) {
 			//ptsÐ¡ÓÚseektime£¬¶ªÖ¡
 
@@ -85,7 +85,7 @@ void YaoPlayerCtr::run()
 				//EyerLog("~~~~~~~~audio frame audioFrame->getPts():%lld\n", audioFrame->audioPrint());
 				pushFrameplayAudioFrame(audioFrame);
 
-				delete audioFrame;
+				//delete audioFrame;
 				audioFrame = nullptr;
 			}
 			else
