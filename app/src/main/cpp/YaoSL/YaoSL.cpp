@@ -36,27 +36,26 @@ void pcmCallBack(SLAndroidSimpleBufferQueueItf bf, void*contex)
         }
 
     }*/
-    EyerLog("------------------1");
+    static unsigned char *buf = NULL;
+    if (!buf){
+        buf = new unsigned char[1024*1024];
+    }
 
     YaoSL * sl = (YaoSL *)contex;
     YaoAVFrame* audioFrame = nullptr;
-    EyerLog("------------------2");
     if(sl->playAudioFrameQueue->queueSize() > 0){
         sl->playAudioFrameQueue->pop(&audioFrame);
-        EyerLog("------------------3");
-
-        EyerLog("video frame videoFrame->getPts():%lld, weight:%d, heigt:%d\n", audioFrame->getPts(), audioFrame->getW(), audioFrame->getH());
+        EyerLog("audio frame Frame->getPts():%lld, weight:%d, heigt:%d\n", audioFrame->getPts(), audioFrame->getW(), audioFrame->getH());
         //GetPerSampleSize() * GetNBSamples()
-        int len = audioFrame;
+        int len = audioFrame->getPerSampleSize() * audioFrame->getNBSamples();
         if (len > 0){//读取到数据 数据传入队列
             //声音停顿的话，check参数是否传对
             //声音音调不对的话，可能是pcm文件和pcm设置不对
+            audioFrame->getAudioData(buf);
             (*bf)->Enqueue(bf,buf,len);
-
+            EyerLog("------------------enqueue frame,len:%d\n", len);
         }
     }
-    EyerLog("------------------4");
-
 }
 
 YaoSL::YaoSL(YaoQueue<YaoAVFrame> * _playAudioFrameQueue)

@@ -30,6 +30,11 @@ public:
 	int getU(unsigned char * u);
 	int getV(unsigned char * v);
 
+	int getChannels();
+	int getNBSamples();
+	int getPerSampleSize();
+	int getAudioData(unsigned char * data);
+
 	long long getPts();
 public:
 	YaoAVFramePrivate* imp = nullptr;

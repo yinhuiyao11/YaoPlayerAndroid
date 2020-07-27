@@ -105,3 +105,29 @@ long long YaoAVFrame::getPts()
 {
 	return (long long)(imp->pts_sec * 1000);
 }
+
+int YaoAVFrame::getChannels()
+{
+	return imp->frame->channels;
+}
+
+//单个声道中包含的采样点数
+int YaoAVFrame::getNBSamples()
+{
+	return  imp->frame->nb_samples;
+}
+
+//获取每个sample中的字节数
+int YaoAVFrame::getPerSampleSize()
+{
+	return av_get_bytes_per_sample((AVSampleFormat)imp->frame->format);
+}
+
+int YaoAVFrame::getAudioData(unsigned char * data)
+{
+	int perChannelsByte = getPerSampleSize() * getNBSamples();
+	for(int i=0; i<getChannels(); i++){
+		memcpy(data + perChannelsByte * i, imp->frame->data[i], perChannelsByte);
+	}
+	return 0;
+}
