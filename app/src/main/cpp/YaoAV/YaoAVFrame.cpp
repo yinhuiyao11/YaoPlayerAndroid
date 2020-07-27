@@ -1,8 +1,10 @@
 #include "YaoAV.h"
 #include "YaoAVFramePrivate.h"
+#include "../EyerCore/EyerLog.hpp"
 extern "C"
 {
 #include <libavutil/pixdesc.h>
+#include <libswresample/swresample.h>
 }
 
 YaoAVFrame::YaoAVFrame() 
@@ -42,22 +44,22 @@ int YaoAVFrame::videoPrint()
 int YaoAVFrame::audioPrint()
 {
 	int channel = imp->frame->channels;
-	printf("Channel: %d\n", channel);
-	printf("nb_samples: %d\n", imp->frame->nb_samples);
-	printf("sample_rate: %d\n", imp->frame->sample_rate);
+	EyerLog("Channel: %d\n", channel);
+	EyerLog("nb_samples: %d\n", imp->frame->nb_samples);
+	EyerLog("sample_rate: %d\n", imp->frame->sample_rate);
 
 	AVSampleFormat format = (AVSampleFormat)(imp->frame->format);
 
 	char* str = (char*)malloc(128);
 	str = av_get_sample_fmt_string(str, 128, format);
 
-	printf("Sample Format: %s\n", str);
+	EyerLog("Sample Format: %s\n", str);
 
 	free(str);
 
 	for (int i = 0; i < AV_NUM_DATA_POINTERS; i++) {
-		printf("Linesize[%d]: %d\n", i, imp->frame->linesize[i]);
-	}
+		EyerLog("Linesize[%d]: %d\n", i, imp->frame->linesize[i]);
+    }
 	return 0;
 }
 
@@ -130,4 +132,45 @@ int YaoAVFrame::getAudioData(unsigned char * data)
 		memcpy(data + perChannelsByte * i, imp->frame->data[i], perChannelsByte);
 	}
 	return 0;
+}
+
+int YaoAVFrame::getAudioPackedData(unsigned char * data){
+    int sizePerSample = getPerSampleSize();
+    int bufferSize = sizePerSample * getNBSamples() * getChannels();
+    if(data == nullptr){
+        return bufferSize;
+    }
+
+    // 判断是 Packed 还是 Plane
+    int isPanar = av_sample_fmt_is_planar((AVSampleFormat)imp->frame->format);
+    if(isPanar){
+        EyerLog("Panar\n");
+        SwrContext * swrCtx = swr_alloc_set_opts(
+                NULL,
+                imp->frame->channel_layout,
+                // av_get_packed_sample_fmt((AVSampleFormat)imp->frame->format),
+				AVSampleFormat::AV_SAMPLE_FMT_S32,
+                imp->frame->sample_rate,
+
+                imp->frame->channel_layout,
+                (AVSampleFormat)imp->frame->format,
+                imp->frame->sample_rate,
+
+                0,
+                NULL
+        );
+
+
+        swr_init(swrCtx);
+
+        int ret = swr_convert(swrCtx, &data, imp->frame->nb_samples, (const uint8_t **)imp->frame->data, imp->frame->nb_samples);
+
+        swr_free(&swrCtx);
+    }
+    else{
+        EyerLog("Packed\n");
+        memcpy(data, imp->frame->data[0], bufferSize);
+    }
+
+    return 0;
 }

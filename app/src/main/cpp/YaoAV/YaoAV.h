@@ -34,6 +34,7 @@ public:
 	int getNBSamples();
 	int getPerSampleSize();
 	int getAudioData(unsigned char * data);
+	int getAudioPackedData(unsigned char * data);
 
 	long long getPts();
 public:

@@ -26,20 +26,20 @@ public:
     YaoQueue<YaoAVFrame> * playAudioFrameQueue = nullptr;
 
 private:
-    SLObjectItf engineObject = NULL;
-    SLEngineItf engineI = NULL;
+SLObjectItf engineObject = NULL;
+SLEngineItf engineI = NULL;
 
-    SLObjectItf mixObject = NULL;
-    SLDataLocator_OutputMix outMix = {};
-    SLDataSink audioSink = {};
+SLObjectItf mixObject = NULL;
+SLDataLocator_OutputMix outMix = {};
+SLDataSink audioSink = {};
 
-    SLDataLocator_AndroidSimpleBufferQueue que = {};
-    SLDataFormat_PCM pcm = {};
-    SLDataSource dataSource = {};
+SLDataLocator_AndroidSimpleBufferQueue que = {};
+SLDataFormat_PCM pcm = {};
+SLDataSource dataSource = {};
 
-    SLObjectItf playerObject = NULL;
-    SLPlayItf playerI = NULL;
-    SLAndroidSimpleBufferQueueItf pcmQue = NULL;
+SLObjectItf playerObject = NULL;
+SLPlayItf playerI = NULL;
+SLAndroidSimpleBufferQueueItf pcmQue = NULL;
 
 
 };

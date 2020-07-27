@@ -45,13 +45,16 @@ void pcmCallBack(SLAndroidSimpleBufferQueueItf bf, void*contex)
     YaoAVFrame* audioFrame = nullptr;
     if(sl->playAudioFrameQueue->queueSize() > 0){
         sl->playAudioFrameQueue->pop(&audioFrame);
+        audioFrame->audioPrint();
         EyerLog("audio frame Frame->getPts():%lld, weight:%d, heigt:%d\n", audioFrame->getPts(), audioFrame->getW(), audioFrame->getH());
-        //GetPerSampleSize() * GetNBSamples()
-        int len = audioFrame->getPerSampleSize() * audioFrame->getNBSamples();
+
+        int len = audioFrame->getPerSampleSize() * audioFrame->getNBSamples() * audioFrame->getChannels();
         if (len > 0){//读取到数据 数据传入队列
             //声音停顿的话，check参数是否传对
             //声音音调不对的话，可能是pcm文件和pcm设置不对
-            audioFrame->getAudioData(buf);
+            //audioFrame->getAudioData(buf);  音调不对，下面改成packed格式，音调对了，但还是有杂音
+            audioFrame->getAudioPackedData(buf);
+
             (*bf)->Enqueue(bf,buf,len);
             EyerLog("------------------enqueue frame,len:%d\n", len);
         }
@@ -61,11 +64,11 @@ void pcmCallBack(SLAndroidSimpleBufferQueueItf bf, void*contex)
 YaoSL::YaoSL(YaoQueue<YaoAVFrame> * _playAudioFrameQueue)
 {
     playAudioFrameQueue = _playAudioFrameQueue;
+
 }
 
 YaoSL::~YaoSL()
 {
-
 }
 
 int YaoSL::createEngin()
@@ -129,8 +132,8 @@ int YaoSL::setDataSource(SLuint32 bufferNums)
             SL_DATAFORMAT_PCM,
             2,//通道数
             SL_SAMPLINGRATE_44_1,//采样率
-            SL_PCMSAMPLEFORMAT_FIXED_16, // bitsPerSample
-            SL_PCMSAMPLEFORMAT_FIXED_16,// containerSize
+            SL_PCMSAMPLEFORMAT_FIXED_32, // bitsPerSample
+            SL_PCMSAMPLEFORMAT_FIXED_32,// containerSize
             SL_SPEAKER_FRONT_LEFT|SL_SPEAKER_FRONT_RIGHT,//声道
             SL_BYTEORDER_LITTLEENDIAN //字节序,小端
     };
