@@ -144,7 +144,7 @@ int YaoAVFrame::getAudioPackedData(unsigned char * data){
     // 判断是 Packed 还是 Plane
     int isPanar = av_sample_fmt_is_planar((AVSampleFormat)imp->frame->format);
     if(isPanar){
-        EyerLog("Panar\n");
+        //EyerLog("Planar\n");
         SwrContext * swrCtx = swr_alloc_set_opts(
                 NULL,
                 imp->frame->channel_layout,
@@ -168,7 +168,7 @@ int YaoAVFrame::getAudioPackedData(unsigned char * data){
         swr_free(&swrCtx);
     }
     else{
-        EyerLog("Packed\n");
+        //EyerLog("Packed\n");
         memcpy(data, imp->frame->data[0], bufferSize);
     }
 
