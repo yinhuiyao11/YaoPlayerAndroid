@@ -16,8 +16,10 @@ void YaoPlayerCtr::run()
 {
     YaoPlayerReaderThread readerThread(path, this);
 	readerThread.start();
+    YaoPlayerSLThread slThread(&playAudioFrameQueue);
+    int slThreadFlag = 0;
 
-	//获取线程启动时的时间 startTime
+    //获取线程启动时的时间 startTime
 	long long startTime = YaoTime::getTime();
 	YaoAVFrame* videoFrame = nullptr;
 	YaoAVFrame* audioFrame = nullptr;
@@ -66,6 +68,10 @@ void YaoPlayerCtr::run()
 				pushFrameplayVideoFrame(videoFrame);
 
                 videoFrame = nullptr;
+                if(slThreadFlag == 0){
+                    slThread.start();
+                    slThreadFlag = 1;
+                }
 			}
 			else {
 				//还不到播放的时间，程序自悬，或者去处理音频
@@ -97,6 +103,7 @@ void YaoPlayerCtr::run()
 	}
 
 	readerThread.stop();
+	slThread.stop();
 }
 
 int YaoPlayerCtr::pushVideoFrameQueue(YaoAVFrame* avFrame)

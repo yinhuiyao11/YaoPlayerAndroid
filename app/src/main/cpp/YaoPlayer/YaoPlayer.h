@@ -111,10 +111,21 @@ public:
 	int printQueueSize();
 
 	YaoPlayerGL * playerGl = nullptr;
-	YaoSL * playerSl = nullptr;
+	//YaoSL * playerSl = nullptr;
 
 private:
 	std::string path;
 	YaoPlayerCtr * playerCtr = nullptr;
+};
+
+class YaoPlayerSLThread : public YaoThread
+{
+public:
+	YaoPlayerSLThread(YaoQueue<YaoAVFrame> * _playAudioFrameQueue);
+	~YaoPlayerSLThread();
+	virtual void run();
+
+private:
+	YaoQueue<YaoAVFrame> * playAudioFrameQueue = nullptr;
 };
 

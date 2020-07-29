@@ -8,34 +8,7 @@
 //回调函数
 void pcmCallBack(SLAndroidSimpleBufferQueueItf bf, void*contex)
 {
-    //(*bf)->Enqueue(bf,buf,len);
-
-    /*static FILE *fp = NULL;
-    static  char *buf = NULL;
-    if (!buf){
-        buf = new char[1024*1024];
-    }
-    if (!fp){
-        //没有声音 check这里
-        //String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
-        fp = fopen("/storage/emulated/0/ST/test.pcm","rb");
-    }
-    if(!fp){
-        EyerLog("fopen failed!");
-        return;
-    }
-
-    if (feof(fp) == 0){
-
-        int len = fread(buf,1,1024,fp);
-        if (len > 0){//读取到数据 数据传入队列
-            //声音停顿的话，check参数是否传对
-            //声音音调不对的话，可能是pcm文件和pcm设置不对
-            (*bf)->Enqueue(bf,buf,len);
-
-        }
-
-    }*/
+    //todo 内存管理
     static unsigned char *buf = NULL;
     if (!buf){
         buf = new unsigned char[1024*1024];

@@ -59,12 +59,12 @@ public class MainActivity extends AppCompatActivity {
         view = new GLESJNIView(this, player);
         setContentView(view);
 
-        new Thread(){
+        /*new Thread(){
             public void run(){
                 //audio
                 player.sl_play();
             }
-        }.start();
+        }.start();*/
 
 
         player.play();
