@@ -67,5 +67,7 @@ int YaoPlayer::printQueueSize() {
 	EyerLog("+++++++++++++++++++++++++++++playVideoFrameQueueGL is not null\n");
 
 	EyerLog("+++++++++++++++++++++++++++++playVideoFrameQueueGL->size:%d\n", playerCtr->playVideoFrameQueue.queueSize());
+    EyerLog("+++++++++++++++++++++++++++++playAudioFrameQueue->size:%d\n", playerCtr->playAudioFrameQueue.queueSize());
+
     return 0;
 }

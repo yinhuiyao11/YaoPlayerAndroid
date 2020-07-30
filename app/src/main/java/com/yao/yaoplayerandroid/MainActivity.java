@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         player.play();
-
+        player.sl_start_play();
         //player.stop();
     }
 

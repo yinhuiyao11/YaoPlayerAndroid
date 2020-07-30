@@ -18,6 +18,8 @@ public class Player extends YaoObject {
 
     public static native int                    player_sl                                   (long player);
 
+    public static native int                    player_start_sl                                   (long player);
+
     public static native int                    player_print_queue_size                         (long player);
 
     public int print_queue_size(){
@@ -66,6 +68,11 @@ public class Player extends YaoObject {
     public int sl_play(){
         System.out.println("+++++++++++++++in sl_play");
         return player_sl(nativeId);
+    }
+
+    public int sl_start_play(){
+        System.out.println("+++++++++++++++in player_start_sl");
+        return player_start_sl(nativeId);
     }
 
     @Override

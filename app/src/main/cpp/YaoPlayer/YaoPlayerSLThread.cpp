@@ -18,6 +18,7 @@ YaoPlayerSLThread::~YaoPlayerSLThread()
 
 void YaoPlayerSLThread::run()
 {
+    EyerLog("`````````````YaoPlayerSLThread::run playAudioFrameQueue:%d\n", playAudioFrameQueue->queueSize());
     YaoSL playerSl(playAudioFrameQueue);
     //1 创建引擎
     playerSl.createEngin();

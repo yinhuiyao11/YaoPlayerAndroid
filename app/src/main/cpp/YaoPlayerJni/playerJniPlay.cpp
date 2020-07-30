@@ -115,3 +115,13 @@ Java_com_yao_yaoplayerandroid_player_Player_player_1sl(JNIEnv *env, jclass clazz
 
     return 0;
 }
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_yao_yaoplayerandroid_player_Player_player_1start_1sl(JNIEnv *env, jclass clazz,
+                                                              jlong _player) {
+    YaoPlayer * player = (YaoPlayer *)_player;
+    player->thread = new YaoPlayerSLThread(&(player->playerCtr->playAudioFrameQueue));
+    player->thread->start();
+    return 0;
+}

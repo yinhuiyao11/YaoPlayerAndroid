@@ -16,7 +16,13 @@ void pcmCallBack(SLAndroidSimpleBufferQueueItf bf, void*contex)
 
     YaoSL * sl = (YaoSL *)contex;
     YaoAVFrame* audioFrame = nullptr;
+
+    if(sl->playAudioFrameQueue->queueSize() <= 0){
+        EyerLog("````````````````````sl->playAudioFrameQueue->queueSize():%d\n", sl->playAudioFrameQueue->queueSize());
+    }
+
     if(sl->playAudioFrameQueue->queueSize() > 0){
+        EyerLog("pcmCallBack   sl->playAudioFrameQueue->queueSize():%d\n", sl->playAudioFrameQueue->queueSize());
         sl->playAudioFrameQueue->pop(&audioFrame);
         audioFrame->audioPrint();
         EyerLog("audio frame Frame->getPts():%lld, weight:%d, heigt:%d\n", audioFrame->getPts(), audioFrame->getW(), audioFrame->getH());
@@ -37,7 +43,7 @@ void pcmCallBack(SLAndroidSimpleBufferQueueItf bf, void*contex)
 YaoSL::YaoSL(YaoQueue<YaoAVFrame> * _playAudioFrameQueue)
 {
     playAudioFrameQueue = _playAudioFrameQueue;
-
+    EyerLog("YaoSL() playAudioFrameQueue:%d\n", playAudioFrameQueue->queueSize());
 }
 
 YaoSL::~YaoSL()
@@ -150,6 +156,8 @@ int YaoSL::createAudioPlayer()
     /*
      * 第二个参数是回调函数 第三个参数是 给回调函数传的参数
      */
+    EyerLog("````````````````````before callback playAudioFrameQueue->queueSize():%d\n", playAudioFrameQueue->queueSize());
+
     (*pcmQue)->RegisterCallback(pcmQue,pcmCallBack,this);
     //设置状态 播放
     (*playerI)->SetPlayState(playerI,SL_PLAYSTATE_PLAYING);

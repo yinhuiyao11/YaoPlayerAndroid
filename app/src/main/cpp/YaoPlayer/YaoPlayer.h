@@ -95,6 +95,17 @@ private:
     YaoVAO * vao = nullptr;
 };
 
+class YaoPlayerSLThread : public YaoThread
+{
+public:
+    YaoPlayerSLThread(YaoQueue<YaoAVFrame> * _playAudioFrameQueue);
+    ~YaoPlayerSLThread();
+    virtual void run();
+
+private:
+    YaoQueue<YaoAVFrame> * playAudioFrameQueue = nullptr;
+};
+
 class YaoPlayer
 {
 public:
@@ -112,20 +123,12 @@ public:
 
 	YaoPlayerGL * playerGl = nullptr;
 	//YaoSL * playerSl = nullptr;
+	//YaoPlayerSLThread * thread = new YaoPlayerSLThread(&(playerCtr->playAudioFrameQueue));
+    YaoPlayerSLThread * thread = nullptr;
+    YaoPlayerCtr * playerCtr = nullptr;
 
 private:
 	std::string path;
-	YaoPlayerCtr * playerCtr = nullptr;
 };
 
-class YaoPlayerSLThread : public YaoThread
-{
-public:
-	YaoPlayerSLThread(YaoQueue<YaoAVFrame> * _playAudioFrameQueue);
-	~YaoPlayerSLThread();
-	virtual void run();
-
-private:
-	YaoQueue<YaoAVFrame> * playAudioFrameQueue = nullptr;
-};
 
