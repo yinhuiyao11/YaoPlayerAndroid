@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private GLESJNIView view;
     private Player player;
+    private int started = 0;
 
     private static String[] PERMISSIONS_STORAGE = {
             "android.permission.READ_EXTERNAL_STORAGE",
@@ -44,38 +45,47 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        if(started == 1){
+            player.play();
+            new Thread() {
+                public void run() {
+                    //audio
+                    player.sl_play();
+                }
+            }.start();
+        }
+        if(started == 0) {
+            File dir = Environment.getExternalStorageDirectory();
+            //String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
+            String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
+            System.out.println("+++++++++path:" + videoPath);
 
-        File dir = Environment.getExternalStorageDirectory();
-        //String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
-        String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
-        System.out.println("+++++++++path:" + videoPath);
+            File f = new File(videoPath);
+            System.out.println("f:" + f.canRead());
 
-        File f = new File(videoPath);
-        System.out.println("f:" + f.canRead());
+            player = new Player(videoPath);
+            player.open(0);
 
-        player = new Player(videoPath);
-        player.open(0);
+            view = new GLESJNIView(this, player);
+            setContentView(view);
 
-        view = new GLESJNIView(this, player);
-        setContentView(view);
+            new Thread() {
+                public void run() {
+                    //audio
+                    player.sl_play();
+                }
+            }.start();
 
-        new Thread(){
-            public void run(){
-                //audio
-                player.sl_play();
-            }
-        }.start();
-
-
-        player.play();
-
+            started = 1;
+            player.play();
+        }
         //player.stop();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        //player.destory();
+        player.pause();
     }
 
 
