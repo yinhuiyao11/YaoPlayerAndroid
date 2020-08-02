@@ -28,6 +28,7 @@ public class GLRender implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
+
         player.gl_surfaceChanged(width, height);
     }
 

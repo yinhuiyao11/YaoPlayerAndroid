@@ -7,6 +7,9 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.opengl.GLSurfaceView;
 
@@ -18,7 +21,11 @@ public class MainActivity extends AppCompatActivity {
     static {
         System.loadLibrary("YaoPlayerJni");
     }
-    private GLESJNIView view;
+    private GLSurfaceView gLSurfaceView;
+    private Button btn_start;
+    private Button btn_stop;
+    private ProgressBar video_progress_bar;
+
     private Player player;
     private int started = 0;
 
@@ -31,7 +38,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_main);
+        initView();
         /*setContentView(R.layout.activity_main);
         // Example of a call to a native method
         TextView tv = (TextView) findViewById(R.id.sample_text);
@@ -40,6 +48,26 @@ public class MainActivity extends AppCompatActivity {
 
         verifyStoragePermissions(this);
 
+    }
+
+    private void initView(){
+        gLSurfaceView = findViewById(R.id.gLSurfaceView);
+        btn_start = findViewById(R.id.btn_start);
+        btn_stop = findViewById(R.id.btn_stop);
+
+        btn_start.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        btn_stop.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
@@ -57,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         if(started == 0) {
             File dir = Environment.getExternalStorageDirectory();
             //String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
-            String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
+            String videoPath = dir.getAbsolutePath() + "/" + "ST/4k_animal.mp4";
             System.out.println("+++++++++path:" + videoPath);
 
             File f = new File(videoPath);
@@ -66,8 +94,9 @@ public class MainActivity extends AppCompatActivity {
             player = new Player(videoPath);
             player.open(0);
 
-            view = new GLESJNIView(this, player);
-            setContentView(view);
+            gLSurfaceView.setEGLContextClientVersion(3);
+            gLSurfaceView.setRenderer(new GLRender(player));
+            //gLESJNIView = new GLESJNIView(this, player);
 
             new Thread() {
                 public void run() {
