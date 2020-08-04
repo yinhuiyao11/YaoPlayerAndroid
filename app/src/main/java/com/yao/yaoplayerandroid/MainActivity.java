@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.opengl.GLSurfaceView;
 
@@ -25,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_start;
     private Button btn_stop;
     private ProgressBar video_progress_bar;
+    private RelativeLayout mParent;
 
     private Player player;
     private int started = 0;
@@ -52,9 +56,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView(){
         gLSurfaceView = findViewById(R.id.gLSurfaceView);
+        System.out.println("------initView surfaceWidth:" + gLSurfaceView.getWidth() + "  height:" + gLSurfaceView.getHeight());
+
         btn_start = findViewById(R.id.btn_start);
         btn_stop = findViewById(R.id.btn_stop);
-
+        mParent = findViewById(R.id.test_parent_play);
         btn_start.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -69,6 +75,41 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    //改变视频的尺寸自适应。
+    public void changeVideoSize() {
+        //todo 获取视频长宽
+        int videoWidth = 4096;
+        int videoHeight = 2160;
+
+        DisplayMetrics dm = new DisplayMetrics();
+        dm = getResources().getDisplayMetrics();
+
+        int surfaceWidth = dm.widthPixels;
+        int surfaceHeight = dm.heightPixels;
+
+        //根据视频尺寸去计算->视频可以在sufaceView中放大的最大倍数。
+        float max;
+        if (getResources().getConfiguration().orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+            //竖屏模式下按视频宽度计算放大倍数值
+            max = Math.max((float) videoWidth / (float) surfaceWidth, (float) videoHeight / (float) surfaceHeight);
+        } else {
+            //横屏模式下按视频高度计算放大倍数值
+            max = Math.max(((float) videoWidth / (float) surfaceHeight), (float) videoHeight / (float) surfaceWidth);
+        }
+
+        //视频宽高分别/最大倍数值 计算出放大后的视频尺寸
+        videoWidth = (int) Math.ceil((float) videoWidth / max);
+        videoHeight = (int) Math.ceil((float) videoHeight / max);
+        System.out.println("endVideoWidth:" + videoWidth + "  endVideoHeight:" + videoHeight);
+
+        //无法直接设置视频尺寸，将计算出的视频尺寸设置到surfaceView 让视频自动填充。
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(videoWidth, videoHeight);
+        params.addRule(RelativeLayout.CENTER_VERTICAL, mParent.getId());
+        gLSurfaceView.setLayoutParams(params);
+
+    }
+
 
     @Override
     protected void onStart() {
@@ -85,7 +126,9 @@ public class MainActivity extends AppCompatActivity {
         if(started == 0) {
             File dir = Environment.getExternalStorageDirectory();
             //String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
-            String videoPath = dir.getAbsolutePath() + "/" + "ST/4k_animal.mp4";
+            //String videoPath = dir.getAbsolutePath() + "/" + "ST/The_Beauty_of_Earth.mp4";
+            //String videoPath = dir.getAbsolutePath() + "/" + "ST/4k_animal.mp4";
+            String videoPath = dir.getAbsolutePath() + "/" + "ST/rabbit.mp4";
             System.out.println("+++++++++path:" + videoPath);
 
             File f = new File(videoPath);
@@ -97,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
             gLSurfaceView.setEGLContextClientVersion(3);
             gLSurfaceView.setRenderer(new GLRender(player));
             //gLESJNIView = new GLESJNIView(this, player);
+            changeVideoSize();
 
             new Thread() {
                 public void run() {
