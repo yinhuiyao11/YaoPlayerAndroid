@@ -115,3 +115,18 @@ Java_com_yao_yaoplayerandroid_player_Player_player_1sl(JNIEnv *env, jclass clazz
 
     return 0;
 }
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_yao_yaoplayerandroid_player_Player_player_1get_1height(JNIEnv *env, jclass clazz, jlong  _player) {
+    YaoPlayer * player = (YaoPlayer *)_player;
+    return player->playerGl->getHeight();
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_yao_yaoplayerandroid_player_Player_player_1get_1width(JNIEnv *env, jclass clazz,
+                                                               jlong _player) {
+    YaoPlayer * player = (YaoPlayer *)_player;
+    return player->playerGl->getWidth();
+}

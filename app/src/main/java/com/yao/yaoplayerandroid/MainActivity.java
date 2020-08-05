@@ -77,14 +77,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //改变视频的尺寸自适应。
-    public void changeVideoSize() {
-        //todo 获取视频长宽
-        int videoWidth = 4096;
-        int videoHeight = 2160;
-
+    public void changeVideoSize(int videoWidth , int videoHeight) {
         DisplayMetrics dm = new DisplayMetrics();
         dm = getResources().getDisplayMetrics();
 
+        //todo 验证获取的屏幕宽高是否正确
         int surfaceWidth = dm.widthPixels;
         int surfaceHeight = dm.heightPixels;
 
@@ -140,7 +137,8 @@ public class MainActivity extends AppCompatActivity {
             gLSurfaceView.setEGLContextClientVersion(3);
             gLSurfaceView.setRenderer(new GLRender(player));
             //gLESJNIView = new GLESJNIView(this, player);
-            changeVideoSize();
+            changeVideoSize(player.gl_width(), player.gl_height());
+            System.out.println("_+_++_+_+_+_+_+++++_+VideoWidth:" + player.gl_width() + "  VideoHeight:" + player.gl_height());
 
             new Thread() {
                 public void run() {

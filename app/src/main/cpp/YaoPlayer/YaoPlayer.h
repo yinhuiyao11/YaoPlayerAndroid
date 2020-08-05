@@ -86,6 +86,8 @@ public:
     int surfaceChanged(int w, int h);
     int drawFrame();
 
+	int getHeight();
+	int getWidth();
 public:
 	YaoQueue<YaoAVFrame> * playVideoFrameQueueGL = nullptr;
 
@@ -93,6 +95,8 @@ private:
     //着色器程序
     YaoGLProgram * program = nullptr;
     YaoVAO * vao = nullptr;
+	int height = 0;
+	int width = 0;
 };
 
 class YaoPlayer

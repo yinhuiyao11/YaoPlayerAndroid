@@ -69,3 +69,4 @@ int YaoPlayer::printQueueSize() {
 	EyerLog("+++++++++++++++++++++++++++++playVideoFrameQueueGL->size:%d\n", playerCtr->playVideoFrameQueue.queueSize());
     return 0;
 }
+
