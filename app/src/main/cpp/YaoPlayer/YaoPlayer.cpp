@@ -5,6 +5,7 @@
 YaoPlayer::YaoPlayer(std::string _path)
 {
 	path = _path;
+	setWidthHeight();
 }
 
 YaoPlayer::~YaoPlayer()
@@ -56,6 +57,29 @@ int YaoPlayer::seek(double time)
 {
 	stop();
 	open(time);
+	return 0;
+}
+
+int YaoPlayer::getHeight()
+{
+	return height;
+}
+
+int YaoPlayer::getWidth()
+{
+	return  width;
+}
+
+int YaoPlayer::setWidthHeight()
+{
+	YaoAVReader reader;
+	int ret = reader.Open(path.c_str());
+	if (ret) {
+		EyerLog("=============================read file fail (setWidthHeight) , %s, %d\n", path.c_str(), ret);
+		return -1;
+	}
+	height = reader.getVideoHeight();
+	width = reader.getVideoWidth();
 	return 0;
 }
 

@@ -128,8 +128,8 @@ int YaoPlayerGL::drawFrame(){
         playVideoFrameQueueGL->pop(&videoFrame);
         //EyerLog("video frame videoFrame->getPts():%lld, weight:%d, heigt:%d\n", videoFrame->getPts(), videoFrame->getW(), videoFrame->getH());
 
-        width = videoFrame->getW();
-        height = videoFrame->getH();
+        int width = videoFrame->getW();
+        int height = videoFrame->getH();
 
         unsigned char* y;
         unsigned char* u;
@@ -170,20 +170,4 @@ int YaoPlayerGL::drawFrame(){
     vao->draw();
 
     return 0;
-}
-
-int YaoPlayerGL::getHeight()
-{
-    while(height <= 0){
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
-    }
-    return height;
-}
-
-int YaoPlayerGL::getWidth()
-{
-    while(width <=0){
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
-    }
-    return width;
 }

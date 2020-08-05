@@ -25,7 +25,6 @@ int YaoAVReader::Open(const char* path)
 	if (formatContextPrivate->formatContext == nullptr) {
 		return -1;
 	}
-	EyerLog("fff: %s\n", path);
 	int ret = avformat_open_input(&formatContextPrivate->formatContext, path, nullptr, nullptr);
 	if (!ret) {
 		avformat_find_stream_info(formatContextPrivate->formatContext, nullptr);
@@ -82,4 +81,16 @@ int YaoAVReader::seek(double time)
 	int64_t timestamp = (int64_t)(time * AV_TIME_BASE);
 	av_seek_frame(formatContextPrivate->formatContext, -1, timestamp, AVSEEK_FLAG_BACKWARD);
 	return 0;
+}
+
+int YaoAVReader::getVideoWidth()
+{
+	AVStream * avStream = formatContextPrivate->formatContext->streams[getVideoStreamIndex()];
+	return avStream->codec->width;
+}
+
+int YaoAVReader::getVideoHeight()
+{
+	AVStream * avStream = formatContextPrivate->formatContext->streams[getVideoStreamIndex()];
+	return avStream->codec->height;
 }
