@@ -56,6 +56,9 @@ public:
 	int getVideoStreamIndex();
 	int getAudioStreamIndex();
 
+	int getVideoWidth();
+	int getVideoHeight();
+
 	int seek(double time);
 private:
 	YaoAVReaderPrivate * formatContextPrivate = nullptr;

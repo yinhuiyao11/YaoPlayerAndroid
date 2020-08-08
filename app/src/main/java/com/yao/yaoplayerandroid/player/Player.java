@@ -15,6 +15,8 @@ public class Player extends YaoObject {
     //public static native long                   player_get_play_video_frame                 (long player);
     public static native int                    player_gl_surfaceChanged                    (long player, int width, int height);
     public static native int                    player_gl_drawFrame                         (long player);
+    public static native int                    player_get_height                           (long player);
+    public static native int                    player_get_width                            (long player);
 
     public static native int                    player_sl                                   (long player);
 
@@ -64,8 +66,16 @@ public class Player extends YaoObject {
     }
 
     public int sl_play(){
-        System.out.println("+++++++++++++++in sl_play");
+        //System.out.println("+++++++++++++++in sl_play");
         return player_sl(nativeId);
+    }
+
+    public int gl_height(){
+        return player_get_height(nativeId);
+    }
+
+    public int gl_width(){
+        return player_get_width(nativeId);
     }
 
     @Override
@@ -74,8 +84,7 @@ public class Player extends YaoObject {
             player_uninit(nativeId);
             nativeId = 0L;
         }
-        System.out.println("+++++++++in destory:");
-
+        //System.out.println("+++++++++in destory:");
         return 0;
     }
 }

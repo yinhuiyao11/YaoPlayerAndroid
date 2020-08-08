@@ -39,6 +39,7 @@ public:
 
 	int pushFrameplayAudioFrame(YaoAVFrame * frame);
 	int playAudioFrameSize();
+
 public:
 	double seekTime = 0.0;
     std::string path;
@@ -57,6 +58,7 @@ public:
 	YaoPlayerReaderThread(std::string _path, YaoPlayerCtr * ctr);
 	~YaoPlayerReaderThread();
 	virtual void run();
+
 private:
 	std::string path;
 	YaoPlayerCtr * ctrThread = nullptr;
@@ -110,11 +112,17 @@ public:
 
 	int printQueueSize();
 
+	int setWidthHeight();
+	int getHeight();
+	int getWidth();
+
 	YaoPlayerGL * playerGl = nullptr;
 	YaoSL * playerSl = nullptr;
+	YaoPlayerCtr * playerCtr = nullptr;
 
 private:
 	std::string path;
-	YaoPlayerCtr * playerCtr = nullptr;
+	int height = 0;
+	int width = 0;
 };
 

@@ -11,6 +11,7 @@ YaoPlayerReaderThread::YaoPlayerReaderThread(std::string _path, YaoPlayerCtr* _c
 YaoPlayerReaderThread::~YaoPlayerReaderThread()
 {
 }
+
 void YaoPlayerReaderThread::run()
 {
 	YaoAVReader reader;
