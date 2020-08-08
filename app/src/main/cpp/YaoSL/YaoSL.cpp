@@ -1,6 +1,7 @@
 //
 // Created by Administrator on 2020/7/24.
 //
+#include <thread>
 #include "YaoSL.h"
 #include "../EyerCore/EyerLog.hpp"
 #include "stdio.h"
@@ -43,22 +44,27 @@ void pcmCallBack(SLAndroidSimpleBufferQueueItf bf, void*contex)
 
     YaoSL * sl = (YaoSL *)contex;
     YaoAVFrame* audioFrame = nullptr;
-    if(sl->playAudioFrameQueue->queueSize() > 0){
-        sl->playAudioFrameQueue->pop(&audioFrame);
-        audioFrame->audioPrint();
-        EyerLog("audio frame Frame->getPts():%lld, weight:%d, heigt:%d\n", audioFrame->getPts(), audioFrame->getW(), audioFrame->getH());
+    EyerLog("sl->playAudioFrameQueue->queueSize():%d\n", sl->playAudioFrameQueue->queueSize());
 
-        int len = audioFrame->getPerSampleSize() * audioFrame->getNBSamples() * audioFrame->getChannels();
-        if (len > 0){//读取到数据 数据传入队列
-            //声音停顿的话，check参数是否传对
-            //声音音调不对的话，可能是pcm文件和pcm设置不对
-            //audioFrame->getAudioData(buf);  音调不对，下面改成packed格式，音调对了，但还是有杂音
-            audioFrame->getAudioPackedData(buf);
-
-            (*bf)->Enqueue(bf,buf,len);
-            EyerLog("------------------enqueue frame,len:%d\n", len);
-        }
+    while (sl->playAudioFrameQueue->queueSize() <= 0){
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
+
+    sl->playAudioFrameQueue->pop(&audioFrame);
+    audioFrame->audioPrint();
+    EyerLog("audio frame Frame->getPts():%lld, weight:%d, heigt:%d\n", audioFrame->getPts(), audioFrame->getW(), audioFrame->getH());
+
+    int len = audioFrame->getPerSampleSize() * audioFrame->getNBSamples() * audioFrame->getChannels();
+    if (len > 0){//读取到数据 数据传入队列
+        //声音停顿的话，check参数是否传对
+        //声音音调不对的话，可能是pcm文件和pcm设置不对
+        //audioFrame->getAudioData(buf);  音调不对，下面改成packed格式，音调对了，但还是有杂音
+        audioFrame->getAudioPackedData(buf);
+
+        (*bf)->Enqueue(bf,buf,len);
+        EyerLog("------------------enqueue frame,len:%d\n", len);
+    }
+
 }
 
 YaoSL::YaoSL(YaoQueue<YaoAVFrame> * _playAudioFrameQueue)
@@ -131,7 +137,7 @@ int YaoSL::setDataSource(SLuint32 bufferNums)
     pcm = {
             SL_DATAFORMAT_PCM,
             2,//通道数
-            SL_SAMPLINGRATE_44_1,//采样率
+            SL_SAMPLINGRATE_48,//采样率
             SL_PCMSAMPLEFORMAT_FIXED_32, // bitsPerSample
             SL_PCMSAMPLEFORMAT_FIXED_32,// containerSize
             SL_SPEAKER_FRONT_LEFT|SL_SPEAKER_FRONT_RIGHT,//声道

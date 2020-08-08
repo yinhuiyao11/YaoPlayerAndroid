@@ -113,17 +113,13 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         if(started == 1){
             player.play();
-            new Thread() {
-                public void run() {
-                    //audio
-                    player.sl_play();
-                }
-            }.start();
+            //player.sl_play();
         }
         if(started == 0) {
             File dir = Environment.getExternalStorageDirectory();
             //String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
-            String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
+            //String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
+            String videoPath = dir.getAbsolutePath() + "/" + "ST/banfo.mp4";
             //String videoPath = dir.getAbsolutePath() + "/" + "ST/The_Beauty_of_Earth.mp4";
             //String videoPath = dir.getAbsolutePath() + "/" + "ST/4k_animal.mp4";
             //String videoPath = dir.getAbsolutePath() + "/" + "ST/rabbit.mp4";
@@ -139,17 +135,14 @@ public class MainActivity extends AppCompatActivity {
             gLSurfaceView.setRenderer(new GLRender(player));
             //gLESJNIView = new GLESJNIView(this, player);
             changeVideoSize(player.gl_width(), player.gl_height());
-            System.out.println("_+_++_+_+_+_+_+++++_+VideoWidth:" + player.gl_width() + "  VideoHeight:" + player.gl_height());
-
-            new Thread() {
-                public void run() {
-                    //audio
-                    player.sl_play();
-                }
-            }.start();
+            //System.out.println("_+_++_+_+_+_+_+++++_+VideoWidth:" + player.gl_width() + "  VideoHeight:" + player.gl_height());
+            player.sl_play();
 
             started = 1;
             player.play();
+
+            System.out.println("_+_++_+_+_+_+_+++++_+ after play");
+
         }
         //player.stop();
     }
