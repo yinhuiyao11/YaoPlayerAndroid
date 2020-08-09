@@ -104,14 +104,14 @@ JNIEXPORT jint JNICALL
 Java_com_yao_yaoplayerandroid_player_Player_player_1sl(JNIEnv *env, jclass clazz, jlong _player) {
     YaoPlayer * player = (YaoPlayer *)_player;
 
-    //1 创建引擎
+    /*//1 创建引擎
     player->playerSl->createEngin();
     //2 创建混音器
     player->playerSl->createMix();
     //3 配置音频信息
     player->playerSl->setDataSource(10);
     // 4 创建播放器
-    player->playerSl->createAudioPlayer();
+    player->playerSl->createAudioPlayer();*/
 
     return 0;
 }

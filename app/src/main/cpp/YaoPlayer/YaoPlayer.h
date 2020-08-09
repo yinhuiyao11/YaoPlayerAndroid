@@ -58,10 +58,14 @@ public:
 	YaoPlayerReaderThread(std::string _path, YaoPlayerCtr * ctr);
 	~YaoPlayerReaderThread();
 	virtual void run();
+    int getAudioSampleRate();
+    int getAudioChannels();
 
 private:
 	std::string path;
 	YaoPlayerCtr * ctrThread = nullptr;
+	int audioSampleRate = 0;
+	int audioChannels = 0;
 };
 
 class YaoDecodeThread : public YaoThread
@@ -117,7 +121,6 @@ public:
 	int getWidth();
 
 	YaoPlayerGL * playerGl = nullptr;
-	YaoSL * playerSl = nullptr;
 	YaoPlayerCtr * playerCtr = nullptr;
 
 private:

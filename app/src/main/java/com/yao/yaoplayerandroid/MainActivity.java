@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView(){
         gLSurfaceView = findViewById(R.id.gLSurfaceView);
-        System.out.println("------initView surfaceWidth:" + gLSurfaceView.getWidth() + "  height:" + gLSurfaceView.getHeight());
 
         btn_start = findViewById(R.id.btn_start);
         btn_stop = findViewById(R.id.btn_stop);
@@ -81,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
         DisplayMetrics dm = new DisplayMetrics();
         dm = getResources().getDisplayMetrics();
 
-        //todo 验证获取的屏幕宽高是否正确
         int surfaceWidth = dm.widthPixels;
         int surfaceHeight = dm.heightPixels;
 
@@ -136,12 +134,10 @@ public class MainActivity extends AppCompatActivity {
             //gLESJNIView = new GLESJNIView(this, player);
             changeVideoSize(player.gl_width(), player.gl_height());
             //System.out.println("_+_++_+_+_+_+_+++++_+VideoWidth:" + player.gl_width() + "  VideoHeight:" + player.gl_height());
-            player.sl_play();
+            //player.sl_play();
 
             started = 1;
             player.play();
-
-            System.out.println("_+_++_+_+_+_+_+++++_+ after play");
 
         }
         //player.stop();

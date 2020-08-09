@@ -9,34 +9,6 @@
 //回调函数
 void pcmCallBack(SLAndroidSimpleBufferQueueItf bf, void*contex)
 {
-    //(*bf)->Enqueue(bf,buf,len);
-
-    /*static FILE *fp = NULL;
-    static  char *buf = NULL;
-    if (!buf){
-        buf = new char[1024*1024];
-    }
-    if (!fp){
-        //没有声音 check这里
-        //String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
-        fp = fopen("/storage/emulated/0/ST/test.pcm","rb");
-    }
-    if(!fp){
-        EyerLog("fopen failed!");
-        return;
-    }
-
-    if (feof(fp) == 0){
-
-        int len = fread(buf,1,1024,fp);
-        if (len > 0){//读取到数据 数据传入队列
-            //声音停顿的话，check参数是否传对
-            //声音音调不对的话，可能是pcm文件和pcm设置不对
-            (*bf)->Enqueue(bf,buf,len);
-
-        }
-
-    }*/
     static unsigned char *buf = NULL;
     if (!buf){
         buf = new unsigned char[1024*1024];
@@ -51,7 +23,6 @@ void pcmCallBack(SLAndroidSimpleBufferQueueItf bf, void*contex)
     }
 
     sl->playAudioFrameQueue->pop(&audioFrame);
-    audioFrame->audioPrint();
     EyerLog("audio frame Frame->getPts():%lld, weight:%d, heigt:%d\n", audioFrame->getPts(), audioFrame->getW(), audioFrame->getH());
 
     int len = audioFrame->getPerSampleSize() * audioFrame->getNBSamples() * audioFrame->getChannels();
@@ -128,7 +99,7 @@ int YaoSL::createMix()
     return 0;
 }
 
-int YaoSL::setDataSource(SLuint32 bufferNums)
+int YaoSL::setDataSource(SLuint32 bufferNums, int sampleRate, int channels)
 {
     //创建缓冲队列
     que = {SL_DATALOCATOR_ANDROIDSIMPLEBUFFERQUEUE,bufferNums};
@@ -136,13 +107,23 @@ int YaoSL::setDataSource(SLuint32 bufferNums)
     //音频格式配置（要和测试文件一致，实际使用中音频重采样成同样的格式）
     pcm = {
             SL_DATAFORMAT_PCM,
+            (SLuint32)channels,//通道数
+            (SLuint32)sampleRate * 1000,//采样率
+            SL_PCMSAMPLEFORMAT_FIXED_32, // bitsPerSample
+            SL_PCMSAMPLEFORMAT_FIXED_32,// containerSize
+            SL_SPEAKER_FRONT_LEFT|SL_SPEAKER_FRONT_RIGHT,//声道
+            SL_BYTEORDER_LITTLEENDIAN //字节序,小端
+    };
+    /*pcm = {
+            SL_DATAFORMAT_PCM,
             2,//通道数
             SL_SAMPLINGRATE_48,//采样率
             SL_PCMSAMPLEFORMAT_FIXED_32, // bitsPerSample
             SL_PCMSAMPLEFORMAT_FIXED_32,// containerSize
             SL_SPEAKER_FRONT_LEFT|SL_SPEAKER_FRONT_RIGHT,//声道
             SL_BYTEORDER_LITTLEENDIAN //字节序,小端
-    };
+    };*/
+
     //播放器使用的结构体
     dataSource = {&que,&pcm};
     return 0;

@@ -16,7 +16,7 @@ public:
     ~YaoSL();
     int createEngin();
     int createMix();
-    int setDataSource(SLuint32 bufferNums);
+    int setDataSource(SLuint32 bufferNums, int sampleRate, int channels);
     int createAudioPlayer();
 
     int setPcmQueData();

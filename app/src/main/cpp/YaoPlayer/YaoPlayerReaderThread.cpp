@@ -20,6 +20,9 @@ void YaoPlayerReaderThread::run()
 		EyerLog("=============================read file fail , %s, %d\n", path.c_str(), ret);
 		return;
 	}
+	audioChannels = reader.getAudioChannels();
+	audioSampleRate = reader.getAudioSampleRate();
+	EyerLog("++++++++++++getAudioSampleRate:%d ,getAudioChannels:%d ",reader.getAudioSampleRate(), reader.getAudioChannels());
 
 	reader.seek(ctrThread->seekTime);
 	EyerLog("=============================YaoPlayerReaderThread getStreamCount: %d\n", reader.getStreamCount());
@@ -27,7 +30,7 @@ void YaoPlayerReaderThread::run()
 	int videoStreamIndex = reader.getVideoStreamIndex();
 	int audioStreamIndex = reader.getAudioStreamIndex();
 
-	//TODO³õÊ¼»¯½âÂëÆ÷
+	//TODOï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	YaoDecodeThread* videoDecodeThread = new  YaoDecodeThread(ctrThread, YaoDecoderType::YAODECODER_TYPE_VIDEO);
 	YaoDecodeThread* audioDecodeThread = new  YaoDecodeThread(ctrThread, YaoDecoderType::YAODECODER_TYPE_AUDIO);
 
@@ -62,7 +65,7 @@ void YaoPlayerReaderThread::run()
 		if (pkt->getIndex() == audioStreamIndex) {
 			audioDecodeThread->pushPacket(pkt);
 		}
-		//½«packet·ÅÈë»º´æ
+		//ï¿½ï¿½packetï¿½ï¿½ï¿½ë»ºï¿½ï¿½
 		//printf("get packet\n");
 
 	}
@@ -71,4 +74,14 @@ void YaoPlayerReaderThread::run()
 	audioDecodeThread->stop();
 
 	reader.Close();
+}
+
+int YaoPlayerReaderThread::getAudioSampleRate()
+{
+	return  audioSampleRate;
+}
+
+int YaoPlayerReaderThread::getAudioChannels()
+{
+	return audioChannels;
 }
