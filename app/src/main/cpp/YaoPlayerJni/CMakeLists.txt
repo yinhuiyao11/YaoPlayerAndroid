@@ -13,6 +13,7 @@ add_library(
         playerJniPlay.cpp
 
         playerJniUtil.cpp
+        JavaVMObj.cpp
 )
 
 target_link_libraries(

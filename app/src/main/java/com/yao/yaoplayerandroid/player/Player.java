@@ -47,7 +47,8 @@ public class Player extends YaoObject {
 
     public int play(){
         //System.out.println("+++++++++++++++in play");
-        return player_play(nativeId);
+        PlayEndCallback callback = new PlayEndCallback();
+        return player_play(nativeId, callback);
     }
 
     public int seek(double time){

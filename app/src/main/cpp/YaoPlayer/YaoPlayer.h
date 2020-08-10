@@ -7,6 +7,7 @@
 #include "YaoAV/YaoAV.h"
 #include "YaoQueue/Queue.h"
 
+
 enum YaoDecoderType
 {
 	YAODECODER_TYPE_VIDEO = 0,
