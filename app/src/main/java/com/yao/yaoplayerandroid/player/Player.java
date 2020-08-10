@@ -9,7 +9,7 @@ public class Player extends YaoObject {
     public static native int                    player_uninit                               (long player);
     public static native int                    player_open                                 (long player, double time);
     public static native int                    player_stop                                 (long player);
-    public static native int                    player_play                                 (long player);
+    public static native int                    player_play                                 (long player, PlayEndCallback callback);
     public static native int                    player_pause                                (long player);
     public static native int                    player_seek                                 (long player, double time);
     //public static native long                   player_get_play_video_frame                 (long player);

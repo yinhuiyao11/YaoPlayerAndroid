@@ -36,7 +36,11 @@ Java_com_yao_yaoplayerandroid_player_Player_player_1open(JNIEnv *env, jclass cla
 extern "C"
 JNIEXPORT jint JNICALL
 Java_com_yao_yaoplayerandroid_player_Player_player_1play(JNIEnv *env, jclass clazz,
-                                                         jlong avreader) {
+                                                         jlong avreader, jobject _callback) {
+    jclass callback = env->GetObjectClass(_callback);
+    jmethodID onCall = env->GetMethodID(callback, "onEndCallBack","()V");
+    env->CallVoidMethod(_callback, onCall);
+
     YaoPlayer * player = (YaoPlayer *)avreader;
     return player->play();
 }
