@@ -9,6 +9,9 @@
 class JavaVMObj{
 public:
     static JavaVM * javaVm;
+public:
+    //int callJavaStaticMethod(const char* className, const char* funName, const char* sig);
+    int callJavaStaticMethod();
 };
 
 #endif //YAOPLAYERANDROID_JAVAVMOBJ_H

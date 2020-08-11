@@ -111,24 +111,8 @@ void YaoPlayerCtr::run()
 		}
 
 	}
-	EyerLog("1111111 to the end\n");
+	//EyerLog("1111111 to the end\n");
 
-	JNIEnv *env = NULL;
-	JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
-
-	jclass clazz = env->FindClass("com/yao/yaoplayerandroid/player/PlayEndCallback");
-	if(clazz == NULL){
-		EyerLog("~~~~~~~~~~clazz is null \n");
-	}
-	jmethodID onCall = env->GetStaticMethodID(clazz, "onEndCallBack","()I");
-	if(onCall == NULL){
-		EyerLog("~~~~~~~~~~onCall is null \n");
-	} else{
-        EyerLog("~~~~~~~~~~onCall is not null \n");
-
-    }
-	env->CallStaticIntMethod(clazz, onCall);
-	
 	readerThread.stop();
 
 }
