@@ -1,7 +1,5 @@
 #include "YaoPlayer.h"
 #include "../EyerCore/EyerLog.hpp"
-#include "YaoPlayerJni/JavaVMObj.h"
-
 
 YaoPlayerCtr::YaoPlayerCtr(std::string _path, double _time)
 {
@@ -16,7 +14,7 @@ YaoPlayerCtr::~YaoPlayerCtr()
 
 void YaoPlayerCtr::run()
 {
-    YaoPlayerReaderThread readerThread(path, this);
+	YaoPlayerReaderThread readerThread(path, this);
 	readerThread.start();
 
 	//获取线程启动时的时间 startTime

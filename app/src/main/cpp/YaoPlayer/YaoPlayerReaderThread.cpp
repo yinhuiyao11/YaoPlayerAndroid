@@ -61,24 +61,9 @@ void YaoPlayerReaderThread::run()
 		YaoAVPacket * pkt = new YaoAVPacket();
 		int ret = reader.Read(pkt);
         if(ret == AVERROR_EOF){
-            EyerLog("=============================in AVERROR_EOF\n");
-            /*JavaVMObj javaVMObj;
-            javaVMObj.callJavaStaticMethod();*/
-			JNIEnv *env1 = NULL;
-			JavaVMObj::javaVm->AttachCurrentThread(&env1, NULL);
+			JavaVMObj obj;
+			obj.callJavaStaticMethod(JavaVMObj::jobj, "run","()I");
 
-			jclass clazz1 = env1->FindClass("com/yao/yaoplayerandroid/player/PlayEndCallback");
-			if(clazz1 == NULL){
-				EyerLog("~~~~~~~~~~clazz is null \n");
-			}
-			jmethodID onCall = env1->GetStaticMethodID(clazz1, "onEndCallBack","()I");
-			if(onCall == NULL){
-				EyerLog("~~~~~~~~~~onCall is null \n");
-			} else{
-				EyerLog("~~~~~~~~~~onCall is not null \n");
-
-			}
-			env1->CallStaticIntMethod(clazz1, onCall);
         }
 		if (ret) {
 			delete pkt;

@@ -6,7 +6,7 @@
 #include "../YaoSL/YaoSL.h"
 #include "JavaVMObj.h"
 
-extern "C"
+/*extern "C"
 JNIEXPORT jint JNICALL
 JNI_OnLoad(JavaVM *vm, void *reserved) {
     JavaVMObj::javaVm = vm;
@@ -24,7 +24,7 @@ JNI_OnLoad(JavaVM *vm, void *reserved) {
         result = JNI_VERSION_1_2;
     }
     return result;
-}
+}*/
 
 
 extern "C"
@@ -58,24 +58,9 @@ extern "C"
 JNIEXPORT jint JNICALL
 Java_com_yao_yaoplayerandroid_player_Player_player_1play(JNIEnv *env, jclass clazz,
                                                          jlong avreader, jobject _callback) {
-    //JavaVMObj javaVMObj;
-    //javaVMObj.callJavaStaticMethod("com/yao/yaoplayerandroid/player/PlayEndCallback", "onEndCallBack", "()I");
-    //javaVMObj.callJavaStaticMethod();
-    /*JNIEnv *env1 = NULL;
-    JavaVMObj::javaVm->AttachCurrentThread(&env1, NULL);
+    env->GetJavaVM(&JavaVMObj::javaVm);
+    JavaVMObj::jobj = env->NewGlobalRef(_callback);
 
-    jclass clazz1 = env1->FindClass("com/yao/yaoplayerandroid/player/PlayEndCallback");
-    if(clazz1 == NULL){
-        EyerLog("~~~~~~~~~~clazz is null \n");
-    }
-    jmethodID onCall = env1->GetStaticMethodID(clazz1, "onEndCallBack","()I");
-    if(onCall == NULL){
-        EyerLog("~~~~~~~~~~onCall is null \n");
-    } else{
-        EyerLog("~~~~~~~~~~onCall is not null \n");
-
-    }
-    env1->CallStaticIntMethod(clazz1, onCall);*/
     YaoPlayer * player = (YaoPlayer *)avreader;
     return player->play();
 }

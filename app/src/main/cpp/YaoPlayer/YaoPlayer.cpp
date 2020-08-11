@@ -1,5 +1,6 @@
 #include "YaoPlayer.h"
 #include "../EyerCore/EyerLog.hpp"
+#include "../YaoPlayerJni/JavaVMObj.h"
 //YaoQueue<YaoAVFrame> YaoPlayer::playVideoFrameQueueStatic;
 
 YaoPlayer::YaoPlayer(std::string _path)
