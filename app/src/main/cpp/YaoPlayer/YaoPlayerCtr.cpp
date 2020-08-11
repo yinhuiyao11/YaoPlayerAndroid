@@ -14,7 +14,7 @@ YaoPlayerCtr::~YaoPlayerCtr()
 
 void YaoPlayerCtr::run()
 {
-    YaoPlayerReaderThread readerThread(path, this);
+	YaoPlayerReaderThread readerThread(path, this);
 	readerThread.start();
 
 	//获取线程启动时的时间 startTime
@@ -22,6 +22,20 @@ void YaoPlayerCtr::run()
 	YaoAVFrame* videoFrame = nullptr;
 	YaoAVFrame* audioFrame = nullptr;
 	long long pauseDurationAll = 0;
+
+	while(readerThread.getAudioSampleRate() == 0 || readerThread.getAudioChannels() == 0){
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
+	}
+	//EyerLog("++++++++++++getAudioSampleRate:%d ,getAudioChannels:%d ",reader.getAudioSampleRate(), reader.getAudioChannels());
+	YaoSL playerSl(&playAudioFrameQueue);
+	//1 创建引擎
+	playerSl.createEngin();
+	//2 创建混音器
+	playerSl.createMix();
+	//3 配置音频信息
+	playerSl.setDataSource(10, readerThread.getAudioSampleRate(), readerThread.getAudioChannels());
+	// 4 创建播放器
+	playerSl.createAudioPlayer();
 
 	while (!stopFlag) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -48,7 +62,7 @@ void YaoPlayerCtr::run()
 		if (videoFrame == nullptr) {
 			videoFrameQueue.pop(&videoFrame);
 		} 
-        EyerLog("++++videoFrameQueue.size:%d\n", getVideoFrameQueueSize());
+        //EyerLog("++++videoFrameQueue.size:%d\n", getVideoFrameQueueSize());
 		if (videoFrame != nullptr) {
 			//pts小于seektime，丢帧
 
@@ -85,7 +99,7 @@ void YaoPlayerCtr::run()
 				//EyerLog("~~~~~~~~audio frame audioFrame->getPts():%lld\n", audioFrame->audioPrint());
 				pushFrameplayAudioFrame(audioFrame);
 
-				delete audioFrame;
+				//delete audioFrame;
 				audioFrame = nullptr;
 			}
 			else
@@ -95,8 +109,10 @@ void YaoPlayerCtr::run()
 		}
 
 	}
+	//EyerLog("1111111 to the end\n");
 
 	readerThread.stop();
+
 }
 
 int YaoPlayerCtr::pushVideoFrameQueue(YaoAVFrame* avFrame)
@@ -145,4 +161,5 @@ int YaoPlayerCtr::playAudioFrameSize()
 {
 	return playAudioFrameQueue.queueSize();
 }
+
 

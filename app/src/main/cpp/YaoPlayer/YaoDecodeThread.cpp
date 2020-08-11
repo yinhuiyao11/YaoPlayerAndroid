@@ -1,4 +1,5 @@
 #include "YaoPlayer.h"
+#include "EyerCore/EyerLog.hpp"
 
 YaoDecodeThread::YaoDecodeThread(YaoPlayerCtr* _ctrThread, YaoDecoderType _type)
 {
@@ -48,16 +49,20 @@ void YaoDecodeThread::run()
 			if (ret) {
 				break;
 			}
-			frameCount++;
-			//printf("frameCount:%d\n", frameCount);
 
 			//通过ctrThread句柄， 向其塞入frame数据
 			if (type == YaoDecoderType::YAODECODER_TYPE_VIDEO) {
 				ctrThread->pushVideoFrameQueue(frame);
+				EyerLog("=========video frame push \n");
 			}
 			else if (type == YaoDecoderType::YAODECODER_TYPE_AUDIO) {
 				ctrThread->pushAudioFrameQueue(frame);
+				EyerLog("+++++++++audio frame push \n");
+
 			}
+
+			frameCount++;
+			//printf("frameCount:%d\n", frameCount);
 		}
 	
 	}

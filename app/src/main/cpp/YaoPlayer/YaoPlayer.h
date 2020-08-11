@@ -2,9 +2,11 @@
 
 #include <string>
 #include "../YaoGL/YaoGL.h"
+#include "../YaoSL/YaoSL.h"
 #include "YaoThread/YaoThread.h"
 #include "YaoAV/YaoAV.h"
 #include "YaoQueue/Queue.h"
+
 
 enum YaoDecoderType
 {
@@ -38,6 +40,7 @@ public:
 
 	int pushFrameplayAudioFrame(YaoAVFrame * frame);
 	int playAudioFrameSize();
+
 public:
 	double seekTime = 0.0;
     std::string path;
@@ -56,9 +59,14 @@ public:
 	YaoPlayerReaderThread(std::string _path, YaoPlayerCtr * ctr);
 	~YaoPlayerReaderThread();
 	virtual void run();
+    int getAudioSampleRate();
+    int getAudioChannels();
+
 private:
 	std::string path;
 	YaoPlayerCtr * ctrThread = nullptr;
+	int audioSampleRate = 0;
+	int audioChannels = 0;
 };
 
 class YaoDecodeThread : public YaoThread
@@ -109,10 +117,16 @@ public:
 
 	int printQueueSize();
 
+	int setWidthHeight();
+	int getHeight();
+	int getWidth();
+
 	YaoPlayerGL * playerGl = nullptr;
+	YaoPlayerCtr * playerCtr = nullptr;
 
 private:
 	std::string path;
-	YaoPlayerCtr * playerCtr = nullptr;
+	int height = 0;
+	int width = 0;
 };
 

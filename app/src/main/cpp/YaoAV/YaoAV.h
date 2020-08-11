@@ -30,6 +30,12 @@ public:
 	int getU(unsigned char * u);
 	int getV(unsigned char * v);
 
+	int getChannels();
+	int getNBSamples();
+	int getPerSampleSize();
+	int getAudioData(unsigned char * data);
+	int getAudioPackedData(unsigned char * data);
+
 	long long getPts();
 public:
 	YaoAVFramePrivate* imp = nullptr;
@@ -49,6 +55,12 @@ public:
 
 	int getVideoStreamIndex();
 	int getAudioStreamIndex();
+
+	int getVideoWidth();
+	int getVideoHeight();
+
+	int getAudioSampleRate();
+	int getAudioChannels();
 
 	int seek(double time);
 private:

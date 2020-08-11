@@ -126,7 +126,7 @@ int YaoPlayerGL::drawFrame(){
         YaoAVFrame* videoFrame = nullptr;
 
         playVideoFrameQueueGL->pop(&videoFrame);
-        EyerLog("video frame videoFrame->getPts():%lld, weight:%d, heigt:%d\n", videoFrame->getPts(), videoFrame->getW(), videoFrame->getH());
+        //EyerLog("video frame videoFrame->getPts():%lld, weight:%d, heigt:%d\n", videoFrame->getPts(), videoFrame->getW(), videoFrame->getH());
 
         int width = videoFrame->getW();
         int height = videoFrame->getH();
@@ -158,6 +158,9 @@ int YaoPlayerGL::drawFrame(){
         free(y);
         free(u);
         free(v);
+
+        delete videoFrame;
+        videoFrame = nullptr;
     }
 
     //设置为活动程序

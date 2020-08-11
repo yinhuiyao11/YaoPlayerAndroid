@@ -13,6 +13,7 @@ add_library(
         playerJniPlay.cpp
 
         playerJniUtil.cpp
+        JavaVMObj.cpp
 )
 
 target_link_libraries(
@@ -20,6 +21,7 @@ target_link_libraries(
 
         YaoAV
         YaoGL
+        YaoSL
         YaoPlayer
         YaoThread
         EyerCore
@@ -27,6 +29,7 @@ target_link_libraries(
         android
         EGL
         GLESv3
+        OpenSLES
 
         ${distribution_DIR}/lib/libavformat.a
         ${distribution_DIR}/lib/libavcodec.a

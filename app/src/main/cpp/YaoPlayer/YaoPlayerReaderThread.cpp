@@ -2,6 +2,13 @@
 #include "YaoPlayer.h"
 #include "YaoAV/YaoAV.h"
 #include "../EyerCore/EyerLog.hpp"
+#include "../YaoPlayerJni/JavaVMObj.h"
+
+extern "C"
+{
+#include <libavutil/error.h>
+#include <libavutil/avutil.h>
+}
 
 YaoPlayerReaderThread::YaoPlayerReaderThread(std::string _path, YaoPlayerCtr* _ctrThread)
 {
@@ -11,6 +18,7 @@ YaoPlayerReaderThread::YaoPlayerReaderThread(std::string _path, YaoPlayerCtr* _c
 YaoPlayerReaderThread::~YaoPlayerReaderThread()
 {
 }
+
 void YaoPlayerReaderThread::run()
 {
 	YaoAVReader reader;
@@ -20,13 +28,17 @@ void YaoPlayerReaderThread::run()
 		return;
 	}
 
+	audioChannels = reader.getAudioChannels();
+	audioSampleRate = reader.getAudioSampleRate();
+	EyerLog("++++++++++++getAudioSampleRate:%d ,getAudioChannels:%d ",reader.getAudioSampleRate(), reader.getAudioChannels());
+
 	reader.seek(ctrThread->seekTime);
 	EyerLog("=============================YaoPlayerReaderThread getStreamCount: %d\n", reader.getStreamCount());
 
 	int videoStreamIndex = reader.getVideoStreamIndex();
 	int audioStreamIndex = reader.getAudioStreamIndex();
 
-	//TODO³õÊ¼»¯½âÂëÆ÷
+	//TODOï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	YaoDecodeThread* videoDecodeThread = new  YaoDecodeThread(ctrThread, YaoDecoderType::YAODECODER_TYPE_VIDEO);
 	YaoDecodeThread* audioDecodeThread = new  YaoDecodeThread(ctrThread, YaoDecoderType::YAODECODER_TYPE_AUDIO);
 
@@ -48,6 +60,11 @@ void YaoPlayerReaderThread::run()
 
 		YaoAVPacket * pkt = new YaoAVPacket();
 		int ret = reader.Read(pkt);
+        if(ret == AVERROR_EOF){
+			JavaVMObj obj;
+			obj.callJavaStaticMethod(JavaVMObj::jobj, "run","()I");
+
+        }
 		if (ret) {
 			delete pkt;
 			pkt = nullptr;
@@ -61,7 +78,7 @@ void YaoPlayerReaderThread::run()
 		if (pkt->getIndex() == audioStreamIndex) {
 			audioDecodeThread->pushPacket(pkt);
 		}
-		//½«packet·ÅÈë»º´æ
+		//ï¿½ï¿½packetï¿½ï¿½ï¿½ë»ºï¿½ï¿½
 		//printf("get packet\n");
 
 	}
@@ -70,4 +87,14 @@ void YaoPlayerReaderThread::run()
 	audioDecodeThread->stop();
 
 	reader.Close();
+}
+
+int YaoPlayerReaderThread::getAudioSampleRate()
+{
+	return  audioSampleRate;
+}
+
+int YaoPlayerReaderThread::getAudioChannels()
+{
+	return audioChannels;
 }

@@ -1,10 +1,12 @@
 #include "YaoPlayer.h"
 #include "../EyerCore/EyerLog.hpp"
+#include "../YaoPlayerJni/JavaVMObj.h"
 //YaoQueue<YaoAVFrame> YaoPlayer::playVideoFrameQueueStatic;
 
 YaoPlayer::YaoPlayer(std::string _path)
 {
 	path = _path;
+	setWidthHeight();
 }
 
 YaoPlayer::~YaoPlayer()
@@ -13,6 +15,7 @@ YaoPlayer::~YaoPlayer()
 		delete playerGl;
 		playerGl = nullptr;
 	}
+
 }
 
 int YaoPlayer::open(double time)
@@ -53,6 +56,29 @@ int YaoPlayer::seek(double time)
 	return 0;
 }
 
+int YaoPlayer::getHeight()
+{
+	return height;
+}
+
+int YaoPlayer::getWidth()
+{
+	return  width;
+}
+
+int YaoPlayer::setWidthHeight()
+{
+	YaoAVReader reader;
+	int ret = reader.Open(path.c_str());
+	if (ret) {
+		EyerLog("=============================read file fail (setWidthHeight) , %s, %d\n", path.c_str(), ret);
+		return -1;
+	}
+	height = reader.getVideoHeight();
+	width = reader.getVideoWidth();
+	return 0;
+}
+
 int YaoPlayer::printQueueSize() {
 	if(&(playerCtr->playVideoFrameQueue) == nullptr){
 		EyerLog("+++++++++++++++++++++++++++++playVideoFrameQueueGL is null\n");
@@ -63,3 +89,4 @@ int YaoPlayer::printQueueSize() {
 	EyerLog("+++++++++++++++++++++++++++++playVideoFrameQueueGL->size:%d\n", playerCtr->playVideoFrameQueue.queueSize());
     return 0;
 }
+
