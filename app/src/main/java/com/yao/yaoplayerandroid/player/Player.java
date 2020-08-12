@@ -1,6 +1,7 @@
 package com.yao.yaoplayerandroid.player;
 
 import com.yao.yaoplayerandroid.base.YaoObject;
+import com.yao.yaoplayerandroid.callback.PlayCallback;
 
 public class Player extends YaoObject {
 
@@ -9,7 +10,7 @@ public class Player extends YaoObject {
     public static native int                    player_uninit                               (long player);
     public static native int                    player_open                                 (long player, double time);
     public static native int                    player_stop                                 (long player);
-    public static native int                    player_play                                 (long player, PlayEndCallback callback);
+    public static native int                    player_play                                 (long player, PlayCallback callback);
     public static native int                    player_pause                                (long player);
     public static native int                    player_seek                                 (long player, double time);
     //public static native long                   player_get_play_video_frame                 (long player);
@@ -47,7 +48,7 @@ public class Player extends YaoObject {
 
     public int play(){
         //System.out.println("+++++++++++++++in play");
-        PlayEndCallback callback = new PlayEndCallback();
+        PlayCallback callback = new PlayCallback();
         return player_play(nativeId, callback);
     }
 

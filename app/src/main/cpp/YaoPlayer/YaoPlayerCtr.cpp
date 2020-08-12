@@ -1,5 +1,6 @@
 #include "YaoPlayer.h"
 #include "../EyerCore/EyerLog.hpp"
+#include "../YaoPlayerJni/JavaVMObj.h"
 
 YaoPlayerCtr::YaoPlayerCtr(std::string _path, double _time)
 {
@@ -22,6 +23,9 @@ void YaoPlayerCtr::run()
 	YaoAVFrame* videoFrame = nullptr;
 	YaoAVFrame* audioFrame = nullptr;
 	long long pauseDurationAll = 0;
+
+	//进度回调函数调用次数
+	int callbackNum = 0;
 
 	while(readerThread.getAudioSampleRate() == 0 || readerThread.getAudioChannels() == 0){
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -108,6 +112,13 @@ void YaoPlayerCtr::run()
 			}
 		}
 
+		//每隔一秒调用进度回调函数，传入dtime
+
+		if(dTime > 1000 * callbackNum) {
+			JavaVMObj obj;
+			obj.callJavaStaticMethod(JavaVMObj::jobj, "playSetProgressBar", "(I)I", (int)(dTime/1000));
+			callbackNum++;
+		}
 	}
 	//EyerLog("1111111 to the end\n");
 

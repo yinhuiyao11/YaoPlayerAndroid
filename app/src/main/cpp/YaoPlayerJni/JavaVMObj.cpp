@@ -23,3 +23,20 @@ int JavaVMObj::callJavaStaticMethod(jobject jobj, const char* funName, const cha
     return env->CallStaticIntMethod(cls, onCall);
 }
 
+int JavaVMObj::callJavaStaticMethod(jobject jobj, const char* funName, const char* sig, int dtime)
+{
+    JNIEnv * env;
+    JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
+    jclass cls = env->GetObjectClass(jobj);
+    if(cls == NULL){
+        EyerLog("~~~~~~~~~~cls is null \n");
+    }
+
+    jmethodID onCall = env->GetStaticMethodID(cls, funName, sig);
+    if(onCall == NULL){
+        EyerLog("~~~~~~~~~~onCall is null \n");
+    }
+    return env->CallStaticIntMethod(cls, onCall, dtime);
+}
+
+
