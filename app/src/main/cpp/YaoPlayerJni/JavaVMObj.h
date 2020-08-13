@@ -11,9 +11,8 @@ public:
     static JavaVM * javaVm;
     static jobject jobj;
 public:
-    //int callJavaStaticMethod(const char* className, const char* funName, const char* sig);
-    int callJavaStaticMethod(jobject jobj, const char* funName, const char* sig);
-    int callJavaStaticMethod(jobject jobj, const char* funName, const char* sig, int dtime);
+    int callJavaMethod(jobject jobj, const char* funName, const char* sig);
+    int callJavaMethod(jobject jobj, const char* funName, const char* sig, int dtime);
 
 };
 

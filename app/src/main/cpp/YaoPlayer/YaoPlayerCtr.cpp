@@ -116,7 +116,7 @@ void YaoPlayerCtr::run()
 
 		if(dTime > 1000 * callbackNum) {
 			JavaVMObj obj;
-			obj.callJavaStaticMethod(JavaVMObj::jobj, "playSetProgressBar", "(I)I", (int)(dTime/1000));
+			obj.callJavaMethod(JavaVMObj::jobj, "playSetProgressBar", "(I)I", (int)(dTime/1000));
 			callbackNum++;
 		}
 	}

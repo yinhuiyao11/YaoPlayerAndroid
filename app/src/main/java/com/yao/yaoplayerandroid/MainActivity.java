@@ -15,7 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.opengl.GLSurfaceView;
-
 import com.yao.yaoplayerandroid.player.Player;
 
 import java.io.File;
@@ -26,12 +25,13 @@ public class MainActivity extends AppCompatActivity {
     }
     private GLSurfaceView gLSurfaceView;
     private Button btn_start;
-    private Button btn_stop;
     private ProgressBar video_progress_bar;
     private RelativeLayout mParent;
-
     private Player player;
     private int started = 0;
+
+    private int screenHeight;
+    private int screenWidth;
 
     private static String[] PERMISSIONS_STORAGE = {
             "android.permission.READ_EXTERNAL_STORAGE",
@@ -55,11 +55,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView(){
+        DisplayMetrics dm = new DisplayMetrics();
+        dm = getResources().getDisplayMetrics();
+        screenWidth = dm.widthPixels;
+        screenHeight = dm.heightPixels;
+
         gLSurfaceView = findViewById(R.id.gLSurfaceView);
 
         btn_start = findViewById(R.id.btn_start);
-        btn_stop = findViewById(R.id.btn_stop);
         mParent = findViewById(R.id.test_parent_play);
+        video_progress_bar = findViewById(R.id.video_progress_bar);
+
         btn_start.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -67,21 +73,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btn_stop.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
     //改变视频的尺寸自适应。
     public void changeVideoSize(int videoWidth , int videoHeight) {
-        DisplayMetrics dm = new DisplayMetrics();
-        dm = getResources().getDisplayMetrics();
-
-        int surfaceWidth = dm.widthPixels;
-        int surfaceHeight = dm.heightPixels;
+        int surfaceWidth = screenWidth;
+        int surfaceHeight = screenHeight;
 
         //根据视频尺寸去计算->视频可以在sufaceView中放大的最大倍数。
         float max;
@@ -116,8 +113,8 @@ public class MainActivity extends AppCompatActivity {
         if(started == 0) {
             File dir = Environment.getExternalStorageDirectory();
             //String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
-            String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
-            //String videoPath = dir.getAbsolutePath() + "/" + "ST/banfo.mp4";
+            //String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
+            String videoPath = dir.getAbsolutePath() + "/" + "ST/banfo.mp4";
             //String videoPath = dir.getAbsolutePath() + "/" + "ST/The_Beauty_of_Earth.mp4";
             //String videoPath = dir.getAbsolutePath() + "/" + "ST/4k_animal.mp4";
             //String videoPath = dir.getAbsolutePath() + "/" + "ST/rabbit.mp4";
@@ -128,6 +125,9 @@ public class MainActivity extends AppCompatActivity {
 
             player = new Player(videoPath);
             player.open(0);
+
+            //todo 获取duration
+            video_progress_bar.setMax(1000);
 
             gLSurfaceView.setEGLContextClientVersion(3);
             gLSurfaceView.setRenderer(new GLRender(player));
@@ -149,8 +149,20 @@ public class MainActivity extends AppCompatActivity {
         player.pause();
     }
 
+    public static int playEndCallback() {
+        //自行执行回调后的操作
+        System.out.println("~~~~~~~~~~~~~in: playEndCallback\n");
+        return 0;
+    }
 
-    public static void verifyStoragePermissions(Activity activity) {
+    public int playSetProgressBar(int playSec){
+        System.out.println("~~~~~~~~~~~~~playSetProgressBar playSec: " + playSec);
+        ProgressBar video_progress_bar = findViewById(R.id.video_progress_bar);
+
+        return 0;
+    }
+
+    public void verifyStoragePermissions(Activity activity) {
         try {
             //检测是否有写的权限
             int permission = ActivityCompat.checkSelfPermission(activity, "android.permission.WRITE_EXTERNAL_STORAGE");

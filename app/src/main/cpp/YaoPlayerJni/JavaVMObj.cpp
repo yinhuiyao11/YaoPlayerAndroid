@@ -6,8 +6,8 @@
 
 JavaVM * JavaVMObj::javaVm = nullptr;
 jobject JavaVMObj::jobj = NULL;
-//int JavaVMObj::callJavaStaticMethod(const char* className, const char* funName, const char* sig)
-int JavaVMObj::callJavaStaticMethod(jobject jobj, const char* funName, const char* sig)
+
+int JavaVMObj::callJavaMethod(jobject jobj, const char* funName, const char* sig)
 {
     JNIEnv * env;
     JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
@@ -16,14 +16,14 @@ int JavaVMObj::callJavaStaticMethod(jobject jobj, const char* funName, const cha
         EyerLog("~~~~~~~~~~cls is null \n");
     }
 
-    jmethodID onCall = env->GetStaticMethodID(cls, funName, sig);
+    jmethodID onCall = env->GetMethodID(cls, funName, sig);
     if(onCall == NULL){
         EyerLog("~~~~~~~~~~onCall is null \n");
     }
     return env->CallStaticIntMethod(cls, onCall);
 }
 
-int JavaVMObj::callJavaStaticMethod(jobject jobj, const char* funName, const char* sig, int dtime)
+int JavaVMObj::callJavaMethod(jobject jobj, const char* funName, const char* sig, int dtime)
 {
     JNIEnv * env;
     JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
@@ -32,11 +32,11 @@ int JavaVMObj::callJavaStaticMethod(jobject jobj, const char* funName, const cha
         EyerLog("~~~~~~~~~~cls is null \n");
     }
 
-    jmethodID onCall = env->GetStaticMethodID(cls, funName, sig);
+    jmethodID onCall = env->GetMethodID(cls, funName, sig);
     if(onCall == NULL){
         EyerLog("~~~~~~~~~~onCall is null \n");
     }
-    return env->CallStaticIntMethod(cls, onCall, dtime);
+    return env->CallIntMethod(cls, onCall, dtime);
 }
 
 

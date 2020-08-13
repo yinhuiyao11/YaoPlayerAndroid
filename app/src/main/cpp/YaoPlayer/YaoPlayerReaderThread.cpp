@@ -62,7 +62,7 @@ void YaoPlayerReaderThread::run()
 		int ret = reader.Read(pkt);
         if(ret == AVERROR_EOF){
 			JavaVMObj obj;
-			obj.callJavaStaticMethod(JavaVMObj::jobj, "playEndCallback","()I");
+			obj.callJavaMethod(JavaVMObj::jobj, "playEndCallback","()I");
 
         }
 		if (ret) {
