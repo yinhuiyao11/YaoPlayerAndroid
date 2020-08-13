@@ -11,32 +11,38 @@ int JavaVMObj::callJavaMethod(jobject jobj, const char* funName, const char* sig
 {
     JNIEnv * env;
     JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
-    jclass cls = env->GetObjectClass(jobj);
-    if(cls == NULL){
-        EyerLog("~~~~~~~~~~cls is null \n");
+    // 获取类
+    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::jobj);
+    if(ax_list_jclass == NULL){
+        EyerLog("~~~~~~~~~~jclass is null \n");
     }
-
-    jmethodID onCall = env->GetMethodID(cls, funName, sig);
-    if(onCall == NULL){
-        EyerLog("~~~~~~~~~~onCall is null \n");
+    // 获取方法
+    jmethodID listGetMe;
+    listGetMe = env->GetMethodID(ax_list_jclass, funName, sig);
+    if(listGetMe == NULL){
+        EyerLog("~~~~~~~~~~jni jmethodID is null \n");
     }
-    return env->CallStaticIntMethod(cls, onCall);
+    jobject findObj = env->CallObjectMethod(JavaVMObj::jobj, listGetMe);
+    return 0;
 }
 
 int JavaVMObj::callJavaMethod(jobject jobj, const char* funName, const char* sig, int dtime)
 {
     JNIEnv * env;
     JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
-    jclass cls = env->GetObjectClass(jobj);
-    if(cls == NULL){
-        EyerLog("~~~~~~~~~~cls is null \n");
+    // 获取类
+    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::jobj);
+    if(ax_list_jclass == NULL){
+        EyerLog("~~~~~~~~~~jclass is null \n");
     }
-
-    jmethodID onCall = env->GetMethodID(cls, funName, sig);
-    if(onCall == NULL){
-        EyerLog("~~~~~~~~~~onCall is null \n");
+    // 获取方法
+    jmethodID listGetMe;
+    listGetMe = env->GetMethodID(ax_list_jclass, funName, sig);
+    if(listGetMe == NULL){
+        EyerLog("~~~~~~~~~~jni jmethodID is null \n");
     }
-    return env->CallIntMethod(cls, onCall, dtime);
+    jobject findObj = env->CallObjectMethod(JavaVMObj::jobj, listGetMe , dtime);
+    return 0;
 }
 
 

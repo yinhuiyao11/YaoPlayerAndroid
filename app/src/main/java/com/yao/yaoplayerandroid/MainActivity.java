@@ -113,8 +113,8 @@ public class MainActivity extends AppCompatActivity {
         if(started == 0) {
             File dir = Environment.getExternalStorageDirectory();
             //String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
-            //String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
-            String videoPath = dir.getAbsolutePath() + "/" + "ST/banfo.mp4";
+            String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
+            //String videoPath = dir.getAbsolutePath() + "/" + "ST/banfo.mp4";
             //String videoPath = dir.getAbsolutePath() + "/" + "ST/The_Beauty_of_Earth.mp4";
             //String videoPath = dir.getAbsolutePath() + "/" + "ST/4k_animal.mp4";
             //String videoPath = dir.getAbsolutePath() + "/" + "ST/rabbit.mp4";
@@ -147,19 +147,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         player.pause();
-    }
-
-    public static int playEndCallback() {
-        //自行执行回调后的操作
-        System.out.println("~~~~~~~~~~~~~in: playEndCallback\n");
-        return 0;
-    }
-
-    public int playSetProgressBar(int playSec){
-        System.out.println("~~~~~~~~~~~~~playSetProgressBar playSec: " + playSec);
-        ProgressBar video_progress_bar = findViewById(R.id.video_progress_bar);
-
-        return 0;
     }
 
     public void verifyStoragePermissions(Activity activity) {

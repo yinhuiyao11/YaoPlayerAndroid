@@ -2,9 +2,11 @@ package com.yao.yaoplayerandroid.callback;
 
 import android.widget.ProgressBar;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.yao.yaoplayerandroid.R;
 
-public class PlayCallback {
+public class PlayCallback extends AppCompatActivity {
     public PlayCallback(){
 
     }
@@ -16,7 +18,8 @@ public class PlayCallback {
 
     public int playSetProgressBar(int playSec){
         System.out.println("~~~~~~~~~~~~~playSetProgressBar playSec: " + playSec);
-
+        /*ProgressBar video_progress_bar = findViewById(R.id.video_progress_bar);
+        video_progress_bar.setProgress(playSec);*/
         return 0;
     }
 }
