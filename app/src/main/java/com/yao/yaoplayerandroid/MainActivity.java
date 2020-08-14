@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private int screenHeight;
     private int screenWidth;
 
+    public int progress = 10;
+
     private static String[] PERMISSIONS_STORAGE = {
             "android.permission.READ_EXTERNAL_STORAGE",
             "android.permission.WRITE_EXTERNAL_STORAGE" };
@@ -65,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
         btn_start = findViewById(R.id.btn_start);
         mParent = findViewById(R.id.test_parent_play);
         video_progress_bar = findViewById(R.id.video_progress_bar);
-
+        video_progress_bar.setMax(100);
+        video_progress_bar.setProgress(progress);
         btn_start.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -126,8 +129,7 @@ public class MainActivity extends AppCompatActivity {
             player = new Player(videoPath);
             player.open(0);
 
-            //todo 获取duration
-            video_progress_bar.setMax(1000);
+            video_progress_bar.setMax(100);
 
             gLSurfaceView.setEGLContextClientVersion(3);
             gLSurfaceView.setRenderer(new GLRender(player));
@@ -147,6 +149,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         player.pause();
+    }
+
+    public int playEndCallback() {
+        //自行执行回调后的操作
+        System.out.println("~~~~~~~~~~~~~in: playEndCallback\n");
+        return 0;
+    }
+
+    public int playSetProgressBar(int playSec){
+        System.out.println("~~~~~~~~~~~~~playSetProgressBar playSec: " + playSec);
+        progress = playSec;
+        //video_progress_bar.setProgress(progress);
+        return 0;
     }
 
     public void verifyStoragePermissions(Activity activity) {

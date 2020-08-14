@@ -18,8 +18,12 @@ public class PlayCallback extends AppCompatActivity {
 
     public int playSetProgressBar(int playSec){
         System.out.println("~~~~~~~~~~~~~playSetProgressBar playSec: " + playSec);
-        /*ProgressBar video_progress_bar = findViewById(R.id.video_progress_bar);
-        video_progress_bar.setProgress(playSec);*/
+        ProgressBar video_progress_bar = findViewById(R.id.video_progress_bar);
+        if(video_progress_bar == null){
+            System.out.println("~~~~~~~~~~~~~playSetProgressBar video_progress_bar is null ");
+
+        }
+        video_progress_bar.setProgress(playSec);
         return 0;
     }
 }
