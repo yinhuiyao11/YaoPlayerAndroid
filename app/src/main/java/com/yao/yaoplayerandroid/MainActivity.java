@@ -8,6 +8,9 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +18,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.opengl.GLSurfaceView;
+import android.widget.Toast;
+
 import com.yao.yaoplayerandroid.player.Player;
 
 import java.io.File;
@@ -34,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private int screenWidth;
 
     public int progress = 10;
+    MyHandler myHandler;
+    static MyHandler mHandler;
 
     private static String[] PERMISSIONS_STORAGE = {
             "android.permission.READ_EXTERNAL_STORAGE",
@@ -66,6 +73,10 @@ public class MainActivity extends AppCompatActivity {
 
         btn_start = findViewById(R.id.btn_start);
         mParent = findViewById(R.id.test_parent_play);
+
+        myHandler = new MyHandler();
+        mHandler = myHandler;//重要,保存全局静态handler句柄,以便回掉的时候能找到该上下文
+
         video_progress_bar = findViewById(R.id.video_progress_bar);
         video_progress_bar.setMax(100);
         video_progress_bar.setProgress(progress);
@@ -151,16 +162,38 @@ public class MainActivity extends AppCompatActivity {
         player.pause();
     }
 
+
     public int playEndCallback() {
         //自行执行回调后的操作
         System.out.println("~~~~~~~~~~~~~in: playEndCallback\n");
         return 0;
     }
 
+    class MyHandler extends Handler {
+        public MyHandler() {
+        }
+
+        public MyHandler(Looper L) {
+            super(L);
+        }
+
+        // 子类必须重写此方法，接受数据
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            // 此处可以更新UI
+            video_progress_bar.setProgress(msg.what);
+
+        }
+    }
+
     public int playSetProgressBar(int playSec){
-        System.out.println("~~~~~~~~~~~~~playSetProgressBar playSec: " + playSec);
-        progress = playSec;
-        //video_progress_bar.setProgress(progress);
+        System.out.println("~~~~~~~playSetProgressBar:"+ playSec);
+
+        Message meg = Message.obtain();
+        meg.what = playSec;
+        mHandler.sendMessage(meg);
+
         return 0;
     }
 
