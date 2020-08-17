@@ -19,6 +19,7 @@ public class Player extends YaoObject {
     public static native int                    player_gl_drawFrame                         (long player);
     public static native int                    player_get_height                           (long player);
     public static native int                    player_get_width                            (long player);
+    public static native long                   player_get_duration                         (long player);
 
     public static native int                    player_sl                                   (long player);
 
@@ -79,6 +80,10 @@ public class Player extends YaoObject {
 
     public int gl_width(){
         return player_get_width(nativeId);
+    }
+
+    public long gl_duration() {
+        return player_get_duration(nativeId);
     }
 
     @Override

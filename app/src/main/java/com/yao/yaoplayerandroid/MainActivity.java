@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.opengl.GLSurfaceView;
 import android.widget.Toast;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private GLSurfaceView gLSurfaceView;
     private Button btn_start;
-    private ProgressBar video_progress_bar;
+    private SeekBar video_progress_bar;
     private RelativeLayout mParent;
     private Player player;
     private int started = 0;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     public int progress = 10;
     MyHandler myHandler;
     static MyHandler mHandler;
+    static long duration = 0;
 
     private static String[] PERMISSIONS_STORAGE = {
             "android.permission.READ_EXTERNAL_STORAGE",
@@ -138,16 +140,17 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("f:" + f.canRead());
 
             player = new Player(videoPath);
+            duration = player.gl_duration();
             player.open(0);
 
             video_progress_bar.setMax(100);
+            bindSeekBar(player);
 
             gLSurfaceView.setEGLContextClientVersion(3);
             gLSurfaceView.setRenderer(new GLRender(player));
-            //gLESJNIView = new GLESJNIView(this, player);
+
             changeVideoSize(player.gl_width(), player.gl_height());
-            //System.out.println("_+_++_+_+_+_+_+++++_+VideoWidth:" + player.gl_width() + "  VideoHeight:" + player.gl_height());
-            //player.sl_play();
+            //System.out.println("_+_++_+_+_+_+_+++++_+gl_duration:" + player.gl_duration());
 
             started = 1;
             player.play();
@@ -182,8 +185,7 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             // 此处可以更新UI
-            video_progress_bar.setProgress(msg.what);
-
+            video_progress_bar.setProgress((int)((float)msg.what/(float) duration * (float)100));
         }
     }
 
@@ -209,9 +211,26 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-    public native String stringFromJNI();
+
+    private void bindSeekBar(final Player player) {
+        video_progress_bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                System.out.println("~~~当前进度值:" + progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                //System.out.println("~~~onStart:" + seekBar.getProgress());
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                System.out.println("~~~onStop:" + seekBar.getProgress());
+                started = 0;
+                player.seek((double) seekBar.getProgress() * 0.01 * player.gl_duration());
+            }
+        });
+    }
 }

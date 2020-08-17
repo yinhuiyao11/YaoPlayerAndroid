@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="开始" />
-            <ProgressBar
+            <SeekBar
                 android:id="@+id/video_progress_bar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="fill_parent"
@@ -43,7 +43,7 @@
                 android:thumb="@drawable/seekbar_dot_bg"
                 android:focusable="true"
                 >
-            </ProgressBar>
+            </SeekBar>
 
         </LinearLayout>
 

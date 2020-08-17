@@ -76,8 +76,15 @@ int YaoPlayer::setWidthHeight()
 	}
 	height = reader.getVideoHeight();
 	width = reader.getVideoWidth();
+	duration = reader.getDuration();
 	return 0;
 }
+
+long long YaoPlayer::getDuration()
+{
+	return duration;
+}
+
 
 int YaoPlayer::printQueueSize() {
 	if(&(playerCtr->playVideoFrameQueue) == nullptr){

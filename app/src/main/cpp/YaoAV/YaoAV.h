@@ -62,7 +62,7 @@ public:
 	int getAudioSampleRate();
 	int getAudioChannels();
 
-	int getDuration();
+	long long getDuration();
 
 	int seek(double time);
 private:

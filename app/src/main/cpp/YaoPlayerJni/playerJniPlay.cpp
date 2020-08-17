@@ -153,4 +153,10 @@ Java_com_yao_yaoplayerandroid_player_Player_player_1get_1width(JNIEnv *env, jcla
                                                                jlong _player) {
     YaoPlayer * player = (YaoPlayer *)_player;
     return player->getWidth();
+}extern "C"
+JNIEXPORT jlong JNICALL
+Java_com_yao_yaoplayerandroid_player_Player_player_1get_1duration(JNIEnv *env, jclass clazz,
+                                                                  jlong _player) {
+    YaoPlayer * player = (YaoPlayer *)_player;
+    return player->getDuration();
 }
