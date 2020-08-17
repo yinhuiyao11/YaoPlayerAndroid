@@ -23,7 +23,9 @@ int YaoPlayer::open(double time)
 	if (playerCtr == nullptr) {
 		playerCtr = new YaoPlayerCtr(path, time);
 		playerCtr->start();
-		playerGl = new YaoPlayerGL(&(playerCtr->playVideoFrameQueue));
+		if(playerGl == nullptr){
+			playerGl = new YaoPlayerGL(&(playerCtr->playVideoFrameQueue));
+		}
 		return 0;
 	}
 	return -1;

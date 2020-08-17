@@ -65,7 +65,7 @@ public class Player extends YaoObject {
     }
 
     public int gl_drawFrame(){
-        //System.out.println("+++++++++++++++in gl_drawFrame");
+        System.out.println("11111111111111111+++++++++++++++in gl_drawFrame");
         return player_gl_drawFrame(nativeId);
     }
 

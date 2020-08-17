@@ -228,8 +228,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 System.out.println("~~~onStop:" + seekBar.getProgress());
-                started = 0;
-                player.seek((double) seekBar.getProgress() * 0.01 * player.gl_duration());
+                //player.seek((double) seekBar.getProgress() * 0.01 * player.gl_duration());
+                player.seek(5.0);
             }
         });
     }

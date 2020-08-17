@@ -66,7 +66,6 @@ void YaoPlayerCtr::run()
 		if (videoFrame == nullptr) {
 			videoFrameQueue.pop(&videoFrame);
 		} 
-        //EyerLog("++++videoFrameQueue.size:%d\n", getVideoFrameQueueSize());
 		if (videoFrame != nullptr) {
 			//pts小于seektime，丢帧
 
@@ -80,7 +79,8 @@ void YaoPlayerCtr::run()
             //如果 framePts <= dTime
 			if (videoFrame->getPts() <= dTime) {
 				//该帧立即播放
-				//EyerLog("++++video frame videoFrame->getPts():%lld, weight:%d, heigt:%d\n", videoFrame->getPts(), videoFrame->getW(), videoFrame->getH());
+                EyerLog("++++playVideoFrameQueue.size:%d\n", playVideoFrameQueue.queueSize());
+                EyerLog("++++video frame videoFrame->getPts():%lld, weight:%d, heigt:%d\n", videoFrame->getPts(), videoFrame->getW(), videoFrame->getH());
 				pushFrameplayVideoFrame(videoFrame);
 
                 videoFrame = nullptr;
@@ -100,7 +100,7 @@ void YaoPlayerCtr::run()
             //如果 framePts <= dTime，
 			if (audioFrame->getPts() <= dTime) {
 				//该帧立即播放
-				//EyerLog("~~~~~~~~audio frame audioFrame->getPts():%lld\n", audioFrame->audioPrint());
+				EyerLog("~~~~~~~~audio frame audioFrame->getPts():%lld\n", audioFrame->getPts());
 				pushFrameplayAudioFrame(audioFrame);
 
 				//delete audioFrame;
