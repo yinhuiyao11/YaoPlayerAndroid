@@ -20,6 +20,8 @@ YaoPlayer::~YaoPlayer()
 
 int YaoPlayer::open(double time)
 {
+	EyerLog("~~~~~time:%f\n", time);
+
 	if (playerCtr == nullptr) {
 		playerCtr = new YaoPlayerCtr(path, time);
 		playerCtr->start();

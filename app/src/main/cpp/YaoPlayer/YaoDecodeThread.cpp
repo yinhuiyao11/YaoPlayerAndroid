@@ -53,11 +53,11 @@ void YaoDecodeThread::run()
 			//通过ctrThread句柄， 向其塞入frame数据
 			if (type == YaoDecoderType::YAODECODER_TYPE_VIDEO) {
 				ctrThread->pushVideoFrameQueue(frame);
-				EyerLog("=========video frame push \n");
+				//EyerLog("=========video frame push \n");
 			}
 			else if (type == YaoDecoderType::YAODECODER_TYPE_AUDIO) {
 				ctrThread->pushAudioFrameQueue(frame);
-				EyerLog("+++++++++audio frame push \n");
+				//EyerLog("+++++++++audio frame push \n");
 
 			}
 

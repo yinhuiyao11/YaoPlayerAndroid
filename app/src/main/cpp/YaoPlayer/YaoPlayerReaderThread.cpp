@@ -85,7 +85,6 @@ void YaoPlayerReaderThread::run()
 
 	videoDecodeThread->stop();
 	audioDecodeThread->stop();
-
 	reader.Close();
 }
 

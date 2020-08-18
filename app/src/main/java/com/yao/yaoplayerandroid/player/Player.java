@@ -55,7 +55,7 @@ public class Player extends YaoObject {
     }
 
     public int seek(double time){
-        //System.out.println("+++++++++++++++in seek");
+        System.out.println("+++++++++++++++in seek");
         return player_seek(nativeId, time);
     }
 
@@ -65,7 +65,7 @@ public class Player extends YaoObject {
     }
 
     public int gl_drawFrame(){
-        System.out.println("11111111111111111+++++++++++++++in gl_drawFrame");
+        //System.out.println("11111111111111111+++++++++++++++in gl_drawFrame");
         return player_gl_drawFrame(nativeId);
     }
 

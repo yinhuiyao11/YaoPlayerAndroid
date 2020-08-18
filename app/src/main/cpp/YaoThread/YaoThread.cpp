@@ -1,4 +1,5 @@
 #include "YaoThread.h"
+#include "../EyerCore/EyerLog.hpp"
 
 int YaoThread::start()
 {

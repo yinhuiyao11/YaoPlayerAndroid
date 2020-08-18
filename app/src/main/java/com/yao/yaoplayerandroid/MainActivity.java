@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private int screenWidth;
     private int isplay = 1;
 
-    public int progress = 10;
+    public int progress = 0;
     MyHandler myHandler;
     static MyHandler mHandler;
     static long duration = 0;
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(isplay == 1){
-                    player.stop();
+                    player.pause();
                     isplay = 0;
                 }else if(isplay == 0){
                     player.play();
@@ -234,8 +234,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 System.out.println("~~~onStop:" + seekBar.getProgress());
-                //player.seek((double) seekBar.getProgress() * 0.01 * player.gl_duration());
-                player.seek(5.0);
+                player.seek((double) seekBar.getProgress() * 0.01 * player.gl_duration());
             }
         });
     }
