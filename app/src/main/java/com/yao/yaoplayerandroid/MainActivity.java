@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int screenHeight;
     private int screenWidth;
+    private int isplay = 1;
 
     public int progress = 10;
     MyHandler myHandler;
@@ -54,14 +55,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        verifyStoragePermissions(this);
+
         initView();
         /*setContentView(R.layout.activity_main);
         // Example of a call to a native method
         TextView tv = (TextView) findViewById(R.id.sample_text);
         tv.setText(stringFromJNI());*/
-
-
-        verifyStoragePermissions(this);
 
     }
 
@@ -85,7 +85,13 @@ public class MainActivity extends AppCompatActivity {
         btn_start.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
+                if(isplay == 1){
+                    player.stop();
+                    isplay = 0;
+                }else if(isplay == 0){
+                    player.play();
+                    isplay = 1;
+                }
             }
         });
 

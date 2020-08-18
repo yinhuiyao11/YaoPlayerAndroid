@@ -81,7 +81,7 @@ void YaoPlayerCtr::run()
 				//¸ÃÖ¡Á¢¼´²¥·Å
                 EyerLog("++++playVideoFrameQueue.size:%d\n", playVideoFrameQueue.queueSize());
                 EyerLog("++++video frame videoFrame->getPts():%lld, weight:%d, heigt:%d\n", videoFrame->getPts(), videoFrame->getW(), videoFrame->getH());
-				pushFrameplayVideoFrame(videoFrame);
+				//pushFrameplayVideoFrame(videoFrame);
 
                 videoFrame = nullptr;
 			}
@@ -120,10 +120,8 @@ void YaoPlayerCtr::run()
 			callbackNum++;
 		}
 	}
-	//EyerLog("1111111 to the end\n");
-
+	//EyerLog("2222221111111 to the end\n");
 	readerThread.stop();
-
 }
 
 int YaoPlayerCtr::pushVideoFrameQueue(YaoAVFrame* avFrame)
