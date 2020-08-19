@@ -124,11 +124,14 @@ public:
 
 	YaoPlayerGL * playerGl = nullptr;
 	YaoPlayerCtr * playerCtr = nullptr;
+	YaoSL * playerSl = nullptr;
 
 private:
 	std::string path;
 	int height = 0;
 	int width = 0;
 	long long duration = 0;
+	int audioSampleRate = 44100;
+	int audioChannels = 2;
 };
 

@@ -30,7 +30,7 @@ void YaoPlayerCtr::run()
 	while(readerThread.getAudioSampleRate() == 0 || readerThread.getAudioChannels() == 0){
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
-	//EyerLog("++++++++++++getAudioSampleRate:%d ,getAudioChannels:%d ",reader.getAudioSampleRate(), reader.getAudioChannels());
+
 	YaoSL playerSl(&playAudioFrameQueue);
 	//1 ´´½¨ÒýÇæ
 	playerSl.createEngin();

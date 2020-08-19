@@ -30,7 +30,6 @@ void YaoPlayerReaderThread::run()
 
 	audioChannels = reader.getAudioChannels();
 	audioSampleRate = reader.getAudioSampleRate();
-	EyerLog("++++++++++++getAudioSampleRate:%d ,getAudioChannels:%d ",reader.getAudioSampleRate(), reader.getAudioChannels());
 
 	reader.seek(ctrThread->seekTime);
 	EyerLog("=============================YaoPlayerReaderThread getStreamCount: %d\n", reader.getStreamCount());
