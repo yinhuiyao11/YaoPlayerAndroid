@@ -30,7 +30,7 @@ int YaoPlayer::open(double time)
 			playerGl = new YaoPlayerGL(&(playerCtr->playVideoFrameQueue));
 		}
 		if(playerSl == nullptr){
-			/*EyerLog("in playSL new \n");
+			EyerLog("in playSL new \n");
 			playerSl = new YaoSL(&(playerCtr->playAudioFrameQueue));
 			//1 创建引擎
 			playerSl->createEngin();
@@ -42,7 +42,7 @@ int YaoPlayer::open(double time)
 			playerSl->setDataSource(10, audioSampleRate, audioChannels);
 			// 4 创建播放器
 			playerSl->createAudioPlayer();
-			EyerLog("in playSL end \n");*/
+			EyerLog("in playSL end \n");
 
 		}
 		return 0;

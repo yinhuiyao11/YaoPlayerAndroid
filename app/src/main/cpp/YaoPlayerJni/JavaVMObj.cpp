@@ -28,8 +28,12 @@ int JavaVMObj::callJavaMethod(jobject jobj, const char* funName, const char* sig
 
 int JavaVMObj::callJavaMethod(jobject jobj, const char* funName, const char* sig, int dtime)
 {
+    EyerLog("~~~~~~~~~~callJavaMethod int ~~~~ \n");
+
     JNIEnv * env;
     JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
+    EyerLog("~~~~~~~~~~callJavaMethod int2 ~~~~ \n");
+
     // 获取类
     jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::jobj);
     if(ax_list_jclass == NULL){

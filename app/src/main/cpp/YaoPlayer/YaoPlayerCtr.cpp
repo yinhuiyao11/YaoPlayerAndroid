@@ -30,8 +30,8 @@ void YaoPlayerCtr::run()
 	while(readerThread.getAudioSampleRate() == 0 || readerThread.getAudioChannels() == 0){
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
-
-	YaoSL playerSl(&playAudioFrameQueue);
+	//EyerLog("++++++++++++getAudioSampleRate:%d ,getAudioChannels:%d ",reader.getAudioSampleRate(), reader.getAudioChannels());
+	/*YaoSL playerSl(&playAudioFrameQueue);
 	//1 创建引擎
 	playerSl.createEngin();
 	//2 创建混音器
@@ -39,7 +39,7 @@ void YaoPlayerCtr::run()
 	//3 配置音频信息
 	playerSl.setDataSource(10, readerThread.getAudioSampleRate(), readerThread.getAudioChannels());
 	// 4 创建播放器
-	playerSl.createAudioPlayer();
+	playerSl.createAudioPlayer();*/
 
 	while (!stopFlag) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));

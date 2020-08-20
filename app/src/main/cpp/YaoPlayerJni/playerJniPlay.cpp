@@ -49,7 +49,10 @@ Java_com_yao_yaoplayerandroid_player_Player_player_1uninit(JNIEnv *env, jclass c
 extern "C"
 JNIEXPORT jint JNICALL
 Java_com_yao_yaoplayerandroid_player_Player_player_1open(JNIEnv *env, jclass clazz, jlong avreader,
-                                                         jdouble time) {
+                                                         jdouble time, jobject _callback) {
+    env->GetJavaVM(&JavaVMObj::javaVm);
+    JavaVMObj::jobj = env->NewGlobalRef(_callback);
+
     YaoPlayer * player = (YaoPlayer *)avreader;
     return player->open(time);
 }
@@ -57,10 +60,7 @@ Java_com_yao_yaoplayerandroid_player_Player_player_1open(JNIEnv *env, jclass cla
 extern "C"
 JNIEXPORT jint JNICALL
 Java_com_yao_yaoplayerandroid_player_Player_player_1play(JNIEnv *env, jclass clazz,
-                                                         jlong avreader, jobject _callback) {
-    env->GetJavaVM(&JavaVMObj::javaVm);
-    JavaVMObj::jobj = env->NewGlobalRef(_callback);
-
+                                                         jlong avreader) {
     YaoPlayer * player = (YaoPlayer *)avreader;
     return player->play();
 }
