@@ -108,3 +108,9 @@ int YaoAVReader::getAudioChannels()
 	return avStream->codec->channels;
 }
 
+long long YaoAVReader::getDuration()
+{
+	return (long long)(formatContextPrivate->formatContext->duration / AV_TIME_BASE);
+}
+
+

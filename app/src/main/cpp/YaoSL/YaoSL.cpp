@@ -16,7 +16,7 @@ void pcmCallBack(SLAndroidSimpleBufferQueueItf bf, void*contex)
 
     YaoSL * sl = (YaoSL *)contex;
     YaoAVFrame* audioFrame = nullptr;
-    EyerLog("sl->playAudioFrameQueue->queueSize():%d\n", sl->playAudioFrameQueue->queueSize());
+    //EyerLog("sl->playAudioFrameQueue->queueSize():%d\n", sl->playAudioFrameQueue->queueSize());
 
     while (sl->playAudioFrameQueue->queueSize() <= 0){
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -33,7 +33,6 @@ void pcmCallBack(SLAndroidSimpleBufferQueueItf bf, void*contex)
         audioFrame->getAudioPackedData(buf);
 
         (*bf)->Enqueue(bf,buf,len);
-        EyerLog("------------------enqueue frame,len:%d\n", len);
     }
 
 }
@@ -46,6 +45,29 @@ YaoSL::YaoSL(YaoQueue<YaoAVFrame> * _playAudioFrameQueue)
 
 YaoSL::~YaoSL()
 {
+    //设置停止状态
+    if (playerI) {
+        (*playerI)->SetPlayState(playerI, SL_PLAYSTATE_STOPPED);
+        playerI = 0;
+    }
+    //销毁播放器
+    if (playerObject) {
+        (*playerObject)->Destroy(playerObject);
+        playerObject = 0;
+        pcmQue = 0;
+    }
+    //销毁混音器
+    if (mixObject) {
+        (*mixObject)->Destroy(mixObject);
+        mixObject = 0;
+    }
+    //销毁引擎
+    if (engineObject) {
+        (*engineObject)->Destroy(engineObject);
+        engineObject = 0;
+        engineI = 0;
+    }
+
 }
 
 int YaoSL::createEngin()

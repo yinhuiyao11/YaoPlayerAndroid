@@ -8,13 +8,18 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.opengl.GLSurfaceView;
+import android.widget.Toast;
 
 import com.yao.yaoplayerandroid.player.Player;
 
@@ -26,12 +31,19 @@ public class MainActivity extends AppCompatActivity {
     }
     private GLSurfaceView gLSurfaceView;
     private Button btn_start;
-    private Button btn_stop;
-    private ProgressBar video_progress_bar;
+    private SeekBar video_progress_bar;
     private RelativeLayout mParent;
-
     private Player player;
     private int started = 0;
+
+    private int screenHeight;
+    private int screenWidth;
+    private int isplay = 1;
+
+    public int progress = 0;
+    MyHandler myHandler;
+    static MyHandler mHandler;
+    static long duration = 0;
 
     private static String[] PERMISSIONS_STORAGE = {
             "android.permission.READ_EXTERNAL_STORAGE",
@@ -43,45 +55,52 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        verifyStoragePermissions(this);
+
         initView();
         /*setContentView(R.layout.activity_main);
         // Example of a call to a native method
         TextView tv = (TextView) findViewById(R.id.sample_text);
         tv.setText(stringFromJNI());*/
 
-
-        verifyStoragePermissions(this);
-
     }
 
     private void initView(){
+        DisplayMetrics dm = new DisplayMetrics();
+        dm = getResources().getDisplayMetrics();
+        screenWidth = dm.widthPixels;
+        screenHeight = dm.heightPixels;
+
         gLSurfaceView = findViewById(R.id.gLSurfaceView);
 
         btn_start = findViewById(R.id.btn_start);
-        btn_stop = findViewById(R.id.btn_stop);
         mParent = findViewById(R.id.test_parent_play);
+
+        myHandler = new MyHandler();
+        mHandler = myHandler;//重要,保存全局静态handler句柄,以便回掉的时候能找到该上下文
+
+        video_progress_bar = findViewById(R.id.video_progress_bar);
+        video_progress_bar.setMax(100);
+        video_progress_bar.setProgress(progress);
         btn_start.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
+                if(isplay == 1){
+                    player.pause();
+                    isplay = 0;
+                }else if(isplay == 0){
+                    player.play();
+                    isplay = 1;
+                }
             }
         });
 
-        btn_stop.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
     //改变视频的尺寸自适应。
     public void changeVideoSize(int videoWidth , int videoHeight) {
-        DisplayMetrics dm = new DisplayMetrics();
-        dm = getResources().getDisplayMetrics();
-
-        int surfaceWidth = dm.widthPixels;
-        int surfaceHeight = dm.heightPixels;
+        int surfaceWidth = screenWidth;
+        int surfaceHeight = screenHeight;
 
         //根据视频尺寸去计算->视频可以在sufaceView中放大的最大倍数。
         float max;
@@ -116,10 +135,10 @@ public class MainActivity extends AppCompatActivity {
         if(started == 0) {
             File dir = Environment.getExternalStorageDirectory();
             //String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
-            String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
+            //String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
             //String videoPath = dir.getAbsolutePath() + "/" + "ST/banfo.mp4";
             //String videoPath = dir.getAbsolutePath() + "/" + "ST/The_Beauty_of_Earth.mp4";
-            //String videoPath = dir.getAbsolutePath() + "/" + "ST/4k_animal.mp4";
+            String videoPath = dir.getAbsolutePath() + "/" + "ST/4k_animal.mp4";
             //String videoPath = dir.getAbsolutePath() + "/" + "ST/rabbit.mp4";
             System.out.println("+++++++++path:" + videoPath);
 
@@ -127,14 +146,17 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("f:" + f.canRead());
 
             player = new Player(videoPath);
+            duration = player.gl_duration();
             player.open(0);
+
+            video_progress_bar.setMax(100);
+            bindSeekBar(player);
 
             gLSurfaceView.setEGLContextClientVersion(3);
             gLSurfaceView.setRenderer(new GLRender(player));
-            //gLESJNIView = new GLESJNIView(this, player);
+
             changeVideoSize(player.gl_width(), player.gl_height());
-            //System.out.println("_+_++_+_+_+_+_+++++_+VideoWidth:" + player.gl_width() + "  VideoHeight:" + player.gl_height());
-            //player.sl_play();
+            //System.out.println("_+_++_+_+_+_+_+++++_+gl_duration:" + player.gl_duration());
 
             started = 1;
             player.play();
@@ -150,7 +172,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public static void verifyStoragePermissions(Activity activity) {
+    public int playEndCallback() {
+        //自行执行回调后的操作
+        System.out.println("~~~~~~~~~~~~~in: playEndCallback\n");
+        return 0;
+    }
+
+    class MyHandler extends Handler {
+        public MyHandler() {
+        }
+
+        public MyHandler(Looper L) {
+            super(L);
+        }
+
+        // 子类必须重写此方法，接受数据
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            // 此处可以更新UI
+            video_progress_bar.setProgress((int)((float)msg.what/(float) duration * (float)100));
+        }
+    }
+
+    public int playSetProgressBar(int playSec){
+        System.out.println("~~~~~~~playSetProgressBar:"+ playSec);
+
+        Message meg = Message.obtain();
+        meg.what = playSec;
+        mHandler.sendMessage(meg);
+
+        return 0;
+    }
+
+    public void verifyStoragePermissions(Activity activity) {
         try {
             //检测是否有写的权限
             int permission = ActivityCompat.checkSelfPermission(activity, "android.permission.WRITE_EXTERNAL_STORAGE");
@@ -162,9 +217,25 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-    public native String stringFromJNI();
+
+    private void bindSeekBar(final Player player) {
+        video_progress_bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                System.out.println("~~~当前进度值:" + progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                //System.out.println("~~~onStart:" + seekBar.getProgress());
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                System.out.println("~~~onStop:" + seekBar.getProgress());
+                player.seek((double) seekBar.getProgress() * 0.01 * player.gl_duration());
+            }
+        });
+    }
 }

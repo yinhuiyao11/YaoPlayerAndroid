@@ -15,7 +15,10 @@ YaoPlayer::~YaoPlayer()
 		delete playerGl;
 		playerGl = nullptr;
 	}
-
+	if(playerSl != nullptr){
+		delete playerSl;
+		playerSl = nullptr;
+	}
 }
 
 int YaoPlayer::open(double time)
@@ -23,7 +26,25 @@ int YaoPlayer::open(double time)
 	if (playerCtr == nullptr) {
 		playerCtr = new YaoPlayerCtr(path, time);
 		playerCtr->start();
-		playerGl = new YaoPlayerGL(&(playerCtr->playVideoFrameQueue));
+		if(playerGl == nullptr){
+			playerGl = new YaoPlayerGL(&(playerCtr->playVideoFrameQueue));
+		}
+		if(playerSl == nullptr){
+			EyerLog("in playSL new \n");
+			playerSl = new YaoSL(&(playerCtr->playAudioFrameQueue));
+			//1 创建引擎
+			playerSl->createEngin();
+			//2 创建混音器
+			playerSl->createMix();
+			//3 配置音频信息
+			EyerLog("++++++++++++audioSampleRate:%d ,audioChannels:%d ",audioSampleRate, audioChannels);
+
+			playerSl->setDataSource(10, audioSampleRate, audioChannels);
+			// 4 创建播放器
+			playerSl->createAudioPlayer();
+			EyerLog("in playSL end \n");
+
+		}
 		return 0;
 	}
 	return -1;
@@ -76,8 +97,17 @@ int YaoPlayer::setWidthHeight()
 	}
 	height = reader.getVideoHeight();
 	width = reader.getVideoWidth();
+	duration = reader.getDuration();
+	audioChannels = reader.getAudioChannels();
+	audioSampleRate = reader.getAudioSampleRate();
 	return 0;
 }
+
+long long YaoPlayer::getDuration()
+{
+	return duration;
+}
+
 
 int YaoPlayer::printQueueSize() {
 	if(&(playerCtr->playVideoFrameQueue) == nullptr){

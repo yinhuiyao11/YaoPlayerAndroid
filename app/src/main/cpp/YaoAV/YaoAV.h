@@ -62,6 +62,8 @@ public:
 	int getAudioSampleRate();
 	int getAudioChannels();
 
+	long long getDuration();
+
 	int seek(double time);
 private:
 	YaoAVReaderPrivate * formatContextPrivate = nullptr;

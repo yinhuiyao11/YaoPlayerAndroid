@@ -30,7 +30,6 @@ void YaoPlayerReaderThread::run()
 
 	audioChannels = reader.getAudioChannels();
 	audioSampleRate = reader.getAudioSampleRate();
-	EyerLog("++++++++++++getAudioSampleRate:%d ,getAudioChannels:%d ",reader.getAudioSampleRate(), reader.getAudioChannels());
 
 	reader.seek(ctrThread->seekTime);
 	EyerLog("=============================YaoPlayerReaderThread getStreamCount: %d\n", reader.getStreamCount());
@@ -62,7 +61,7 @@ void YaoPlayerReaderThread::run()
 		int ret = reader.Read(pkt);
         if(ret == AVERROR_EOF){
 			JavaVMObj obj;
-			obj.callJavaStaticMethod(JavaVMObj::jobj, "run","()I");
+			obj.callJavaMethod(JavaVMObj::jobj, "playEndCallback","()I");
 
         }
 		if (ret) {
@@ -85,7 +84,6 @@ void YaoPlayerReaderThread::run()
 
 	videoDecodeThread->stop();
 	audioDecodeThread->stop();
-
 	reader.Close();
 }
 

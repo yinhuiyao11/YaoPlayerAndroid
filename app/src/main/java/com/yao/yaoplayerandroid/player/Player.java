@@ -1,15 +1,17 @@
 package com.yao.yaoplayerandroid.player;
 
+import com.yao.yaoplayerandroid.MainActivity;
 import com.yao.yaoplayerandroid.base.YaoObject;
+import com.yao.yaoplayerandroid.callback.PlayCallback;
 
 public class Player extends YaoObject {
 
     // AV Reader
     public static native long                   player_init                                 (String path);
     public static native int                    player_uninit                               (long player);
-    public static native int                    player_open                                 (long player, double time);
+    public static native int                    player_open                                 (long player, double time, MainActivity callback);
     public static native int                    player_stop                                 (long player);
-    public static native int                    player_play                                 (long player, PlayEndCallback callback);
+    public static native int                    player_play                                 (long player);
     public static native int                    player_pause                                (long player);
     public static native int                    player_seek                                 (long player, double time);
     //public static native long                   player_get_play_video_frame                 (long player);
@@ -17,6 +19,7 @@ public class Player extends YaoObject {
     public static native int                    player_gl_drawFrame                         (long player);
     public static native int                    player_get_height                           (long player);
     public static native int                    player_get_width                            (long player);
+    public static native long                   player_get_duration                         (long player);
 
     public static native int                    player_sl                                   (long player);
 
@@ -33,7 +36,8 @@ public class Player extends YaoObject {
 
     public int open(double time){
         //System.out.println("+++++++++++++++in open");
-        return player_open(nativeId, time);
+        MainActivity callback = new MainActivity();
+        return player_open(nativeId, time, callback);
     }
 
     public int stop(){
@@ -47,12 +51,11 @@ public class Player extends YaoObject {
 
     public int play(){
         //System.out.println("+++++++++++++++in play");
-        PlayEndCallback callback = new PlayEndCallback();
-        return player_play(nativeId, callback);
+        return player_play(nativeId);
     }
 
     public int seek(double time){
-        //System.out.println("+++++++++++++++in seek");
+        System.out.println("+++++++++++++++in seek");
         return player_seek(nativeId, time);
     }
 
@@ -62,7 +65,7 @@ public class Player extends YaoObject {
     }
 
     public int gl_drawFrame(){
-        //System.out.println("+++++++++++++++in gl_drawFrame");
+        //System.out.println("11111111111111111+++++++++++++++in gl_drawFrame");
         return player_gl_drawFrame(nativeId);
     }
 
@@ -77,6 +80,10 @@ public class Player extends YaoObject {
 
     public int gl_width(){
         return player_get_width(nativeId);
+    }
+
+    public long gl_duration() {
+        return player_get_duration(nativeId);
     }
 
     @Override

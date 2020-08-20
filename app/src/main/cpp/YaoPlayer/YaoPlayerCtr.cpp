@@ -1,5 +1,6 @@
 #include "YaoPlayer.h"
 #include "../EyerCore/EyerLog.hpp"
+#include "../YaoPlayerJni/JavaVMObj.h"
 
 YaoPlayerCtr::YaoPlayerCtr(std::string _path, double _time)
 {
@@ -23,11 +24,14 @@ void YaoPlayerCtr::run()
 	YaoAVFrame* audioFrame = nullptr;
 	long long pauseDurationAll = 0;
 
+	//进度回调函数调用次数
+	int callbackNum = 0;
+
 	while(readerThread.getAudioSampleRate() == 0 || readerThread.getAudioChannels() == 0){
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 	//EyerLog("++++++++++++getAudioSampleRate:%d ,getAudioChannels:%d ",reader.getAudioSampleRate(), reader.getAudioChannels());
-	YaoSL playerSl(&playAudioFrameQueue);
+	/*YaoSL playerSl(&playAudioFrameQueue);
 	//1 创建引擎
 	playerSl.createEngin();
 	//2 创建混音器
@@ -35,7 +39,7 @@ void YaoPlayerCtr::run()
 	//3 配置音频信息
 	playerSl.setDataSource(10, readerThread.getAudioSampleRate(), readerThread.getAudioChannels());
 	// 4 创建播放器
-	playerSl.createAudioPlayer();
+	playerSl.createAudioPlayer();*/
 
 	while (!stopFlag) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -62,7 +66,6 @@ void YaoPlayerCtr::run()
 		if (videoFrame == nullptr) {
 			videoFrameQueue.pop(&videoFrame);
 		} 
-        //EyerLog("++++videoFrameQueue.size:%d\n", getVideoFrameQueueSize());
 		if (videoFrame != nullptr) {
 			//pts小于seektime，丢帧
 
@@ -76,7 +79,7 @@ void YaoPlayerCtr::run()
             //如果 framePts <= dTime
 			if (videoFrame->getPts() <= dTime) {
 				//该帧立即播放
-				//EyerLog("++++video frame videoFrame->getPts():%lld, weight:%d, heigt:%d\n", videoFrame->getPts(), videoFrame->getW(), videoFrame->getH());
+                //EyerLog("++++playVideoFrameQueue.size:%d videoFrame->getPts():%lld, weight:%d, heigt:%d\n", playVideoFrameQueue.queueSize(),videoFrame->getPts(), videoFrame->getW(), videoFrame->getH());
 				pushFrameplayVideoFrame(videoFrame);
 
                 videoFrame = nullptr;
@@ -96,7 +99,7 @@ void YaoPlayerCtr::run()
             //如果 framePts <= dTime，
 			if (audioFrame->getPts() <= dTime) {
 				//该帧立即播放
-				//EyerLog("~~~~~~~~audio frame audioFrame->getPts():%lld\n", audioFrame->audioPrint());
+				//EyerLog("~~~~~play audioFrameQueue size:%d, audioFrame->getPts():%lld\n", audioFrameQueue.queueSize(), audioFrame->getPts());
 				pushFrameplayAudioFrame(audioFrame);
 
 				//delete audioFrame;
@@ -108,11 +111,16 @@ void YaoPlayerCtr::run()
 			}
 		}
 
+		//每隔一秒调用进度回调函数，传入dtime
+
+		if(dTime > 1000 * callbackNum) {
+			JavaVMObj obj;
+			obj.callJavaMethod(JavaVMObj::jobj, "playSetProgressBar", "(I)I", (int)(dTime/1000));
+			callbackNum++;
+		}
 	}
-	//EyerLog("1111111 to the end\n");
 
 	readerThread.stop();
-
 }
 
 int YaoPlayerCtr::pushVideoFrameQueue(YaoAVFrame* avFrame)
