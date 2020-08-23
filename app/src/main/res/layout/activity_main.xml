@@ -13,11 +13,18 @@
         android:layout_height="match_parent"
         android:background="#000000">
 
-        <android.opengl.GLSurfaceView
+        <com.yao.yaoplayerandroid.MySurfaceView
+            android:id="@+id/mySurfaceView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </com.yao.yaoplayerandroid.MySurfaceView>
+
+        <!--<android.opengl.GLSurfaceView
             android:id="@+id/gLSurfaceView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true" />-->
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"

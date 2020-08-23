@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.media.MediaCodec;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -14,14 +15,13 @@ import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.opengl.GLSurfaceView;
-import android.widget.Toast;
 
 import com.yao.yaoplayerandroid.player.Player;
+import com.yao.yaoplayerandroid.test.Nalu;
+import com.yao.yaoplayerandroid.test.ReadNalu;
 
 import java.io.File;
 
@@ -57,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         verifyStoragePermissions(this);
 
-        initView();
+
+        //initView();
         /*setContentView(R.layout.activity_main);
         // Example of a call to a native method
         TextView tv = (TextView) findViewById(R.id.sample_text);
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void initView(){
+    /*private void initView(){
         DisplayMetrics dm = new DisplayMetrics();
         dm = getResources().getDisplayMetrics();
         screenWidth = dm.widthPixels;
@@ -95,11 +96,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    }
+    }*/
 
     @Override
     protected void onStart() {
         super.onStart();
+        /*super.onStart();
         if(started == 1){
             player.play();
         }
@@ -132,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             started = 1;
             player.play();
 
-        }
+        }*/
         //player.stop();
     }
 

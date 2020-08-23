@@ -59,7 +59,7 @@ public class YaoMediaCodec {
     }
 
     public int send(byte[] data, long time){
-        int inputBufIndex = mediaCodec.dequeueInputBuffer(1000);
+        int inputBufIndex = mediaCodec.dequeueInputBuffer(-1);
 
         if (inputBufIndex >= 0) {
             ByteBuffer inputBuf = mediaCodec.getInputBuffers()[inputBufIndex];
@@ -76,7 +76,7 @@ public class YaoMediaCodec {
 
     public int recvAndRender(){
         MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
-        int outindex = mediaCodec.dequeueOutputBuffer(bufferInfo, 1000);
+        int outindex = mediaCodec.dequeueOutputBuffer(bufferInfo, -1);
 
         if (outindex >= 0) {
             ByteBuffer outputBuffer = mediaCodec.getOutputBuffers()[outindex];
