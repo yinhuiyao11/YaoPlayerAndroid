@@ -56,9 +56,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         verifyStoragePermissions(this);
-
-
-        //initView();
+        
+        initView();
         /*setContentView(R.layout.activity_main);
         // Example of a call to a native method
         TextView tv = (TextView) findViewById(R.id.sample_text);
@@ -66,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /*private void initView(){
+    private void initView(){
         DisplayMetrics dm = new DisplayMetrics();
         dm = getResources().getDisplayMetrics();
         screenWidth = dm.widthPixels;
@@ -96,12 +95,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    }*/
+    }
 
     @Override
     protected void onStart() {
         super.onStart();
-        /*super.onStart();
         if(started == 1){
             player.play();
         }
@@ -134,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
             started = 1;
             player.play();
 
-        }*/
+        }
         //player.stop();
     }
 
