@@ -1,5 +1,8 @@
 package com.yao.yaoplayerandroid.player;
 
+
+import android.view.Surface;
+
 import com.yao.yaoplayerandroid.MainActivity;
 import com.yao.yaoplayerandroid.base.YaoObject;
 import com.yao.yaoplayerandroid.callback.PlayCallback;
@@ -10,7 +13,7 @@ public class Player extends YaoObject {
     // AV Reader
     public static native long                   player_init                                 (String path);
     public static native int                    player_uninit                               (long player);
-    public static native int                    player_open                                 (long player, double time, MainActivity callback, YaoMediaCodec mediaCodec);
+    public static native int                    player_open                                 (long player, double time, MainActivity callback, YaoMediaCodec mediaCodec, Surface surface);
     public static native int                    player_stop                                 (long player);
     public static native int                    player_play                                 (long player);
     public static native int                    player_pause                                (long player);
@@ -35,11 +38,10 @@ public class Player extends YaoObject {
         //System.out.println("+++++++++++++++in Player");
     }
 
-    public int open(double time){
-        //System.out.println("+++++++++++++++in open");
+    public int open(double time, Surface surface){
         MainActivity mainActivity = new MainActivity();
         YaoMediaCodec mediaoCodec = new YaoMediaCodec();
-        return player_open(nativeId, time, mainActivity, mediaoCodec);
+        return player_open(nativeId, time, mainActivity, mediaoCodec,surface);
     }
 
     public int stop(){

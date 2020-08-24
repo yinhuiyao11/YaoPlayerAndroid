@@ -1,3 +1,4 @@
+#include <cpp/YaoPlayerJni/JavaVMObj.h>
 #include "YaoPlayer.h"
 #include "EyerCore/EyerLog.hpp"
 
@@ -41,6 +42,12 @@ void YaoDecodeThread::run()
 		if (ret) {
 			continue;
 		}
+
+		//硬解码
+		JavaVMObj obj;
+		obj.callJavaMethod(JavaVMObj::mediaCodec, "init", "(IILjava/lang/Class;)I", 1280, 720, JavaVMObj::surface);
+		obj.
+
 		//解码
 		decode->sendPacket(packet);
 		while (1) {
@@ -52,7 +59,8 @@ void YaoDecodeThread::run()
 
 			//通过ctrThread句柄， 向其塞入frame数据
 			if (type == YaoDecoderType::YAODECODER_TYPE_VIDEO) {
-				ctrThread->pushVideoFrameQueue(frame);
+				//todo 软解码
+				//ctrThread->pushVideoFrameQueue(frame);
 				//EyerLog("=========video frame push \n");
 			}
 			else if (type == YaoDecoderType::YAODECODER_TYPE_AUDIO) {

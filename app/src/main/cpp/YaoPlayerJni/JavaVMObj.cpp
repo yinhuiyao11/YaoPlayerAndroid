@@ -14,13 +14,13 @@ int JavaVMObj::callJavaMethod(jobject jobj, const char* funName, const char* sig
     // 获取类
     jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::jobj);
     if(ax_list_jclass == NULL){
-        EyerLog("~~~~~~~~~~jclass is null \n");
+        EyerLog("jclass is null \n");
     }
     // 获取方法
     jmethodID listGetMe;
     listGetMe = env->GetMethodID(ax_list_jclass, funName, sig);
     if(listGetMe == NULL){
-        EyerLog("~~~~~~~~~~jni jmethodID is null \n");
+        EyerLog("jni jmethodID is null \n");
     }
     jobject findObj = env->CallObjectMethod(JavaVMObj::jobj, listGetMe);
     return 0;
@@ -28,26 +28,44 @@ int JavaVMObj::callJavaMethod(jobject jobj, const char* funName, const char* sig
 
 int JavaVMObj::callJavaMethod(jobject jobj, const char* funName, const char* sig, int dtime)
 {
-    EyerLog("~~~~~~~~~~callJavaMethod int ~~~~ \n");
-
     JNIEnv * env;
     JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
-    EyerLog("~~~~~~~~~~callJavaMethod int2 ~~~~ \n");
 
     // 获取类
     jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::jobj);
     if(ax_list_jclass == NULL){
-        EyerLog("~~~~~~~~~~jclass is null \n");
+        EyerLog("jclass is null \n");
     }
     // 获取方法
     jmethodID listGetMe;
     listGetMe = env->GetMethodID(ax_list_jclass, funName, sig);
     if(listGetMe == NULL){
-        EyerLog("~~~~~~~~~~jni jmethodID is null \n");
+        EyerLog("jni jmethodID is null \n");
     }
     jobject findObj = env->CallObjectMethod(JavaVMObj::jobj, listGetMe , dtime);
-    EyerLog("~~~~~~~~~~playSetProgressBar called in cpp \n");
+    EyerLog("playSetProgressBar called in cpp \n");
     return 0;
 }
+
+int callJavaMethod(jobject jobj, const char* funName, const char* sig, int w, int h, jobject surface)
+{
+    JNIEnv * env;
+    JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
+
+    // 获取类
+    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::jobj);
+    if(ax_list_jclass == NULL){
+        EyerLog("jclass is null \n");
+    }
+    // 获取方法
+    jmethodID listGetMe;
+    listGetMe = env->GetMethodID(ax_list_jclass, funName, sig);
+    if(listGetMe == NULL){
+        EyerLog("jni jmethodID is null \n");
+    }
+    jobject findObj = env->CallObjectMethod(JavaVMObj::jobj, listGetMe , w, h, surface);
+    return 0;
+}
+
 
 
