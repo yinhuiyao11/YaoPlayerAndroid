@@ -8,7 +8,6 @@ public class OutputBufferThread implements Runnable {
     }
     @Override
     public void run() {
-        System.out.println("66in OutputBufferThread");
         while(true){
             mediaCodec.recvAndRender();
         }

@@ -15,10 +15,23 @@ public class ReadNalu {
     public ArrayList<Long> naluStartPosList = new ArrayList<Long>();
     public int haveReadPos = 0;
     private String path;
+    private BufferedInputStream bufferedReader;
 
-    public ReadNalu(String _path){
+    public ReadNalu(String _path) {
         path = _path;
         getNaluStartPosList(_path);
+        try {
+        bufferedReader = new BufferedInputStream(new FileInputStream(path));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        bufferedReader.close();
     }
 
     public int isStartCode(byte[] buffer){
@@ -61,12 +74,11 @@ public class ReadNalu {
         long endPos = naluStartPosList.get(haveReadPos + 1);
         int naluLen = (int)(endPos - startPos);
         byte[] naluContent = new byte[naluLen];
+        int readedLen = 0;
 
         try {
-            BufferedInputStream bufferedReader = new BufferedInputStream(new FileInputStream(path));
-            bufferedReader.read(naluContent, 0, naluLen);
+            readedLen = bufferedReader.read(naluContent, 0, naluLen);
             haveReadPos++;
-            bufferedReader.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -75,7 +87,7 @@ public class ReadNalu {
 
         Nalu nalu = new Nalu();
         nalu.buffer = naluContent;
-        nalu.lenth = naluLen;
+        nalu.lenth = readedLen;
         return nalu;
     }
 }
