@@ -6,7 +6,6 @@
 #define YAOPLAYERANDROID_YAOCODEC_H
 
 #include "../YaoAV/YaoAV.h"
-#include "../../../../../../../NDK/toolchains/llvm/prebuilt/windows-x86_64/sysroot/usr/include/jni.h"
 #include <jni.h>
 
 class YaoMediaCodec{

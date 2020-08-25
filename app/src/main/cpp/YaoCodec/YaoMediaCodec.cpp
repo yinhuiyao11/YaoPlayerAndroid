@@ -19,17 +19,17 @@ int YaoMediaCodec::init(YaoAVReader & avReader, jobject surface)
     JNIEnv * env;
     JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
     // 获取类
-    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::jobj);
+    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::mediaCodec);
     if(ax_list_jclass == NULL){
         EyerLog("jclass is null \n");
     }
     // 获取方法
     jmethodID listGetMe;
-    listGetMe = env->GetMethodID(ax_list_jclass, "init", "(IILjava/lang/Class;)I");
+    listGetMe = env->GetMethodID(ax_list_jclass, "init", "(IILandroid/view/Surface;)I");
     if(listGetMe == NULL){
         EyerLog("jni jmethodID is null \n");
     }
-    jobject findObj = env->CallObjectMethod(JavaVMObj::jobj, listGetMe , avReader.getVideoWidth(), avReader.getVideoHeight(), surface);
+    int findObj = env->CallIntMethod(eyerMediaCodec, listGetMe , avReader.getVideoWidth(), avReader.getVideoHeight(), surface);
     return 0;
 }
 
@@ -38,7 +38,7 @@ int YaoMediaCodec::uninit()
     JNIEnv * env;
     JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
     // 获取类
-    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::jobj);
+    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::mediaCodec);
     if(ax_list_jclass == NULL){
         EyerLog("jclass is null \n");
     }
@@ -48,7 +48,7 @@ int YaoMediaCodec::uninit()
     if(listGetMe == NULL){
         EyerLog("jni jmethodID is null \n");
     }
-    jobject findObj = env->CallObjectMethod(JavaVMObj::jobj, listGetMe);
+    int findObj = env->CallIntMethod(eyerMediaCodec, listGetMe);
     return 0;
 }
 
@@ -57,17 +57,20 @@ int YaoMediaCodec::send(YaoAVPacket * annexbPkt)
     JNIEnv * env;
     JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
     // 获取类
-    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::jobj);
+    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::mediaCodec);
     if(ax_list_jclass == NULL){
         EyerLog("jclass is null \n");
     }
     // 获取方法
     jmethodID listGetMe;
-    listGetMe = env->GetMethodID(ax_list_jclass, "uninit", "()I");
+    listGetMe = env->GetMethodID(ax_list_jclass, "send", "([BJ)I");
     if(listGetMe == NULL){
         EyerLog("jni jmethodID is null \n");
     }
-    jobject findObj = env->CallObjectMethod(JavaVMObj::jobj, listGetMe);
+
+    jbyteArray jData = env->NewGlobalRef(annexbPkt->)
+
+    int findObj = env->CallIntMethod(eyerMediaCodec, listGetMe, );
     return 0;
 }
 int YaoMediaCodec::recvAndRender()
@@ -75,17 +78,17 @@ int YaoMediaCodec::recvAndRender()
     JNIEnv * env;
     JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
     // 获取类
-    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::jobj);
+    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::mediaCodec);
     if(ax_list_jclass == NULL){
         EyerLog("jclass is null \n");
     }
     // 获取方法
     jmethodID listGetMe;
-    listGetMe = env->GetMethodID(ax_list_jclass, "uninit", "()I");
+    listGetMe = env->GetMethodID(ax_list_jclass, "recvAndRender", "()I");
     if(listGetMe == NULL){
         EyerLog("jni jmethodID is null \n");
     }
-    jobject findObj = env->CallObjectMethod(JavaVMObj::jobj, listGetMe);
+    int findObj = env->CallIntMethod(eyerMediaCodec, listGetMe);
     return 0;
 }
 int YaoMediaCodec::dequeueOutputBuffer()
@@ -93,7 +96,7 @@ int YaoMediaCodec::dequeueOutputBuffer()
     JNIEnv * env;
     JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
     // 获取类
-    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::jobj);
+    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::mediaCodec);
     if(ax_list_jclass == NULL){
         EyerLog("jclass is null \n");
     }
@@ -103,7 +106,7 @@ int YaoMediaCodec::dequeueOutputBuffer()
     if(listGetMe == NULL){
         EyerLog("jni jmethodID is null \n");
     }
-    jobject findObj = env->CallObjectMethod(JavaVMObj::jobj, listGetMe);
+    int findObj = env->CallIntMethod(eyerMediaCodec, listGetMe);
     return 0;
 }
 long YaoMediaCodec::getOutTime()
@@ -111,17 +114,17 @@ long YaoMediaCodec::getOutTime()
     JNIEnv * env;
     JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
     // 获取类
-    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::jobj);
+    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::mediaCodec);
     if(ax_list_jclass == NULL){
         EyerLog("jclass is null \n");
     }
     // 获取方法
     jmethodID listGetMe;
-    listGetMe = env->GetMethodID(ax_list_jclass, "getOutTime", "()I");
+    listGetMe = env->GetMethodID(ax_list_jclass, "getOutTime", "()J");
     if(listGetMe == NULL){
         EyerLog("jni jmethodID is null \n");
     }
-    jobject findObj = env->CallObjectMethod(JavaVMObj::jobj, listGetMe);
+    int findObj = env->CallLongMethod(eyerMediaCodec, listGetMe);
     return 0;
 }
 int YaoMediaCodec::renderFrame(int outIndex)
@@ -129,16 +132,16 @@ int YaoMediaCodec::renderFrame(int outIndex)
     JNIEnv * env;
     JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
     // 获取类
-    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::jobj);
+    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::mediaCodec);
     if(ax_list_jclass == NULL){
         EyerLog("jclass is null \n");
     }
     // 获取方法
     jmethodID listGetMe;
-    listGetMe = env->GetMethodID(ax_list_jclass, "renderFrame", "()I");
+    listGetMe = env->GetMethodID(ax_list_jclass, "renderFrame", "(I)I");
     if(listGetMe == NULL){
         EyerLog("jni jmethodID is null \n");
     }
-    jobject findObj = env->CallObjectMethod(JavaVMObj::jobj, listGetMe);
+    int findObj = env->CallIntMethod(eyerMediaCodec, listGetMe, outIndex);
     return 0;
 }
