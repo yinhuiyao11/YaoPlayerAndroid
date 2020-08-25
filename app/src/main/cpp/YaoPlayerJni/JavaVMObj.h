@@ -16,8 +16,7 @@ public:
     int callJavaMethod(jobject jobj, const char* funName, const char* sig);
     int callJavaMethod(jobject jobj, const char* funName, const char* sig, int dtime);
     int callJavaMethod(jobject jobj, const char* funName, const char* sig, int w, int h, jobject surface);
-    int callJavaMethod(jobject jobj, const char* funName, const char* sig, jbyte data, long time);
-
+    int callJavaMethod(jobject jobj, const char* funName, const char* sig, char *data, long time);
 };
 
 #endif //YAOPLAYERANDROID_JAVAVMOBJ_H
