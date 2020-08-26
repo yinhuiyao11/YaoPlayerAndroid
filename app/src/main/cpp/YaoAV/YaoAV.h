@@ -15,6 +15,9 @@ public:
 public:
 	YaoAVPacketPrivate * packetPrivate = nullptr;
 	int getIndex();
+	int getSize();
+	double getSecPTS();
+	unsigned char * getDataPtr();
 };
 
 class YaoAVFrame

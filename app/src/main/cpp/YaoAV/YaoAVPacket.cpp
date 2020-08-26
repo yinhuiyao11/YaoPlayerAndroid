@@ -18,3 +18,19 @@ int YaoAVPacket::getIndex()
 {
 	return packetPrivate->packet->stream_index;
 }
+
+int YaoAVPacket::getSize()
+{
+	return packetPrivate->packet->size;
+}
+
+double YaoAVPacket::getSecPTS()
+{
+	//todo
+	return 0;
+}
+
+unsigned char * YaoAVPacket::getDataPtr()
+{
+	return packetPrivate->packet->data;
+}

@@ -68,9 +68,10 @@ int YaoMediaCodec::send(YaoAVPacket * annexbPkt)
         EyerLog("jni jmethodID is null \n");
     }
 
-    jbyteArray jData = env->NewGlobalRef(annexbPkt->)
-
-    int findObj = env->CallIntMethod(eyerMediaCodec, listGetMe, );
+    jbyteArray jData = env->NewByteArray(annexbPkt->getSize());
+    env->SetByteArrayRegion(jData, 0, annexbPkt->getSize(), (jbyte*)annexbPkt->getDataPtr());
+    jlong time = (jlong)(annexbPkt->getSecPTS() * 1000);
+    int findObj = env->CallIntMethod(eyerMediaCodec, listGetMe, jData, time);
     return 0;
 }
 int YaoMediaCodec::recvAndRender()
