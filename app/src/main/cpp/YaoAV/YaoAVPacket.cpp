@@ -24,10 +24,15 @@ int YaoAVPacket::getSize()
 	return packetPrivate->packet->size;
 }
 
+uint64_t YaoAVPacket::getPTS()
+{
+	return packetPrivate->packet->pts;
+}
+
+
 double YaoAVPacket::getSecPTS()
 {
-	//todo
-	return 0;
+	return secPTS;
 }
 
 unsigned char * YaoAVPacket::getDataPtr()

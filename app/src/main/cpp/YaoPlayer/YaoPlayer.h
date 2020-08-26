@@ -6,6 +6,7 @@
 #include "YaoThread/YaoThread.h"
 #include "YaoAV/YaoAV.h"
 #include "YaoQueue/Queue.h"
+#include "../YaoCodec/YaoCodec.h"
 
 
 enum YaoDecoderType
@@ -46,6 +47,8 @@ public:
     std::string path;
 	YaoQueue<YaoAVFrame> playVideoFrameQueue;
 	YaoQueue<YaoAVFrame> playAudioFrameQueue;
+	YaoMediaCodec * mediaCodec = nullptr;
+
 private:
 	YaoQueue<YaoAVFrame> videoFrameQueue;
 	YaoQueue<YaoAVFrame> audioFrameQueue;
@@ -75,7 +78,7 @@ public:
 	YaoDecodeThread(YaoPlayerCtr * ctr, YaoDecoderType type);
 	~YaoDecodeThread();
 	virtual void run();
-	int init(YaoAVStream* stream);
+	int init(YaoAVStream* _stream);
 	int pushPacket(YaoAVPacket * packet);
 	int packetQueueSize();
 private:
@@ -83,6 +86,7 @@ private:
 	YaoQueue<YaoAVPacket> packetQueue;
 	YaoPlayerCtr * ctrThread = nullptr;
 	YaoDecoderType type;
+	YaoAVStream * stream = nullptr;
 };
 
 class YaoPlayerGL

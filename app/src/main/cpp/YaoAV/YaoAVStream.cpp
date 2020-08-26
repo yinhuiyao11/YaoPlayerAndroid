@@ -18,3 +18,21 @@ YaoAVStream::~YaoAVStream()
 		imp = nullptr;
 	}
 }
+
+int YaoAVStream::scalePacketPts(YaoAVPacket & pkt)
+{
+	uint64_t pts = pkt.getPTS();
+	double ptsSec = pts * 1.0 * timebaseNum / timebaseDen;
+	pkt.secPTS = ptsSec;
+	return 0;
+}
+
+int YaoAVStream::getHeight()
+{
+	return imp->codecpar->height;
+}
+
+int YaoAVStream::getWidth()
+{
+	return imp->codecpar->width;
+}

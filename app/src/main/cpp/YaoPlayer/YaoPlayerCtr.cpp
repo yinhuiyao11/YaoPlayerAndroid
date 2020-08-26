@@ -6,6 +6,8 @@ YaoPlayerCtr::YaoPlayerCtr(std::string _path, double _time)
 {
     path = _path;
     seekTime = _time;
+	mediaCodec = new YaoMediaCodec();
+
 }
 
 YaoPlayerCtr::~YaoPlayerCtr()
@@ -60,8 +62,10 @@ void YaoPlayerCtr::run()
 		dTime = dTime - pauseDurationAll;
 		dTime = dTime + (long long)(seekTime * 1000);
 		//printf("dTime:%lld\n", dTime);
-	
-		//-------视频
+
+		YaoMediaCodec::yaoMediaCodec
+		//软解视频
+		/*//-------视频
 		//从视频frame缓存队列中获取一帧视频 framePts
 		if (videoFrame == nullptr) {
 			videoFrameQueue.pop(&videoFrame);
@@ -87,7 +91,7 @@ void YaoPlayerCtr::run()
 			else {
 				//还不到播放的时间，程序自悬，或者去处理音频
 			}
-		}
+		}*/
 
 		//------音频
 		//从音频frame缓存队列中获取一帧音频 framePts

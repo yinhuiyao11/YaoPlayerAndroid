@@ -1,4 +1,5 @@
 #include <cpp/YaoPlayerJni/JavaVMObj.h>
+#include <cpp/YaoCodec/YaoCodec.h>
 #include "YaoPlayer.h"
 #include "EyerCore/EyerLog.hpp"
 
@@ -21,6 +22,7 @@ YaoDecodeThread::~YaoDecodeThread()
 void YaoDecodeThread::run()
 {
 	int frameCount = 0;
+	YaoMediaCodec mediaCodec;
 	while (!stopFlag) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
@@ -44,11 +46,10 @@ void YaoDecodeThread::run()
 		}
 
 		//Ó²½âÂë
-		JavaVMObj obj;
-		obj.callJavaMethod(JavaVMObj::mediaCodec, "init", "(IILjava/lang/Class;)I", 1280, 720, JavaVMObj::surface);
-		obj.
+		mediaCodec->init(*stream, JavaVMObj::surface);
+		mediaCodec->send(packet);
 
-		//½âÂë
+		//Èí½âÂë
 		decode->sendPacket(packet);
 		while (1) {
 			YaoAVFrame * frame = new YaoAVFrame();
@@ -76,8 +77,9 @@ void YaoDecodeThread::run()
 	}
 }
 
-int YaoDecodeThread::init(YaoAVStream* stream)
+int YaoDecodeThread::init(YaoAVStream* _stream)
 {
+	stream = _stream;
 	return decode->init(stream);
 }
 

@@ -13,7 +13,7 @@ public:
     YaoMediaCodec();
     ~YaoMediaCodec();
 
-    int init(YaoAVReader & avReader, jobject surface);
+    int init(YaoAVStream & avStream, jobject surface);
     int uninit();
 
     int send(YaoAVPacket * annexbPkt);
@@ -22,8 +22,10 @@ public:
     long getOutTime();
     int renderFrame(int outIndex);
 
-private:
-    jobject eyerMediaCodec = nullptr;
+public:
+    static jobject eyerMediaCodec = nullptr;
+    static jobject yaoMediaCodec = nullptr;
+
 };
 
 
