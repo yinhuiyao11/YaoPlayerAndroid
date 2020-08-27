@@ -15,6 +15,7 @@ public class YaoMediaCodec {
     public int init(int width, int height, Surface surface){
         displayDecoders();
         Log.e("EyerMediaCodec", "width: " + width + " height: " + height);
+        System.out.println("EyerMediaCodec width: " + width + " height: " + height);
 
         try {
             mediaCodec = MediaCodec.createDecoderByType(MediaFormat.MIMETYPE_VIDEO_AVC);
@@ -90,6 +91,9 @@ public class YaoMediaCodec {
     private MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
 
     public int dequeueOutputBuffer(){
+        if(mediaCodec == null) {
+            System.out.println("in dequeueOutputBuffer:mediaCodec is null");
+        }
         int outindex = mediaCodec.dequeueOutputBuffer(bufferInfo, 1000);
         return outindex;
     }
@@ -99,6 +103,9 @@ public class YaoMediaCodec {
     }
 
     public int renderFrame(int outindex){
+        if(mediaCodec == null) {
+            System.out.println("in renderFrame:mediaCodec is null");
+        }
         ByteBuffer outputBuffer = mediaCodec.getOutputBuffers()[outindex];
         mediaCodec.releaseOutputBuffer(outindex, true);
 

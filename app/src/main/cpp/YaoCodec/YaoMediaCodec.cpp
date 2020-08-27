@@ -19,10 +19,7 @@ int YaoMediaCodec::init(YaoAVStream & avStream, jobject surface)
     JNIEnv * env;
     JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
     // 获取类
-    EyerLog("init before GetObjectClass\n");
-
     jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::mediaCodec);
-    EyerLog("init after GetObjectClass\n");
 
     if(ax_list_jclass == NULL){
         EyerLog("jclass is null \n");
@@ -46,7 +43,9 @@ int YaoMediaCodec::init(YaoAVStream & avStream, jobject surface)
     if(listGetMe == NULL){
         EyerLog("jni jmethodID is null \n");
     }
+
     int findObj = env->CallIntMethod(mediaCodec, listGetMe , avStream.getWidth(), avStream.getHeight(), surface);
+
     return 0;
 }
 
@@ -78,6 +77,7 @@ int YaoMediaCodec::send(YaoAVPacket * annexbPkt)
     if(ax_list_jclass == NULL){
         EyerLog("jclass is null \n");
     }
+
     // 获取方法
     jmethodID listGetMe;
     listGetMe = env->GetMethodID(ax_list_jclass, "send", "([BJ)I");
@@ -89,6 +89,7 @@ int YaoMediaCodec::send(YaoAVPacket * annexbPkt)
     env->SetByteArrayRegion(jData, 0, annexbPkt->getSize(), (jbyte*)annexbPkt->getDataPtr());
     jlong time = (jlong)(annexbPkt->getSecPTS() * 1000);
     int findObj = env->CallIntMethod(mediaCodec, listGetMe, jData, time);
+
     return 0;
 }
 int YaoMediaCodec::recvAndRender()
@@ -147,6 +148,8 @@ long YaoMediaCodec::getOutTime()
 }
 int YaoMediaCodec::renderFrame(int outIndex)
 {
+    EyerLog("renderFrame in start \n");
+
     JNIEnv * env;
     JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
     // 获取类
@@ -154,6 +157,8 @@ int YaoMediaCodec::renderFrame(int outIndex)
     if(ax_list_jclass == NULL){
         EyerLog("jclass is null \n");
     }
+    EyerLog("renderFrame in middim \n");
+
     // 获取方法 
     jmethodID listGetMe;
     listGetMe = env->GetMethodID(ax_list_jclass, "renderFrame", "(I)I");
@@ -161,5 +166,7 @@ int YaoMediaCodec::renderFrame(int outIndex)
         EyerLog("jni jmethodID is null \n");
     }
     int findObj = env->CallIntMethod(mediaCodec, listGetMe, outIndex);
+    EyerLog("renderFrame in end \n");
+
     return 0;
 }

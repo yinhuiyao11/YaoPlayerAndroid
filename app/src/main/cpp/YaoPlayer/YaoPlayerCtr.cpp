@@ -12,7 +12,9 @@ YaoPlayerCtr::YaoPlayerCtr(std::string _path, double _time)
 
 YaoPlayerCtr::~YaoPlayerCtr()
 {
-
+	if(mediaCodec != nullptr){
+		mediaCodec->uninit();
+	}
 }
 
 void YaoPlayerCtr::run()
@@ -32,16 +34,9 @@ void YaoPlayerCtr::run()
 	while(readerThread.getAudioSampleRate() == 0 || readerThread.getAudioChannels() == 0){
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
-	//EyerLog("++++++++++++getAudioSampleRate:%d ,getAudioChannels:%d ",reader.getAudioSampleRate(), reader.getAudioChannels());
-	/*YaoSL playerSl(&playAudioFrameQueue);
-	//1 创建引擎
-	playerSl.createEngin();
-	//2 创建混音器
-	playerSl.createMix();
-	//3 配置音频信息
-	playerSl.setDataSource(10, readerThread.getAudioSampleRate(), readerThread.getAudioChannels());
-	// 4 创建播放器
-	playerSl.createAudioPlayer();*/
+
+	int outindex = -1;
+	long videoFrameTime = 0;
 
 	while (!stopFlag) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -63,7 +58,20 @@ void YaoPlayerCtr::run()
 		dTime = dTime + (long long)(seekTime * 1000);
 		//printf("dTime:%lld\n", dTime);
 
-		mediaCodec->recvAndRender();
+		if(mediaCodec != nullptr){
+			if(outindex < 0){
+				outindex = mediaCodec->dequeueOutputBuffer();
+				videoFrameTime = mediaCodec->getOutTime();
+				EyerLog("videoFrameTime:%d \n", videoFrameTime);
+			}
+			if(outindex >= 0){
+				double timePts = videoFrameTime / 1000.0;
+				if(timePts <= dTime){
+					mediaCodec->renderFrame(outindex);
+					outindex = -1;
+				}
+			}
+		}
 		//软解视频
 		/*//-------视频
 		//从视频frame缓存队列中获取一帧视频 framePts
@@ -103,7 +111,7 @@ void YaoPlayerCtr::run()
             //如果 framePts <= dTime，
 			if (audioFrame->getPts() <= dTime) {
 				//该帧立即播放
-				//EyerLog("~~~~~play audioFrameQueue size:%d, audioFrame->getPts():%lld\n", audioFrameQueue.queueSize(), audioFrame->getPts());
+				EyerLog("~~~~~play audioFrameQueue size:%d, audioFrame->getPts():%lld\n", audioFrameQueue.queueSize(), audioFrame->getPts());
 				pushFrameplayAudioFrame(audioFrame);
 
 				//delete audioFrame;

@@ -22,6 +22,9 @@ YaoDecodeThread::~YaoDecodeThread()
 void YaoDecodeThread::run()
 {
 	int frameCount = 0;
+	if (type == YaoDecoderType::YAODECODER_TYPE_VIDEO) {
+		mediaCodec->init(*stream, JavaVMObj::surface);
+	}
 	while (!stopFlag) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
@@ -45,7 +48,6 @@ void YaoDecodeThread::run()
 		}
 
 		//Ó²½âÂë
-		mediaCodec->init(*stream, JavaVMObj::surface);
 		mediaCodec->send(packet);
 
 		//Èí½âÂë
