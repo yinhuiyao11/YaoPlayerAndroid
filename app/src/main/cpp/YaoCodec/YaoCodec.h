@@ -23,8 +23,7 @@ public:
     int renderFrame(int outIndex);
 
 public:
-    static jobject eyerMediaCodec = nullptr;
-    static jobject yaoMediaCodec = nullptr;
+    jobject mediaCodec = nullptr;
 
 };
 

@@ -17,7 +17,7 @@ YaoPlayerCtr::~YaoPlayerCtr()
 
 void YaoPlayerCtr::run()
 {
-	YaoPlayerReaderThread readerThread(path, this);
+	YaoPlayerReaderThread readerThread(path, this, mediaCodec);
 	readerThread.start();
 
 	//获取线程启动时的时间 startTime
@@ -63,7 +63,7 @@ void YaoPlayerCtr::run()
 		dTime = dTime + (long long)(seekTime * 1000);
 		//printf("dTime:%lld\n", dTime);
 
-		YaoMediaCodec::yaoMediaCodec
+		mediaCodec->recvAndRender();
 		//软解视频
 		/*//-------视频
 		//从视频frame缓存队列中获取一帧视频 framePts

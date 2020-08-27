@@ -6,6 +6,8 @@
 
 JavaVM * JavaVMObj::javaVm = nullptr;
 jobject JavaVMObj::jobj = NULL;
+jobject JavaVMObj::mediaCodec = NULL;
+jobject JavaVMObj::surface = NULL;
 
 int JavaVMObj::callJavaMethod(jobject jobj, const char* funName, const char* sig)
 {

@@ -36,7 +36,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     }
 
 
-    private YaoMediaCodec mediaCodec = null;
+    //private YaoMediaCodec mediaCodec = null;
     private Player player;
     static long duration = 0;
 
@@ -46,10 +46,10 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
         File dir = Environment.getExternalStorageDirectory();
         //String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
-        //String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
+        String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
         //String videoPath = dir.getAbsolutePath() + "/" + "ST/banfo.mp4";
         //String videoPath = dir.getAbsolutePath() + "/" + "ST/The_Beauty_of_Earth.mp4";
-        String videoPath = dir.getAbsolutePath() + "/" + "ST/4k_animal.mp4";
+        //String videoPath = dir.getAbsolutePath() + "/" + "ST/4k_animal.mp4";
         //String videoPath = dir.getAbsolutePath() + "/" + "ST/rabbit.mp4";
         System.out.println("+++++++++path:" + videoPath);
 
@@ -83,6 +83,6 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        mediaCodec.uninit();
+
     }
 }

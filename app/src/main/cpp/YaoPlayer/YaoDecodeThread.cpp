@@ -22,16 +22,15 @@ YaoDecodeThread::~YaoDecodeThread()
 void YaoDecodeThread::run()
 {
 	int frameCount = 0;
-	YaoMediaCodec mediaCodec;
 	while (!stopFlag) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
-		//控制解码与播放速度
-		if (type == YaoDecoderType::YAODECODER_TYPE_VIDEO) {
+		//控制解码与播放速度 todo
+		/*if (type == YaoDecoderType::YAODECODER_TYPE_VIDEO) {
 			if (ctrThread->getVideoFrameQueueSize() > 10) {
 				continue;
 			}
-		}
+		}*/
 		if (type == YaoDecoderType::YAODECODER_TYPE_AUDIO) {
 			if (ctrThread->getAudioFrameQueueSize() > 20) {
 				continue;
@@ -91,4 +90,9 @@ int YaoDecodeThread::pushPacket(YaoAVPacket* packet)
 int YaoDecodeThread::packetQueueSize()
 {
 	return packetQueue.queueSize();
+}
+
+int YaoDecodeThread::setMediaCodec(YaoMediaCodec * _mediaCodec){
+	mediaCodec = _mediaCodec;
+	return 0;
 }
