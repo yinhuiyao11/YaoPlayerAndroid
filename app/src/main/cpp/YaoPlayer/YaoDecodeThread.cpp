@@ -48,6 +48,8 @@ void YaoDecodeThread::run()
 		}
 
 		//Ó²½âÂë
+		JNIEnv * env;
+		JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
 		mediaCodec->send(packet);
 
 		//Èí½âÂë

@@ -26,6 +26,10 @@ public class YaoMediaCodec {
         MediaFormat mediaFormat = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, width, height);
         mediaCodec.configure(mediaFormat, surface, null, 0);
         mediaCodec.start();
+        if(mediaCodec == null) {
+            System.out.println("in init:mediaCodec is null");
+            return -1;
+        }
 
         return 0;
     }
@@ -93,6 +97,7 @@ public class YaoMediaCodec {
     public int dequeueOutputBuffer(){
         if(mediaCodec == null) {
             System.out.println("in dequeueOutputBuffer:mediaCodec is null");
+            return -1;
         }
         int outindex = mediaCodec.dequeueOutputBuffer(bufferInfo, 1000);
         return outindex;
@@ -105,7 +110,9 @@ public class YaoMediaCodec {
     public int renderFrame(int outindex){
         if(mediaCodec == null) {
             System.out.println("in renderFrame:mediaCodec is null");
+            return -1;
         }
+
         ByteBuffer outputBuffer = mediaCodec.getOutputBuffers()[outindex];
         mediaCodec.releaseOutputBuffer(outindex, true);
 

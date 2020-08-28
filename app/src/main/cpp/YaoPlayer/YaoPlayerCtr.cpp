@@ -19,6 +19,9 @@ YaoPlayerCtr::~YaoPlayerCtr()
 
 void YaoPlayerCtr::run()
 {
+	JNIEnv * env;
+	JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
+
 	YaoPlayerReaderThread readerThread(path, this, mediaCodec);
 	readerThread.start();
 
@@ -62,7 +65,7 @@ void YaoPlayerCtr::run()
 			if(outindex < 0){
 				outindex = mediaCodec->dequeueOutputBuffer();
 				videoFrameTime = mediaCodec->getOutTime();
-				EyerLog("videoFrameTime:%d \n", videoFrameTime);
+				EyerLog("outindex:%d, videoFrameTime:%d \n", outindex, videoFrameTime);
 			}
 			if(outindex >= 0){
 				double timePts = videoFrameTime / 1000.0;
