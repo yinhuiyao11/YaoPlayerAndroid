@@ -23,7 +23,7 @@ void pcmCallBack(SLAndroidSimpleBufferQueueItf bf, void*contex)
     }
 
     sl->playAudioFrameQueue->pop(&audioFrame);
-    EyerLog("audio frame Frame->getPts():%lld, weight:%d, heigt:%d\n", audioFrame->getPts(), audioFrame->getW(), audioFrame->getH());
+    //EyerLog("audio frame Frame->getPts():%lld, weight:%d, heigt:%d\n", audioFrame->getPts(), audioFrame->getW(), audioFrame->getH());
 
     int len = audioFrame->getPerSampleSize() * audioFrame->getNBSamples() * audioFrame->getChannels();
     if (len > 0){//读取到数据 数据传入队列

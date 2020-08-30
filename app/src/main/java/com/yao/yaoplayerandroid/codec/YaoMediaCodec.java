@@ -64,14 +64,16 @@ public class YaoMediaCodec {
     }
 
     public int send(byte[] data, long time){
-        int inputBufIndex = mediaCodec.dequeueInputBuffer(-1);
-
+        int inputBufIndex = mediaCodec.dequeueInputBuffer(1000 * 100);
         if (inputBufIndex >= 0) {
             ByteBuffer inputBuf = mediaCodec.getInputBuffers()[inputBufIndex];
             inputBuf.clear();
             inputBuf.put(data);
 
             mediaCodec.queueInputBuffer(inputBufIndex, 0, data.length, time, 0);
+            if(mediaCodec == null){
+                System.out.println("in send:mediaCodec is null");
+            }
 
             return 0;
         }
@@ -98,6 +100,9 @@ public class YaoMediaCodec {
         if(mediaCodec == null) {
             System.out.println("in dequeueOutputBuffer:mediaCodec is null");
             return -1;
+        }else {
+            //System.out.println("in dequeueOutputBuffer:mediaCodec is not null");
+
         }
         int outindex = mediaCodec.dequeueOutputBuffer(bufferInfo, 1000);
         return outindex;
@@ -111,6 +116,9 @@ public class YaoMediaCodec {
         if(mediaCodec == null) {
             System.out.println("in renderFrame:mediaCodec is null");
             return -1;
+        }else {
+            //System.out.println("in renderFrame:mediaCodec is not null");
+
         }
 
         ByteBuffer outputBuffer = mediaCodec.getOutputBuffers()[outindex];

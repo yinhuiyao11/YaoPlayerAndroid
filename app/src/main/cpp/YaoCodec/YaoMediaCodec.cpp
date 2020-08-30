@@ -36,7 +36,12 @@ int YaoMediaCodec::init(YaoAVStream & avStream, jobject surface)
     }
 
     mediaCodec = env->NewGlobalRef(_mediaCodec);
+    if(mediaCodec == nullptr){
+        EyerLog("cpp init mediaCodec is null\n");
+    } else{
+        //EyerLog("cpp init mediaCodec is not null\n");
 
+    }
     // 获取方法
     jmethodID listGetMe;
     listGetMe = env->GetMethodID(ax_list_jclass, "init", "(IILandroid/view/Surface;)I");
@@ -70,6 +75,12 @@ int YaoMediaCodec::uninit()
 
 int YaoMediaCodec::send(YaoAVPacket * annexbPkt)
 {
+    if(mediaCodec == nullptr){
+        EyerLog("cpp send mediaCodec is null\n");
+    } else{
+        //EyerLog("cpp send mediaCodec is not null\n");
+
+    }
     JNIEnv * env;
     JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
     // 获取类
@@ -88,12 +99,18 @@ int YaoMediaCodec::send(YaoAVPacket * annexbPkt)
     jbyteArray jData = env->NewByteArray(annexbPkt->getSize());
     env->SetByteArrayRegion(jData, 0, annexbPkt->getSize(), (jbyte*)annexbPkt->getDataPtr());
     jlong time = (jlong)(annexbPkt->getSecPTS() * 1000);
-    int findObj = env->CallIntMethod(mediaCodec, listGetMe, jData, time);
+    int ret = env->CallIntMethod(mediaCodec, listGetMe, jData, time);
 
-    return 0;
+    return ret;
 }
 int YaoMediaCodec::recvAndRender()
 {
+    if(mediaCodec == nullptr){
+        EyerLog("cpp recvAndRender mediaCodec is null\n");
+    } else{
+        //EyerLog("cpp recvAndRender mediaCodec is not null\n");
+
+    }
     JNIEnv * env;
     JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
     // 获取类
@@ -112,8 +129,6 @@ int YaoMediaCodec::recvAndRender()
 }
 int YaoMediaCodec::dequeueOutputBuffer()
 {
-    EyerLog("dequeueOutputBuffer in start \n");
-
     JNIEnv * env;
     JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
     // 获取类
@@ -121,7 +136,6 @@ int YaoMediaCodec::dequeueOutputBuffer()
     if(ax_list_jclass == NULL){
         EyerLog("jclass is null \n");
     }
-    EyerLog("dequeueOutputBuffer in middle \n");
 
     // 获取方法
     jmethodID listGetMe;
@@ -133,7 +147,6 @@ int YaoMediaCodec::dequeueOutputBuffer()
         EyerLog("cpp mediaCodec is null\n");
     }
     int findObj = env->CallIntMethod(mediaCodec, listGetMe);
-    EyerLog("dequeueOutputBuffer in end \n");
 
     return 0;
 }

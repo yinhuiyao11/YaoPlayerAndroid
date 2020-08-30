@@ -1,7 +1,9 @@
 #include <cpp/YaoPlayerJni/JavaVMObj.h>
 #include <cpp/YaoCodec/YaoCodec.h>
+#include <unistd.h>
 #include "YaoPlayer.h"
 #include "EyerCore/EyerLog.hpp"
+#include "../YaoAV/EyerAVBitstreamFilter.hpp"
 
 YaoDecodeThread::YaoDecodeThread(YaoPlayerCtr* _ctrThread, YaoDecoderType _type)
 {
@@ -22,7 +24,8 @@ YaoDecodeThread::~YaoDecodeThread()
 void YaoDecodeThread::run()
 {
 	int frameCount = 0;
-	if (type == YaoDecoderType::YAODECODER_TYPE_VIDEO) {
+    Eyer::EyerAVBitstreamFilter bitstreamFilter(Eyer::EyerAVBitstreamFilterType::h264_mp4toannexb, *stream);
+    if (type == YaoDecoderType::YAODECODER_TYPE_VIDEO) {
 		mediaCodec->init(*stream, JavaVMObj::surface);
 	}
 	while (!stopFlag) {
@@ -40,43 +43,76 @@ void YaoDecodeThread::run()
 			}
 		}
 
+        YaoAVPacket *packet = nullptr;
+        int ret = packetQueue.pop(&packet);
+        if (ret) {
+            continue;
+        }
 
-		YaoAVPacket* packet = nullptr;
-		int ret = packetQueue.pop(&packet);
-		if (ret) {
-			continue;
-		}
+        if (type == YaoDecoderType::YAODECODER_TYPE_VIDEO) {
+            bitstreamFilter.SendPacket(packet);
+            //硬解码
 
-		//硬解码
-		JNIEnv * env;
-		JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
-		mediaCodec->send(packet);
+            JNIEnv *env;
+            JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
+
+            while (!stopFlag) {
+                YaoAVPacket changedPacket;
+                int ret = bitstreamFilter.ReceivePacket(&changedPacket);
+                if(ret){
+                    break;
+                }
+
+                /*for (int i = 0; i < 4; i++) {
+                    EyerLog("~~~~~changedPacket data%d: %d \n", i, changedPacket.getDataPtr()[i]);
+                }*/
+                ret = mediaCodec->send(&changedPacket);
+                EyerLog("~~~~~mediaCodec->send result: %d: \n", ret);
+
+                frameCount++;
+
+                while(1){
+                    int outIndex = mediaCodec->dequeueOutputBuffer();
+                    EyerLog("OutIndex: %d\n", outIndex);
+                    if(outIndex >= 0){
+                        mediaCodec->renderFrame(outIndex);
+                    }
+                    else{
+                        break;
+                    }
+
+                    sleep(1);
+                }
+
+            }
+        }
 
 		//软解码
-		decode->sendPacket(packet);
-		while (1) {
-			YaoAVFrame * frame = new YaoAVFrame();
-			ret = decode->receiveFrame(frame);
-			if (ret) {
-				break;
-			}
+        if (type == YaoDecoderType::YAODECODER_TYPE_AUDIO) {
+            decode->sendPacket(packet);
+            while (1) {
+                YaoAVFrame *frame = new YaoAVFrame();
+                ret = decode->receiveFrame(frame);
+                if (ret) {
+                    break;
+                }
 
-			//通过ctrThread句柄， 向其塞入frame数据
-			if (type == YaoDecoderType::YAODECODER_TYPE_VIDEO) {
-				//todo 软解码
-				//ctrThread->pushVideoFrameQueue(frame);
-				//EyerLog("=========video frame push \n");
-			}
-			else if (type == YaoDecoderType::YAODECODER_TYPE_AUDIO) {
-				ctrThread->pushAudioFrameQueue(frame);
-				//EyerLog("+++++++++audio frame push \n");
+                //通过ctrThread句柄， 向其塞入frame数据
+                /*if (type == YaoDecoderType::YAODECODER_TYPE_VIDEO) {
+                    //todo 软解码
+                    //ctrThread->pushVideoFrameQueue(frame);
+                    //EyerLog("=========video frame push \n");
+                }*/
+                //else if (type == YaoDecoderType::YAODECODER_TYPE_AUDIO) {
+                ctrThread->pushAudioFrameQueue(frame);
+                //EyerLog("+++++++++audio frame push \n");
 
-			}
+                //}
 
-			frameCount++;
-			//printf("frameCount:%d\n", frameCount);
-		}
-	
+                frameCount++;
+                //printf("frameCount:%d\n", frameCount);
+            }
+        }
 	}
 }
 

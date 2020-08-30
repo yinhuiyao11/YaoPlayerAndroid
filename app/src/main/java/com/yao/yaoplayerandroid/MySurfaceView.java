@@ -36,7 +36,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     }
 
 
-    //private YaoMediaCodec mediaCodec = null;
+    private YaoMediaCodec mediaCodec = null;
     private Player player;
     static long duration = 0;
 
@@ -46,11 +46,12 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
         File dir = Environment.getExternalStorageDirectory();
         //String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
-        //String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
+        String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
         //String videoPath = dir.getAbsolutePath() + "/" + "ST/banfo.mp4";
         //String videoPath = dir.getAbsolutePath() + "/" + "ST/The_Beauty_of_Earth.mp4";
         //String videoPath = dir.getAbsolutePath() + "/" + "ST/4k_animal.mp4";
-        String videoPath = dir.getAbsolutePath() + "/" + "ST/rabbit.mp4";
+        //String videoPath = dir.getAbsolutePath() + "/" + "ST/rabbit.mp4";
+        //String videoPath = "http://redknot.cn/sohu/hls/shuw.m3u8";
         System.out.println("+++++++++path:" + videoPath);
 
         File f = new File(videoPath);
@@ -66,13 +67,13 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         player.play();
 
 
-       /* mediaCodec = new YaoMediaCodec();
+        mediaCodec = new YaoMediaCodec();
         mediaCodec.init(1920, 1080, holder.getSurface());
         Thread inputBufferThread = new Thread(new InputBufferThread(mediaCodec));
         inputBufferThread.start();
 
         Thread outputBufferThread = new Thread(new OutputBufferThread(mediaCodec));
-        outputBufferThread.start();*/
+        outputBufferThread.start();
 
     }
 

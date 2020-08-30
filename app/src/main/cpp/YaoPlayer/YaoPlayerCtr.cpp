@@ -61,11 +61,14 @@ void YaoPlayerCtr::run()
 		dTime = dTime + (long long)(seekTime * 1000);
 		//printf("dTime:%lld\n", dTime);
 
-		if(mediaCodec != nullptr){
+		if(mediaCodec->mediaCodec != nullptr){
+			/*
 			if(outindex < 0){
 				outindex = mediaCodec->dequeueOutputBuffer();
-				videoFrameTime = mediaCodec->getOutTime();
-				EyerLog("outindex:%d, videoFrameTime:%d \n", outindex, videoFrameTime);
+				if(outindex >= 0){
+					videoFrameTime = mediaCodec->getOutTime();
+					EyerLog("outindex:%d, videoFrameTime:%d \n", outindex, videoFrameTime);
+				}
 			}
 			if(outindex >= 0){
 				double timePts = videoFrameTime / 1000.0;
@@ -74,6 +77,7 @@ void YaoPlayerCtr::run()
 					outindex = -1;
 				}
 			}
+			 */
 		}
 		//软解视频
 		/*//-------视频
@@ -114,7 +118,7 @@ void YaoPlayerCtr::run()
             //如果 framePts <= dTime，
 			if (audioFrame->getPts() <= dTime) {
 				//该帧立即播放
-				EyerLog("~~~~~play audioFrameQueue size:%d, audioFrame->getPts():%lld\n", audioFrameQueue.queueSize(), audioFrame->getPts());
+				//EyerLog("~~~~~play audioFrameQueue size:%d, audioFrame->getPts():%lld\n", audioFrameQueue.queueSize(), audioFrame->getPts());
 				pushFrameplayAudioFrame(audioFrame);
 
 				//delete audioFrame;
