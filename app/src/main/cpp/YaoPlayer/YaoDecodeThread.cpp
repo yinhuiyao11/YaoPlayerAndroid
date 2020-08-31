@@ -75,18 +75,6 @@ void YaoDecodeThread::run()
 
                 frameCount++;
 
-                while(1){
-                    int outIndex = mediaCodec->dequeueOutputBuffer(1000);
-                    //EyerLog("OutIndex: %d\n", outIndex);
-                    if(outIndex >= 0){
-                        mediaCodec->renderFrame(outIndex, true);
-                    }
-                    else{
-                        break;
-                    }
-
-                    //sleep(1);
-                }
 
             }
         }
