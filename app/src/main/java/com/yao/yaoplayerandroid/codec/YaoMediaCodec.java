@@ -10,8 +10,12 @@ import android.view.Surface;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import static android.media.MediaCodec.BUFFER_FLAG_END_OF_STREAM;
+
 public class YaoMediaCodec {
     private MediaCodec mediaCodec = null;
+    private MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
+
     public int init(int width, int height, Surface surface){
         displayDecoders();
         Log.e("EyerMediaCodec", "width: " + width + " height: " + height);
@@ -63,27 +67,28 @@ public class YaoMediaCodec {
         }
     }
 
-    public int send(byte[] data, long time){
-        int inputBufIndex = mediaCodec.dequeueInputBuffer(1000 * 100);
+    public int dequeueInputBuffer(long timeoutUs){
+        return mediaCodec.dequeueInputBuffer(timeoutUs);
+    }
+    public int send(int inputBufIndex, byte[] data){
         if (inputBufIndex >= 0) {
             ByteBuffer inputBuf = mediaCodec.getInputBuffers()[inputBufIndex];
             inputBuf.clear();
             inputBuf.put(data);
-
-            mediaCodec.queueInputBuffer(inputBufIndex, 0, data.length, time, 0);
-            if(mediaCodec == null){
-                System.out.println("in send:mediaCodec is null");
-            }
-
             return 0;
-        }
 
+        }
         return -1;
+    }
+
+    public void queueInputBuffer(int inputBufIndex, int offset, int size, long presentationTimeUs, int flags){
+        mediaCodec.queueInputBuffer(inputBufIndex, offset, size, presentationTimeUs, flags);
     }
 
     public int recvAndRender(){
         MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
         int outindex = mediaCodec.dequeueOutputBuffer(bufferInfo, -1);
+        System.out.println("java recvAndRender outindex: " + outindex);
 
         if (outindex >= 0) {
             ByteBuffer outputBuffer = mediaCodec.getOutputBuffers()[outindex];
@@ -94,9 +99,7 @@ public class YaoMediaCodec {
         return -1;
     }
 
-    private MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
-
-    public int dequeueOutputBuffer(){
+    public int dequeueOutputBuffer(long timeoutUs){
         if(mediaCodec == null) {
             System.out.println("in dequeueOutputBuffer:mediaCodec is null");
             return -1;
@@ -104,7 +107,7 @@ public class YaoMediaCodec {
             //System.out.println("in dequeueOutputBuffer:mediaCodec is not null");
 
         }
-        int outindex = mediaCodec.dequeueOutputBuffer(bufferInfo, 1000);
+        int outindex = mediaCodec.dequeueOutputBuffer(bufferInfo, timeoutUs);
         return outindex;
     }
 
@@ -112,7 +115,8 @@ public class YaoMediaCodec {
         return bufferInfo.presentationTimeUs;
     }
 
-    public int renderFrame(int outindex){
+
+    public int renderFrame(int outindex, boolean isRender){
         if(mediaCodec == null) {
             System.out.println("in renderFrame:mediaCodec is null");
             return -1;
@@ -122,8 +126,17 @@ public class YaoMediaCodec {
         }
 
         ByteBuffer outputBuffer = mediaCodec.getOutputBuffers()[outindex];
-        mediaCodec.releaseOutputBuffer(outindex, true);
+        mediaCodec.releaseOutputBuffer(outindex, isRender);
 
         return 0;
+    }
+
+    public int flush(){
+        mediaCodec.flush();
+        return 0;
+    }
+
+    public void sendEndOfStream(int index){
+        mediaCodec.queueInputBuffer(index,0,0,0, BUFFER_FLAG_END_OF_STREAM);
     }
 }

@@ -16,11 +16,16 @@ public:
     int init(YaoAVStream & avStream, jobject surface);
     int uninit();
 
-    int send(YaoAVPacket * annexbPkt);
+    int send(int inputBufIndex, YaoAVPacket * annexbPkt);
     int recvAndRender();
-    int dequeueOutputBuffer();
+    int dequeueOutputBuffer(long long timeoutUs);
     long getOutTime();
-    int renderFrame(int outIndex);
+    int renderFrame(int outindex, bool isRender);
+    int dequeueInputBuffer(long long timeoutUs);
+    int queueInputBuffer(int inputBufIndex, int offset, int size, long long presentationTimeUs, int flags);
+
+    int sendEndOfStream(int index);
+    int flush();
 
 public:
     jobject mediaCodec = nullptr;

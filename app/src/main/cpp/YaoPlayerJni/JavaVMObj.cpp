@@ -45,7 +45,6 @@ int JavaVMObj::callJavaMethod(jobject jobj, const char* funName, const char* sig
         EyerLog("jni jmethodID is null \n");
     }
     jobject findObj = env->CallObjectMethod(JavaVMObj::jobj, listGetMe , dtime);
-    EyerLog("playSetProgressBar called in cpp \n");
     return 0;
 }
 

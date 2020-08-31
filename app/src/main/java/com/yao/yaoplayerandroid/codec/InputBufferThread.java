@@ -31,7 +31,7 @@ public class InputBufferThread implements Runnable {
         while (readNalu.haveReadPos < readNalu.naluStartPosList.size() - 1){
             //System.out.println("888haveReadPos "+readNalu.haveReadPos);
             Nalu nalu = readNalu.readNaluChar();
-            System.out.println("1111111readNalu.haveReadPos"+readNalu.haveReadPos);
+            //System.out.println("1111111readNalu.haveReadPos"+readNalu.haveReadPos);
 
             /*try {
                 output.write(nalu.buffer, 0, nalu.lenth);
