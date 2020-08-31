@@ -41,8 +41,9 @@ public class InputBufferThread implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
             }*/
-
-            mediaCodec.send(nalu.buffer, 0);
+            int inputIndex = mediaCodec.dequeueInputBuffer(1000);
+            mediaCodec.send(inputIndex, nalu.buffer);
+            mediaCodec.queueInputBuffer(inputIndex, 0, nalu.lenth, 1000,0);
         }
 
         /*try {

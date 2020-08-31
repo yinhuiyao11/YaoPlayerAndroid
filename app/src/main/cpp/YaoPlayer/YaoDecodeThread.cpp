@@ -66,16 +66,19 @@ void YaoDecodeThread::run()
                 /*for (int i = 0; i < 4; i++) {
                     EyerLog("~~~~~changedPacket data%d: %d \n", i, changedPacket.getDataPtr()[i]);
                 }*/
-                ret = mediaCodec->send(&changedPacket);
+                long long timeoutUs = 1000;
+                int inputBufferIndex = mediaCodec->dequeueInputBuffer(1000 * 100);
+                ret = mediaCodec->send(inputBufferIndex, &changedPacket);
+                mediaCodec->queueInputBuffer(inputBufferIndex, 0, changedPacket.getSize(), (long long)(changedPacket.getSecPTS() * 1000.0), 0);
                 EyerLog("~~~~~mediaCodec->send result: %d: \n", ret);
 
                 frameCount++;
 
                 while(1){
-                    int outIndex = mediaCodec->dequeueOutputBuffer();
+                    int outIndex = mediaCodec->dequeueOutputBuffer(1000);
                     EyerLog("OutIndex: %d\n", outIndex);
                     if(outIndex >= 0){
-                        mediaCodec->renderFrame(outIndex);
+                        mediaCodec->renderFrame(outIndex, true);
                     }
                     else{
                         break;
