@@ -9,7 +9,10 @@ public class OutputBufferThread implements Runnable {
     @Override
     public void run() {
         while(true){
-            mediaCodec.recvAndRender();
+            int outindex = mediaCodec.dequeueOutputBuffer(1000);
+            if(outindex >= 0){
+                mediaCodec.renderFrame(outindex, true);
+            }
         }
     }
 }

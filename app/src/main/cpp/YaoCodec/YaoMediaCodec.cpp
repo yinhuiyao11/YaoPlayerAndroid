@@ -253,8 +253,8 @@ int YaoMediaCodec::sendEndOfStream(int index)
     if(listGetMe == NULL){
         EyerLog("jni jmethodID is null \n");
     }
-    int ret = env->CallLongMethod(mediaCodec, listGetMe, index);
-    return ret;
+    env->CallVoidMethod(mediaCodec, listGetMe, index);
+    return 0;
 }
 
 int YaoMediaCodec::flush()
@@ -272,6 +272,6 @@ int YaoMediaCodec::flush()
     if(listGetMe == NULL){
         EyerLog("jni jmethodID is null \n");
     }
-    int ret = env->CallLongMethod(mediaCodec, listGetMe);
+    int ret = env->CallIntMethod(mediaCodec, listGetMe);
     return ret;
 }

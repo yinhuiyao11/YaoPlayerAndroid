@@ -54,7 +54,7 @@ public class ReadNalu {
                 readLen = bufferedReader.read(head, 0, 4);
 
                 if(isStartCode(head) != -1){
-                    System.out.println("3333333333 start pos:"+ pos);
+                    //System.out.println("3333333333 start pos:"+ pos);
                     naluStartPosList.add(pos);
                 }
                 pos = pos + 4;
