@@ -9,13 +9,18 @@ import android.view.Surface;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.media.MediaCodec.BUFFER_FLAG_END_OF_STREAM;
 
 public class YaoMediaCodec {
     private MediaCodec mediaCodec = null;
     private MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
-
+    private List<Integer> list = null;
+    public int getListNum1(){
+        return list.get(0);
+    }
     public int init(int width, int height, Surface surface){
         displayDecoders();
         Log.e("EyerMediaCodec", "width: " + width + " height: " + height);
@@ -34,6 +39,10 @@ public class YaoMediaCodec {
             System.out.println("in init:mediaCodec is null");
             return -1;
         }
+
+        list = new ArrayList<Integer>();
+        list.add(1);
+        list.add(2);
 
         return 0;
     }

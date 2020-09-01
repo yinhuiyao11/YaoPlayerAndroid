@@ -275,3 +275,23 @@ int YaoMediaCodec::flush()
     int ret = env->CallIntMethod(mediaCodec, listGetMe);
     return ret;
 }
+
+int YaoMediaCodec::getListNum1()
+{
+    JNIEnv * env;
+    JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
+    // 获取类
+    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::mediaCodec);
+    if(ax_list_jclass == NULL){
+        EyerLog("jclass is null \n");
+    }
+    // 获取方法
+    jmethodID listGetMe;
+    listGetMe = env->GetMethodID(ax_list_jclass, "getListNum1", "()I");
+    if(listGetMe == NULL){
+        EyerLog("jni jmethodID is null \n");
+    }
+    int ret = env->CallIntMethod(mediaCodec, listGetMe);
+    EyerLog("##################ret:%d", ret);
+    return ret;
+}

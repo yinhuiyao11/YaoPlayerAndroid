@@ -63,11 +63,13 @@ void YaoPlayerCtr::run()
 
 		if(mediaCodec->mediaCodec != nullptr){
 			while(1){
+				mediaCodec->getListNum1();
 				int outIndex = mediaCodec->dequeueOutputBuffer(1000);
 				//EyerLog("OutIndex: %d\n", outIndex);
 				if(outIndex >= 0){
 
 					mediaCodec->renderFrame(outIndex, true);
+
 				}
 				else{
 					break;
