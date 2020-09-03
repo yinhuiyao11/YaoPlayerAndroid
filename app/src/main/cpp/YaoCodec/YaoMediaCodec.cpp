@@ -53,9 +53,10 @@ int YaoMediaCodec::init(YaoAVStream & avStream, jobject surface)
     if(mediaCodec == nullptr){
         EyerLog("cpp init CallIntMethod mediaCodec is null\n");
     } else{
-        EyerLog("cpp init CallIntMethod mediaCodec is not null\n");
-
+        //EyerLog("cpp init CallIntMethod mediaCodec is not null\n");
     }
+
+    initStatus = 0;
     return ret;
 }
 
@@ -75,6 +76,9 @@ int YaoMediaCodec::uninit()
         EyerLog("jni jmethodID is null \n");
     }
     int ret = env->CallIntMethod(mediaCodec, listGetMe);
+
+    initStatus = -1;
+
     return ret;
 }
 
@@ -281,22 +285,8 @@ int YaoMediaCodec::flush()
     return ret;
 }
 
-int YaoMediaCodec::getListNum1()
+int YaoMediaCodec::getInitStatus()
 {
-    JNIEnv * env;
-    JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
-    // 获取类
-    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::mediaCodec);
-    if(ax_list_jclass == NULL){
-        EyerLog("jclass is null \n");
-    }
-    // 获取方法
-    jmethodID listGetMe;
-    listGetMe = env->GetMethodID(ax_list_jclass, "getListNum1", "()I");
-    if(listGetMe == NULL){
-        EyerLog("jni jmethodID is null \n");
-    }
-    int ret = env->CallIntMethod(mediaCodec, listGetMe);
-    EyerLog("##################ret:%d", ret);
-    return ret;
+    return initStatus;
 }
+

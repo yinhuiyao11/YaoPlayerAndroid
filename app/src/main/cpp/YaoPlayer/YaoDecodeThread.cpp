@@ -44,6 +44,16 @@ void YaoDecodeThread::run()
 			}
 		}
 
+        int inputBufferIndex = -1;
+        if (type == YaoDecoderType::YAODECODER_TYPE_VIDEO) {
+            inputBufferIndex = mediaCodec->dequeueInputBuffer(1000 * 100);
+            if(inputBufferIndex < 0){
+                continue;
+            }
+        }
+
+        EyerLog("Input Index: %d\n", inputBufferIndex);
+
         YaoAVPacket *packet = nullptr;
         int ret = packetQueue.pop(&packet);
         if (ret) {
@@ -64,10 +74,11 @@ void YaoDecodeThread::run()
                     EyerLog("~~~~~changedPacket data%d: %d \n", i, changedPacket.getDataPtr()[i]);
                 }*/
 
-                int inputBufferIndex = mediaCodec->dequeueInputBuffer(1000 * 100);
+
                 if(inputBufferIndex >= 0){
                     ret = mediaCodec->send(inputBufferIndex, &changedPacket);
                     mediaCodec->queueInputBuffer(inputBufferIndex, 0, changedPacket.getSize(), (long long)(changedPacket.getSecPTS() * 1000.0), 0);
+                    inputBufferIndex = -1;
                 }
 
                 frameCount++;

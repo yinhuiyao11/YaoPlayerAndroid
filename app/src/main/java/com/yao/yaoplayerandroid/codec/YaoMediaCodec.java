@@ -17,10 +17,12 @@ import static android.media.MediaCodec.BUFFER_FLAG_END_OF_STREAM;
 public class YaoMediaCodec {
     private MediaCodec mediaCodec = null;
     private MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
-    private List<Integer> list = null;
-    public int getListNum1(){
-        return list.get(0);
+    private int initStatus = -1;
+    public int getInitStatus(){
+        System.out.println("###java getInitStatus " + initStatus);
+        return initStatus;
     }
+
     public int init(int width, int height, Surface surface){
         displayDecoders();
         Log.e("EyerMediaCodec", "width: " + width + " height: " + height);
@@ -35,15 +37,7 @@ public class YaoMediaCodec {
         MediaFormat mediaFormat = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC, width, height);
         mediaCodec.configure(mediaFormat, surface, null, 0);
         mediaCodec.start();
-        if(mediaCodec == null) {
-            System.out.println("in init:mediaCodec is null");
-            return -1;
-        }
-
-        list = new ArrayList<Integer>();
-        list.add(1);
-        list.add(2);
-
+        initStatus = 0;
         return 0;
     }
 

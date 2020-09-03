@@ -26,10 +26,11 @@ public:
 
     int sendEndOfStream(int index);
     int flush();
-    int getListNum1();
+    int getInitStatus();
 
 public:
     jobject mediaCodec = nullptr;
+    int initStatus = -1;
 
 };
 
