@@ -37,9 +37,9 @@ int YaoMediaCodec::init(YaoAVStream & avStream, jobject surface)
 
     mediaCodec = env->NewGlobalRef(_mediaCodec);
     if(mediaCodec == nullptr){
-        EyerLog("cpp init mediaCodec is null\n");
+        EyerLog("cpp init NewGlobalRef mediaCodec is null\n");
     } else{
-        //EyerLog("cpp init mediaCodec is not null\n");
+        EyerLog("cpp init NewGlobalRef mediaCodec is not null\n");
 
     }
     // 获取方法
@@ -50,7 +50,12 @@ int YaoMediaCodec::init(YaoAVStream & avStream, jobject surface)
     }
 
     int ret = env->CallIntMethod(mediaCodec, listGetMe , avStream.getWidth(), avStream.getHeight(), surface);
+    if(mediaCodec == nullptr){
+        EyerLog("cpp init CallIntMethod mediaCodec is null\n");
+    } else{
+        EyerLog("cpp init CallIntMethod mediaCodec is not null\n");
 
+    }
     return ret;
 }
 

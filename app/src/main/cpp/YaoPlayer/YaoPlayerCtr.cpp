@@ -62,8 +62,12 @@ void YaoPlayerCtr::run()
 		//printf("dTime:%lld\n", dTime);
 
 		if(mediaCodec->mediaCodec != nullptr){
+
 			while(1){
-				mediaCodec->getListNum1();
+				std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+				//mediaCodec->getListNum1();
+				EyerLog("run mediaCodec->dequeueOutputBuffer\n");
+
 				int outIndex = mediaCodec->dequeueOutputBuffer(1000);
 				//EyerLog("OutIndex: %d\n", outIndex);
 				if(outIndex >= 0){
