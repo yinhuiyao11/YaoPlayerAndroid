@@ -19,7 +19,7 @@ public:
     int send(int inputBufIndex, YaoAVPacket * annexbPkt);
     int recvAndRender();
     int dequeueOutputBuffer(long long timeoutUs);
-    long getOutTime();
+    long long getOutTime();
     int renderFrame(int outindex, bool isRender);
     int dequeueInputBuffer(long long timeoutUs);
     int queueInputBuffer(int inputBufIndex, int offset, int size, long long presentationTimeUs, int flags);

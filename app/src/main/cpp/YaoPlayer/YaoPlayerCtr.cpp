@@ -62,30 +62,28 @@ void YaoPlayerCtr::run()
 		dTime = dTime + (long long)(seekTime * 1000);
 		//printf("dTime:%lld\n", dTime);
 
+		long long videoFrameTime = -1;
+		int outIndex = -1;
 		if(mediaCodec->mediaCodec != nullptr){
 			while(1){
-				EyerLog("run mediaCodec->dequeueOutputBuffer\n");
+				if(outIndex == -1){
+					outIndex = mediaCodec->dequeueOutputBuffer(1000);
+					EyerLog("OutIndex: %d\n", outIndex);
+				}
 
-				int outIndex = mediaCodec->dequeueOutputBuffer(1000);
-				EyerLog("OutIndex: %d\n", outIndex);
 				if(outIndex >= 0){
-					mediaCodec->renderFrame(outIndex, true);
+					videoFrameTime = mediaCodec->getOutTime();
+					double timePts = videoFrameTime /1000.0;
+					EyerLog("videoFrameTime:%lld, timePts: %f, dTime:%lld\n",videoFrameTime, timePts, dTime);
+
+					if(videoFrameTime <= dTime){
+						mediaCodec->renderFrame(outIndex, true);
+						outIndex = -1;
+					}
 				}
 				else{
 					break;
 				}
-				/*
-				if(outIndex >= 0){
-
-					mediaCodec->renderFrame(outIndex, true);
-
-				}
-				else{
-					break;
-				}
-				 */
-
-				//sleep(1);
 			}
 			/*
 			if(outindex < 0){

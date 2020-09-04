@@ -19,7 +19,6 @@ public class YaoMediaCodec {
     private MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
     private int initStatus = -1;
     public int getInitStatus(){
-        System.out.println("###java getInitStatus " + initStatus);
         return initStatus;
     }
 
@@ -115,6 +114,7 @@ public class YaoMediaCodec {
     }
 
     public long getOutTime(){
+        System.out.println("java bufferInfo.presentationTimeUs: "+bufferInfo.presentationTimeUs);
         return bufferInfo.presentationTimeUs;
     }
 

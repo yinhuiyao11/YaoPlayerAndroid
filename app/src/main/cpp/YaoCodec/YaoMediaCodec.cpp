@@ -208,8 +208,7 @@ int YaoMediaCodec::queueInputBuffer(int inputBufIndex, int offset, int size, lon
     return 0;
 }
 
-
-long YaoMediaCodec::getOutTime()
+long long YaoMediaCodec::getOutTime()
 {
     JNIEnv * env;
     JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
@@ -224,9 +223,10 @@ long YaoMediaCodec::getOutTime()
     if(listGetMe == NULL){
         EyerLog("jni jmethodID is null \n");
     }
-    int ret = env->CallLongMethod(mediaCodec, listGetMe);
+    long long ret = env->CallLongMethod(mediaCodec, listGetMe);
     return ret;
 }
+
 int YaoMediaCodec::renderFrame(int outIndex, bool isRender)
 {
     JNIEnv * env;

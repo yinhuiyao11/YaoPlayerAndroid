@@ -47,6 +47,7 @@ void YaoDecodeThread::run()
         int inputBufferIndex = -1;
         if (type == YaoDecoderType::YAODECODER_TYPE_VIDEO) {
             inputBufferIndex = mediaCodec->dequeueInputBuffer(1000 * 100);
+
             if(inputBufferIndex < 0){
                 continue;
             }
@@ -77,6 +78,8 @@ void YaoDecodeThread::run()
 
                 if(inputBufferIndex >= 0){
                     ret = mediaCodec->send(inputBufferIndex, &changedPacket);
+                    stream->scalePacketPts(changedPacket);
+                    EyerLog("pts:%lld \n", (long long)(changedPacket.getSecPTS() * 1000.0));
                     mediaCodec->queueInputBuffer(inputBufferIndex, 0, changedPacket.getSize(), (long long)(changedPacket.getSecPTS() * 1000.0), 0);
                     inputBufferIndex = -1;
                 }
