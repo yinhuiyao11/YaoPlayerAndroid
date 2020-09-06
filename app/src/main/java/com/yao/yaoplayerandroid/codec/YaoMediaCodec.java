@@ -114,7 +114,6 @@ public class YaoMediaCodec {
     }
 
     public long getOutTime(){
-        System.out.println("java bufferInfo.presentationTimeUs: "+bufferInfo.presentationTimeUs);
         return bufferInfo.presentationTimeUs;
     }
 
