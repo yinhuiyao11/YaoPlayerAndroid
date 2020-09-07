@@ -17,7 +17,6 @@ import com.yao.yaoplayerandroid.player.Player;
 import java.io.File;
 
 public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback {
-    private Player player;
     static long duration = 0;
 
     public MySurfaceView(Context context) {
@@ -59,11 +58,10 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         File f = new File(videoPath);
         System.out.println("f:" + f.canRead());
 
-        player = new Player(videoPath);
-        duration = player.gl_duration();
+        duration = MainActivity.player.gl_duration();
 
-        player.open(0, surface);
-        player.play();
+        MainActivity.player.open(0, surface);
+        MainActivity.player.play();
 
     }
 

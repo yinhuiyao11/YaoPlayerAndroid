@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         verifyStoragePermissions(this);
 
-        /*File dir = Environment.getExternalStorageDirectory();
+        File dir = Environment.getExternalStorageDirectory();
         //String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
         //String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
         //String videoPath = dir.getAbsolutePath() + "/" + "ST/banfo.mp4";
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
         video_progress_bar = findViewById(R.id.video_progress_bar);
 
-        bindSeekBar(player);*/
+        bindSeekBar(player);
 
 
         //initView();
