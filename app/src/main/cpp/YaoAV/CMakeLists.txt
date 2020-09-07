@@ -12,6 +12,7 @@ add_library(
 	YaoAVStream.cpp
 	YaoAVFrame.cpp
 	YaoTime.cpp
+		EyerAVBitstreamFilter.cpp
 )
 
 target_link_libraries(

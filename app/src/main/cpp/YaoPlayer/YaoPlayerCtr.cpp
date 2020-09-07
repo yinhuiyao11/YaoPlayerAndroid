@@ -6,16 +6,23 @@ YaoPlayerCtr::YaoPlayerCtr(std::string _path, double _time)
 {
     path = _path;
     seekTime = _time;
+	mediaCodec = new YaoMediaCodec();
+
 }
 
 YaoPlayerCtr::~YaoPlayerCtr()
 {
-
+	if(mediaCodec != nullptr){
+		mediaCodec->uninit();
+	}
 }
 
 void YaoPlayerCtr::run()
 {
-	YaoPlayerReaderThread readerThread(path, this);
+	JNIEnv * env;
+	JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
+
+	YaoPlayerReaderThread readerThread(path, this, mediaCodec);
 	readerThread.start();
 
 	//获取线程启动时的时间 startTime
@@ -30,18 +37,17 @@ void YaoPlayerCtr::run()
 	while(readerThread.getAudioSampleRate() == 0 || readerThread.getAudioChannels() == 0){
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
-	//EyerLog("++++++++++++getAudioSampleRate:%d ,getAudioChannels:%d ",reader.getAudioSampleRate(), reader.getAudioChannels());
-	/*YaoSL playerSl(&playAudioFrameQueue);
-	//1 创建引擎
-	playerSl.createEngin();
-	//2 创建混音器
-	playerSl.createMix();
-	//3 配置音频信息
-	playerSl.setDataSource(10, readerThread.getAudioSampleRate(), readerThread.getAudioChannels());
-	// 4 创建播放器
-	playerSl.createAudioPlayer();*/
+
+	while (mediaCodec->getInitStatus() == -1){
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
+	}
+
+	long long videoFrameTime = -1;
+	int outIndex = -1;
 
 	while (!stopFlag) {
+		EyerLog("first OutIndex: %d\n", outIndex);
+
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
 		long long pauseStart = YaoTime::getTime();
@@ -60,8 +66,49 @@ void YaoPlayerCtr::run()
 		dTime = dTime - pauseDurationAll;
 		dTime = dTime + (long long)(seekTime * 1000);
 		//printf("dTime:%lld\n", dTime);
-	
-		//-------视频
+
+
+		if(mediaCodec->mediaCodec != nullptr){
+			while(1){
+				if(outIndex < 0){
+					outIndex = mediaCodec->dequeueOutputBuffer(1);
+					EyerLog("OutIndex: %d\n", outIndex);
+				}
+
+				if(outIndex >= 0){
+					videoFrameTime = mediaCodec->getOutTime();
+					EyerLog("videoFrameTime:%lld, dTime:%lld\n",videoFrameTime, dTime);
+
+					if(videoFrameTime <= dTime){
+						mediaCodec->renderFrame(outIndex, true);
+						outIndex = -1;
+					} else{
+						break;
+					}
+				}
+				else{
+					break;
+				}
+			}
+			/*
+			if(outindex < 0){
+				outindex = mediaCodec->dequeueOutputBuffer();
+				if(outindex >= 0){
+					videoFrameTime = mediaCodec->getOutTime();
+					EyerLog("outindex:%d, videoFrameTime:%d \n", outindex, videoFrameTime);
+				}
+			}
+			if(outindex >= 0){
+				double timePts = videoFrameTime / 1000.0;
+				if(timePts <= dTime){
+					mediaCodec->renderFrame(outindex);
+					outindex = -1;
+				}
+			}
+			 */
+		}
+		//软解视频
+		/*//-------视频
 		//从视频frame缓存队列中获取一帧视频 framePts
 		if (videoFrame == nullptr) {
 			videoFrameQueue.pop(&videoFrame);
@@ -87,7 +134,7 @@ void YaoPlayerCtr::run()
 			else {
 				//还不到播放的时间，程序自悬，或者去处理音频
 			}
-		}
+		}*/
 
 		//------音频
 		//从音频frame缓存队列中获取一帧音频 framePts
@@ -115,7 +162,7 @@ void YaoPlayerCtr::run()
 
 		if(dTime > 1000 * callbackNum) {
 			JavaVMObj obj;
-			obj.callJavaMethod(JavaVMObj::jobj, "playSetProgressBar", "(I)I", (int)(dTime/1000));
+			// obj.callJavaMethod(JavaVMObj::jobj, "playSetProgressBar", "(I)I", (int)(dTime/1000));
 			callbackNum++;
 		}
 	}

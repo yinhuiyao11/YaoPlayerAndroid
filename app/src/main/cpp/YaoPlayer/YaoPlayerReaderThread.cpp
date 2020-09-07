@@ -10,10 +10,11 @@ extern "C"
 #include <libavutil/avutil.h>
 }
 
-YaoPlayerReaderThread::YaoPlayerReaderThread(std::string _path, YaoPlayerCtr* _ctrThread)
+YaoPlayerReaderThread::YaoPlayerReaderThread(std::string _path, YaoPlayerCtr* _ctrThread, YaoMediaCodec * _mediaCodec)
 {
 	path = _path;
 	ctrThread = _ctrThread;
+	mediaCodec = _mediaCodec;
 }
 YaoPlayerReaderThread::~YaoPlayerReaderThread()
 {
@@ -39,6 +40,7 @@ void YaoPlayerReaderThread::run()
 
 	//TODO��ʼ��������
 	YaoDecodeThread* videoDecodeThread = new  YaoDecodeThread(ctrThread, YaoDecoderType::YAODECODER_TYPE_VIDEO);
+	videoDecodeThread->setMediaCodec(mediaCodec);
 	YaoDecodeThread* audioDecodeThread = new  YaoDecodeThread(ctrThread, YaoDecoderType::YAODECODER_TYPE_AUDIO);
 
 	YaoAVStream videoStream;

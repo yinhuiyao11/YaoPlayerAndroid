@@ -1,4 +1,5 @@
 #pragma once
+#include <stdint.h>
 
 class YaoAVPacketPrivate;
 class YaoAVReaderPrivate;
@@ -12,9 +13,17 @@ class YaoAVPacket
 public:
 	YaoAVPacket();
 	~YaoAVPacket();
+	int getIndex();
+	int getSize();
+
+	double getSecPTS();
+	uint64_t getPTS();
+
+	unsigned char * getDataPtr();
 public:
 	YaoAVPacketPrivate * packetPrivate = nullptr;
-	int getIndex();
+	double secPTS = 0.0;
+	int isLastPacket = 0;
 };
 
 class YaoAVFrame
@@ -74,11 +83,15 @@ class YaoAVStream
 public:
 	YaoAVStream();
 	~YaoAVStream();
+	int scalePacketPts(YaoAVPacket & pkt);
+	int getHeight();
+	int getWidth();
 public:
 	YaoAVStreamPrivate* imp = nullptr;
 	int streamIndex = -1;
 	int timebaseDen = -1;
 	int timebaseNum = -1;
+
 };
 
 class Decoder
