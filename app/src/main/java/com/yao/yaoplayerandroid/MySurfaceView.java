@@ -6,7 +6,9 @@ import android.util.AttributeSet;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.SeekBar;
 
+import com.yao.yaoplayerandroid.callback.ProgressBarHandler;
 import com.yao.yaoplayerandroid.codec.InputBufferThread;
 import com.yao.yaoplayerandroid.codec.OutputBufferThread;
 import com.yao.yaoplayerandroid.codec.YaoMediaCodec;
@@ -15,6 +17,9 @@ import com.yao.yaoplayerandroid.player.Player;
 import java.io.File;
 
 public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback {
+    private Player player;
+    static long duration = 0;
+
     public MySurfaceView(Context context) {
         super(context);
         init();
@@ -34,11 +39,6 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         getHolder().addCallback(this);
         return 0;
     }
-
-
-    //private YaoMediaCodec mediaCodec = null;
-    private Player player;
-    static long duration = 0;
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
@@ -61,21 +61,9 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
 
         player = new Player(videoPath);
         duration = player.gl_duration();
+
         player.open(0, surface);
-
-        //video_progress_bar.setMax(100);
-        //bindSeekBar(player);
-
         player.play();
-
-
-       /* mediaCodec = new YaoMediaCodec();
-        mediaCodec.init(1920, 1080, holder.getSurface());
-        Thread inputBufferThread = new Thread(new InputBufferThread(mediaCodec));
-        inputBufferThread.start();
-
-        Thread outputBufferThread = new Thread(new OutputBufferThread(mediaCodec));
-        outputBufferThread.start();*/
 
     }
 
@@ -88,4 +76,17 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
     public void surfaceDestroyed(SurfaceHolder holder) {
 
     }
+
+
 }
+
+
+        //mediaCodec java层使用
+       /* mediaCodec = new YaoMediaCodec();
+        mediaCodec.init(1920, 1080, holder.getSurface());
+        Thread inputBufferThread = new Thread(new InputBufferThread(mediaCodec));
+        inputBufferThread.start();
+
+        Thread outputBufferThread = new Thread(new OutputBufferThread(mediaCodec));
+        outputBufferThread.start();*/
+

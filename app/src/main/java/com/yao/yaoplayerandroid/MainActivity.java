@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.opengl.GLSurfaceView;
 
+import com.yao.yaoplayerandroid.callback.ProgressBarHandler;
 import com.yao.yaoplayerandroid.player.Player;
 import com.yao.yaoplayerandroid.test.Nalu;
 import com.yao.yaoplayerandroid.test.ReadNalu;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_start;
     private SeekBar video_progress_bar;
     private RelativeLayout mParent;
-    private Player player;
+    public static Player player;
     private int started = 0;
 
     private int screenHeight;
@@ -41,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private int isplay = 1;
 
     public int progress = 0;
-    MyHandler myHandler;
-    static MyHandler mHandler;
+    ProgressBarHandler myHandler;
+    static ProgressBarHandler mHandler;
     static long duration = 0;
 
     private static String[] PERMISSIONS_STORAGE = {
@@ -56,7 +57,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         verifyStoragePermissions(this);
-        
+
+        /*File dir = Environment.getExternalStorageDirectory();
+        //String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
+        //String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
+        //String videoPath = dir.getAbsolutePath() + "/" + "ST/banfo.mp4";
+        String videoPath = dir.getAbsolutePath() + "/" + "ST/mrHe.mp4";
+        //String videoPath = dir.getAbsolutePath() + "/" + "ST/The_Beauty_of_Earth.mp4";
+        //String videoPath = dir.getAbsolutePath() + "/" + "ST/4k_animal.mp4";
+        //String videoPath = dir.getAbsolutePath() + "/" + "ST/rabbit.mp4";
+        //String videoPath = "http://redknot.cn/sohu/hls/shuw.m3u8";
+
+        player = new Player(videoPath);
+        duration = player.gl_duration();
+        myHandler = new ProgressBarHandler(this, duration);
+        mHandler = myHandler;//重要,保存全局静态handler句柄,以便回掉的时候能找到该上下文
+
+        video_progress_bar = findViewById(R.id.video_progress_bar);
+
+        bindSeekBar(player);*/
+
+
         //initView();
         /*setContentView(R.layout.activity_main);
         // Example of a call to a native method
@@ -76,10 +97,8 @@ public class MainActivity extends AppCompatActivity {
         btn_start = findViewById(R.id.btn_start);
         mParent = findViewById(R.id.test_parent_play);
 
-        myHandler = new MyHandler();
-        mHandler = myHandler;//重要,保存全局静态handler句柄,以便回掉的时候能找到该上下文
 
-        video_progress_bar = findViewById(R.id.video_progress_bar);
+
         video_progress_bar.setMax(100);
         video_progress_bar.setProgress(progress);
         btn_start.setOnClickListener(new View.OnClickListener(){
@@ -140,23 +159,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         //player.pause();
-    }
-
-    class MyHandler extends Handler {
-        public MyHandler() {
-        }
-
-        public MyHandler(Looper L) {
-            super(L);
-        }
-
-        // 子类必须重写此方法，接受数据
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            // 此处可以更新UI
-            video_progress_bar.setProgress((int)((float)msg.what/(float) duration * (float)100));
-        }
     }
 
     public void verifyStoragePermissions(Activity activity) {

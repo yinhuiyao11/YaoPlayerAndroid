@@ -67,17 +67,16 @@ void YaoPlayerCtr::run()
 		dTime = dTime + (long long)(seekTime * 1000);
 		//printf("dTime:%lld\n", dTime);
 
-
 		if(mediaCodec->mediaCodec != nullptr){
 			while(1){
 				if(outIndex < 0){
 					outIndex = mediaCodec->dequeueOutputBuffer(1);
-					EyerLog("OutIndex: %d\n", outIndex);
+					//EyerLog("OutIndex: %d\n", outIndex);
 				}
 
 				if(outIndex >= 0){
 					videoFrameTime = mediaCodec->getOutTime();
-					EyerLog("videoFrameTime:%lld, dTime:%lld\n",videoFrameTime, dTime);
+					//EyerLog("videoFrameTime:%lld, dTime:%lld\n",videoFrameTime, dTime);
 
 					if(videoFrameTime <= dTime){
 						mediaCodec->renderFrame(outIndex, true);
@@ -90,22 +89,6 @@ void YaoPlayerCtr::run()
 					break;
 				}
 			}
-			/*
-			if(outindex < 0){
-				outindex = mediaCodec->dequeueOutputBuffer();
-				if(outindex >= 0){
-					videoFrameTime = mediaCodec->getOutTime();
-					EyerLog("outindex:%d, videoFrameTime:%d \n", outindex, videoFrameTime);
-				}
-			}
-			if(outindex >= 0){
-				double timePts = videoFrameTime / 1000.0;
-				if(timePts <= dTime){
-					mediaCodec->renderFrame(outindex);
-					outindex = -1;
-				}
-			}
-			 */
 		}
 		//Èí½âÊÓÆµ
 		/*//-------ÊÓÆµ
@@ -162,7 +145,7 @@ void YaoPlayerCtr::run()
 
 		if(dTime > 1000 * callbackNum) {
 			JavaVMObj obj;
-			// obj.callJavaMethod(JavaVMObj::jobj, "playSetProgressBar", "(I)I", (int)(dTime/1000));
+			//obj.callJavaMethod(JavaVMObj::jobj, "playSetProgressBar", "(I)I", (int)(dTime/1000));
 			callbackNum++;
 		}
 	}
