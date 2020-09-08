@@ -25,7 +25,7 @@ public class ProgressBarHandler extends Handler {
     public void handleMessage(Message msg) {
         super.handleMessage(msg);
         // 此处可以更新UI
-        SeekBar video_progress_bar = content.findViewById(R.id.video_progress_bar);
-        video_progress_bar.setProgress((int)((float)msg.what/(float) duration * (float)100));
+        SeekBar video_progress_bar_inner = content.findViewById(R.id.video_progress_bar);
+        video_progress_bar_inner.setProgress((int)((float)msg.what/(float) duration * (float)100));
     }
 }

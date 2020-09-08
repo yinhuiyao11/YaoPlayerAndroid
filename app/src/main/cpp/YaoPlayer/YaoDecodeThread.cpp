@@ -116,7 +116,9 @@ void YaoDecodeThread::run()
                 //printf("frameCount:%d\n", frameCount);
             }
         }
-	}
+        //mediaCodec->flush();
+
+    }
 }
 
 int YaoDecodeThread::init(YaoAVStream* _stream)

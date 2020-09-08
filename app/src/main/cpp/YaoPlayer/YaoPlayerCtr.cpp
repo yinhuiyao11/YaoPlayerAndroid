@@ -2,19 +2,16 @@
 #include "../EyerCore/EyerLog.hpp"
 #include "../YaoPlayerJni/JavaVMObj.h"
 
-YaoPlayerCtr::YaoPlayerCtr(std::string _path, double _time)
+YaoPlayerCtr::YaoPlayerCtr(std::string _path, YaoMediaCodec * _mediaCodec, double _time)
 {
     path = _path;
     seekTime = _time;
-	mediaCodec = new YaoMediaCodec();
-
+	mediaCodec = _mediaCodec;
 }
 
 YaoPlayerCtr::~YaoPlayerCtr()
 {
-	if(mediaCodec != nullptr){
-		mediaCodec->uninit();
-	}
+
 }
 
 void YaoPlayerCtr::run()
@@ -145,7 +142,7 @@ void YaoPlayerCtr::run()
 
 		if(dTime > 1000 * callbackNum) {
 			JavaVMObj obj;
-			//obj.callJavaMethod(JavaVMObj::jobj, "playSetProgressBar", "(I)I", (int)(dTime/1000));
+			obj.callJavaMethod(JavaVMObj::jobj, "playSetProgressBar", "(I)I", (int)(dTime/1000));
 			callbackNum++;
 		}
 	}

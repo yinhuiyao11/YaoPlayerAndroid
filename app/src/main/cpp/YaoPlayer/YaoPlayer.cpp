@@ -7,6 +7,7 @@ YaoPlayer::YaoPlayer(std::string _path)
 {
 	path = _path;
 	setWidthHeight();
+    mediaCodec = new YaoMediaCodec();
 }
 
 YaoPlayer::~YaoPlayer()
@@ -19,12 +20,16 @@ YaoPlayer::~YaoPlayer()
 		delete playerSl;
 		playerSl = nullptr;
 	}
+
+    if(mediaCodec != nullptr){
+        mediaCodec->uninit();
+    }
 }
 
 int YaoPlayer::open(double time)
 {
 	if (playerCtr == nullptr) {
-		playerCtr = new YaoPlayerCtr(path, time);
+		playerCtr = new YaoPlayerCtr(path, mediaCodec, time);
 		playerCtr->start();
 		if(playerGl == nullptr){
 			playerGl = new YaoPlayerGL(&(playerCtr->playVideoFrameQueue));
