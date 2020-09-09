@@ -44,11 +44,11 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         Surface surface = holder.getSurface();
         holder.setKeepScreenOn(true);
 
-        File dir = Environment.getExternalStorageDirectory();
+        /*File dir = Environment.getExternalStorageDirectory();
         //String videoPath = dir.getAbsolutePath() + "/" + "ST/time_clock_1min_720x1280_30fps.mp4";
         //String videoPath = dir.getAbsolutePath() + "/" + "ST/ads.mp4";
-        //String videoPath = dir.getAbsolutePath() + "/" + "ST/banfo.mp4";
-        String videoPath = dir.getAbsolutePath() + "/" + "ST/mrHe.mp4";
+        String videoPath = dir.getAbsolutePath() + "/" + "ST/banfo.mp4";
+        //String videoPath = dir.getAbsolutePath() + "/" + "ST/mrHe.mp4";
         //String videoPath = dir.getAbsolutePath() + "/" + "ST/The_Beauty_of_Earth.mp4";
         //String videoPath = dir.getAbsolutePath() + "/" + "ST/4k_animal.mp4";
         //String videoPath = dir.getAbsolutePath() + "/" + "ST/rabbit.mp4";
@@ -56,7 +56,7 @@ public class MySurfaceView extends SurfaceView implements SurfaceHolder.Callback
         System.out.println("+++++++++path:" + videoPath);
 
         File f = new File(videoPath);
-        System.out.println("f:" + f.canRead());
+        System.out.println("f:" + f.canRead());*/
 
         duration = MainActivity.player.gl_duration();
 

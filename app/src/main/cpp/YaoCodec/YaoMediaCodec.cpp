@@ -14,6 +14,30 @@ YaoMediaCodec::~YaoMediaCodec()
 
 }
 
+int YaoMediaCodec::start()
+{
+    JNIEnv * env;
+    JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
+    // 获取类
+    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::mediaCodec);
+    if(ax_list_jclass == NULL){
+        EyerLog("jclass is null \n");
+    }
+    // 获取方法
+    jmethodID listGetMe;
+    listGetMe = env->GetMethodID(ax_list_jclass, "start", "()V");
+    if(listGetMe == NULL){
+        EyerLog("jni jmethodID is null \n");
+    }
+    env->CallVoidMethod(mediaCodec, listGetMe);
+    /*if(env->ExceptionCheck()){
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+        EyerLog("cpp YaoMediaCodec::start call fail \n");
+    }*/
+    return 0;
+}
+
 int YaoMediaCodec::init(YaoAVStream & avStream, jobject surface)
 {
     JNIEnv * env;
@@ -50,10 +74,10 @@ int YaoMediaCodec::init(YaoAVStream & avStream, jobject surface)
     }
 
     int ret = env->CallIntMethod(mediaCodec, listGetMe , avStream.getWidth(), avStream.getHeight(), surface);
-    if(mediaCodec == nullptr){
-        EyerLog("cpp init CallIntMethod mediaCodec is null\n");
-    } else{
-        //EyerLog("cpp init CallIntMethod mediaCodec is not null\n");
+    if(env->ExceptionCheck()){
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+        EyerLog("cpp YaoMediaCodec::init call fail \n");
     }
 
     initStatus = 0;
@@ -109,7 +133,11 @@ int YaoMediaCodec::send(int inputBufIndex, YaoAVPacket * annexbPkt)
     env->SetByteArrayRegion(jData, 0, annexbPkt->getSize(), (jbyte*)annexbPkt->getDataPtr());
     jlong time = (jlong)(annexbPkt->getSecPTS() * 1000);
     int ret = env->CallIntMethod(mediaCodec, listGetMe, inputBufIndex, jData);
-
+//    if(env->ExceptionCheck()){
+//        env->ExceptionDescribe();
+//        env->ExceptionClear();
+//        EyerLog("cpp YaoMediaCodec::send call fail \n");
+//    }
     return ret;
 }
 int YaoMediaCodec::recvAndRender()
@@ -134,6 +162,11 @@ int YaoMediaCodec::recvAndRender()
         EyerLog("jni jmethodID is null \n");
     }
     int ret = env->CallIntMethod(mediaCodec, listGetMe);
+    /*if(env->ExceptionCheck()){
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+        EyerLog("cpp YaoMediaCodec::recvAndRender call fail \n");
+    }*/
     return ret;
 }
 int YaoMediaCodec::dequeueOutputBuffer(long long timeoutUs)
@@ -156,7 +189,11 @@ int YaoMediaCodec::dequeueOutputBuffer(long long timeoutUs)
         EyerLog("cpp mediaCodec is null\n");
     }
     int ret = env->CallIntMethod(mediaCodec, listGetMe, timeoutUs);
-
+    /*if(env->ExceptionCheck()){
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+        EyerLog("cpp YaoMediaCodec::dequeueOutputBuffer call fail \n");
+    }*/
     return ret;
 }
 
@@ -180,7 +217,11 @@ int YaoMediaCodec::dequeueInputBuffer(long long timeoutUs)
         EyerLog("cpp mediaCodec is null\n");
     }
     int ret = env->CallIntMethod(mediaCodec, listGetMe, timeoutUs);
-
+    /*if(env->ExceptionCheck()){
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+        EyerLog("cpp YaoMediaCodec::dequeueInputBuffer call fail \n");
+    }*/
     return ret;
 }
 
@@ -204,7 +245,11 @@ int YaoMediaCodec::queueInputBuffer(int inputBufIndex, int offset, int size, lon
         EyerLog("cpp mediaCodec is null\n");
     }
     env->CallVoidMethod(mediaCodec, listGetMe, inputBufIndex, offset, size, presentationTimeUs, flags);
-
+    /*if(env->ExceptionCheck()){
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+        EyerLog("cpp YaoMediaCodec::queueInputBuffer call fail \n");
+    }*/
     return 0;
 }
 
@@ -224,6 +269,11 @@ long long YaoMediaCodec::getOutTime()
         EyerLog("jni jmethodID is null \n");
     }
     long long ret = env->CallLongMethod(mediaCodec, listGetMe);
+    /*if(env->ExceptionCheck()){
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+        EyerLog("cpp YaoMediaCodec::getOutTime call fail \n");
+    }*/
     return ret;
 }
 
@@ -244,7 +294,11 @@ int YaoMediaCodec::renderFrame(int outIndex, bool isRender)
         EyerLog("jni jmethodID is null \n");
     }
     int ret = env->CallIntMethod(mediaCodec, listGetMe, outIndex, isRender);
-
+    /*if(env->ExceptionCheck()){
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+        EyerLog("cpp YaoMediaCodec::renderFrame call fail \n");
+    }*/
     return ret;
 }
 int YaoMediaCodec::sendEndOfStream(int index)
@@ -263,6 +317,11 @@ int YaoMediaCodec::sendEndOfStream(int index)
         EyerLog("jni jmethodID is null \n");
     }
     env->CallVoidMethod(mediaCodec, listGetMe, index);
+    /*if(env->ExceptionCheck()){
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+        EyerLog("cpp YaoMediaCodec::sendEndOfStream call fail \n");
+    }*/
     return 0;
 }
 
@@ -282,6 +341,11 @@ int YaoMediaCodec::flush()
         EyerLog("jni jmethodID is null \n");
     }
     int ret = env->CallIntMethod(mediaCodec, listGetMe);
+    /*if(env->ExceptionCheck()){
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+        EyerLog("cpp YaoMediaCodec::flush call fail \n");
+    }*/
     return ret;
 }
 

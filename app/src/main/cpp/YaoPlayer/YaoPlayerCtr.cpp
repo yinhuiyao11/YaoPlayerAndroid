@@ -43,8 +43,6 @@ void YaoPlayerCtr::run()
 	int outIndex = -1;
 
 	while (!stopFlag) {
-		EyerLog("first OutIndex: %d\n", outIndex);
-
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
 		long long pauseStart = YaoTime::getTime();
@@ -146,7 +144,7 @@ void YaoPlayerCtr::run()
 			callbackNum++;
 		}
 	}
-
+	mediaCodec->flush();
 	readerThread.stop();
 }
 

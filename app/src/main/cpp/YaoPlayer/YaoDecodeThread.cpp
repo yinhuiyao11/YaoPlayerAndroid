@@ -26,8 +26,12 @@ void YaoDecodeThread::run()
 	int frameCount = 0;
     Eyer::EyerAVBitstreamFilter bitstreamFilter(Eyer::EyerAVBitstreamFilterType::h264_mp4toannexb, *stream);
     if (type == YaoDecoderType::YAODECODER_TYPE_VIDEO) {
-        mediaCodec->init(*stream, JavaVMObj::surface);
-        EyerLog("run mediaCodec->init\n");
+        if(mediaCodec->mediaCodec == nullptr){
+            mediaCodec->init(*stream, JavaVMObj::surface);
+            EyerLog("run mediaCodec->init\n");
+        } else{
+            mediaCodec->start();
+        }
     }
 	while (!stopFlag) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -53,8 +57,6 @@ void YaoDecodeThread::run()
             }
         }
 
-        EyerLog("Input Index: %d\n", inputBufferIndex);
-
         YaoAVPacket *packet = nullptr;
         int ret = packetQueue.pop(&packet);
         if (ret) {
@@ -79,7 +81,7 @@ void YaoDecodeThread::run()
                 if(inputBufferIndex >= 0){
                     ret = mediaCodec->send(inputBufferIndex, &changedPacket);
                     stream->scalePacketPts(changedPacket);
-                    EyerLog("pts:%lld \n", (long long)(changedPacket.getSecPTS() * 1000.0));
+                    EyerLog("pts:%lld \n", (long long)(changedPacket.getSecPTS()));
                     mediaCodec->queueInputBuffer(inputBufferIndex, 0, changedPacket.getSize(), (long long)(changedPacket.getSecPTS() * 1000.0), 0);
                     inputBufferIndex = -1;
                 }

@@ -16,6 +16,7 @@ public:
     int init(YaoAVStream & avStream, jobject surface);
     int uninit();
 
+    int start();
     int send(int inputBufIndex, YaoAVPacket * annexbPkt);
     int recvAndRender();
     int dequeueOutputBuffer(long long timeoutUs);
