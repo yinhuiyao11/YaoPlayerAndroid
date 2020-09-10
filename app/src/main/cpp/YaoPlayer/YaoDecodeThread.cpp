@@ -49,10 +49,14 @@ void YaoDecodeThread::run()
 		}
 
         int inputBufferIndex = -1;
+        EyerLog("==`11111111`\n");
+
         if (type == YaoDecoderType::YAODECODER_TYPE_VIDEO) {
             inputBufferIndex = mediaCodec->dequeueInputBuffer(1000 * 100);
 
             if(inputBufferIndex < 0){
+                EyerLog("==inputBufferIndex < 0 \n");
+
                 continue;
             }
         }
@@ -65,17 +69,21 @@ void YaoDecodeThread::run()
 
         if (type == YaoDecoderType::YAODECODER_TYPE_VIDEO) {
             bitstreamFilter.SendPacket(packet);
+            EyerLog("==in YAODECODER_TYPE_VIDEO) \n");
+
             //Ó²½âÂë
             while (!stopFlag) {
                 YaoAVPacket changedPacket;
                 int ret = bitstreamFilter.ReceivePacket(&changedPacket);
                 if(ret){
+                    EyerLog("==break) \n");
+
                     break;
                 }
 
-                /*for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < 4; i++) {
                     EyerLog("~~~~~changedPacket data%d: %d \n", i, changedPacket.getDataPtr()[i]);
-                }*/
+                }
 
 
                 if(inputBufferIndex >= 0){
@@ -90,6 +98,7 @@ void YaoDecodeThread::run()
 
 
             }
+
         }
 
 		//Èí½âÂë
@@ -117,6 +126,7 @@ void YaoDecodeThread::run()
                 frameCount++;
                 //printf("frameCount:%d\n", frameCount);
             }
+
         }
         //mediaCodec->flush();
 

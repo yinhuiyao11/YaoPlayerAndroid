@@ -41,6 +41,7 @@ void YaoPlayerReaderThread::run()
 	//TODO��ʼ��������
 	YaoDecodeThread* videoDecodeThread = new  YaoDecodeThread(ctrThread, YaoDecoderType::YAODECODER_TYPE_VIDEO);
 	videoDecodeThread->setMediaCodec(mediaCodec);
+
 	YaoDecodeThread* audioDecodeThread = new  YaoDecodeThread(ctrThread, YaoDecoderType::YAODECODER_TYPE_AUDIO);
 
 	YaoAVStream videoStream;
