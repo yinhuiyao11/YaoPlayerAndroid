@@ -42,16 +42,18 @@ void YaoDecodeThread::run()
 				continue;
 			}
 		}*/
-		if (type == YaoDecoderType::YAODECODER_TYPE_AUDIO) {
+		//todo
+		/*if (type == YaoDecoderType::YAODECODER_TYPE_AUDIO) {
 			if (ctrThread->getAudioFrameQueueSize() > 20) {
-				continue;
+				EyerLog("ctrThread->getAudioFrameQueueSize() > 20 \n");
+			    continue;
 			}
-		}
+		}*/
 
         int inputBufferIndex = -1;
-        EyerLog("==`11111111`\n");
 
         if (type == YaoDecoderType::YAODECODER_TYPE_VIDEO) {
+            EyerLog("==`11111111`\n");
             inputBufferIndex = mediaCodec->dequeueInputBuffer(1000 * 100);
 
             if(inputBufferIndex < 0){

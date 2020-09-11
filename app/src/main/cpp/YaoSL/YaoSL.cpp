@@ -16,14 +16,14 @@ void pcmCallBack(SLAndroidSimpleBufferQueueItf bf, void*contex)
 
     YaoSL * sl = (YaoSL *)contex;
     YaoAVFrame* audioFrame = nullptr;
-    //EyerLog("sl->playAudioFrameQueue->queueSize():%d\n", sl->playAudioFrameQueue->queueSize());
+    EyerLog("sl->playAudioFrameQueue->queueSize():%d\n", sl->playAudioFrameQueue->queueSize());
 
     while (sl->playAudioFrameQueue->queueSize() <= 0){
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
     sl->playAudioFrameQueue->pop(&audioFrame);
-    //EyerLog("audio frame Frame->getPts():%lld, weight:%d, heigt:%d\n", audioFrame->getPts(), audioFrame->getW(), audioFrame->getH());
+    EyerLog("audio frame Frame->getPts():%lld, weight:%d, heigt:%d\n", audioFrame->getPts(), audioFrame->getW(), audioFrame->getH());
 
     int len = audioFrame->getPerSampleSize() * audioFrame->getNBSamples() * audioFrame->getChannels();
     if (len > 0){//读取到数据 数据传入队列

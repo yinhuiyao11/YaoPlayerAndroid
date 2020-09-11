@@ -12,7 +12,7 @@
 
 class YaoSL{
 public:
-    YaoSL(YaoQueue<YaoAVFrame> * playAudioFrameQueue);
+    YaoSL(YaoQueue<YaoAVFrame> * _playAudioFrameQueue);
     ~YaoSL();
     int createEngin();
     int createMix();
