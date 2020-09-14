@@ -24,7 +24,7 @@ enum YaoPlayerStatus
 class YaoPlayerCtr : public YaoThread
 {
 public:
-	YaoPlayerCtr(std::string _path, double _time = 0.0);
+	YaoPlayerCtr(std::string _path, YaoMediaCodec *_mediaCodec, double _time = 0.0);
 	~YaoPlayerCtr();
 
 	virtual void run();
@@ -133,6 +133,7 @@ public:
 	YaoPlayerGL * playerGl = nullptr;
 	YaoPlayerCtr * playerCtr = nullptr;
 	YaoSL * playerSl = nullptr;
+	YaoMediaCodec * mediaCodec = nullptr;
 
 private:
 	std::string path;

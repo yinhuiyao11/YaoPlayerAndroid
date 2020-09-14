@@ -2,19 +2,17 @@
 #include "../EyerCore/EyerLog.hpp"
 #include "../YaoPlayerJni/JavaVMObj.h"
 
-YaoPlayerCtr::YaoPlayerCtr(std::string _path, double _time)
+YaoPlayerCtr::YaoPlayerCtr(std::string _path, YaoMediaCodec * _mediaCodec, double _time)
 {
     path = _path;
     seekTime = _time;
-	mediaCodec = new YaoMediaCodec();
+	mediaCodec = _mediaCodec;
 
 }
 
 YaoPlayerCtr::~YaoPlayerCtr()
 {
-	if(mediaCodec != nullptr){
-		mediaCodec->uninit();
-	}
+
 }
 
 void YaoPlayerCtr::run()
@@ -46,8 +44,6 @@ void YaoPlayerCtr::run()
 	int outIndex = -1;
 
 	while (!stopFlag) {
-		EyerLog("first OutIndex: %d\n", outIndex);
-
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
 		long long pauseStart = YaoTime::getTime();

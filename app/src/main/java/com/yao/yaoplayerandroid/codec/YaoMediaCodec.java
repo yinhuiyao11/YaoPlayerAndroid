@@ -141,4 +141,8 @@ public class YaoMediaCodec {
     public void sendEndOfStream(int index){
         mediaCodec.queueInputBuffer(index,0,0,0, BUFFER_FLAG_END_OF_STREAM);
     }
+
+    public void start(){
+        mediaCodec.start();
+    }
 }

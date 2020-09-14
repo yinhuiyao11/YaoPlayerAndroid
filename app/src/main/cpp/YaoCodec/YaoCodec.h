@@ -27,6 +27,7 @@ public:
     int sendEndOfStream(int index);
     int flush();
     int getInitStatus();
+    int start();
 
 public:
     jobject mediaCodec = nullptr;

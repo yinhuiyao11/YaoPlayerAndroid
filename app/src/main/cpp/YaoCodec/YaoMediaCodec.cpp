@@ -290,3 +290,27 @@ int YaoMediaCodec::getInitStatus()
     return initStatus;
 }
 
+int YaoMediaCodec::start()
+{
+    JNIEnv * env;
+    JavaVMObj::javaVm->AttachCurrentThread(&env, NULL);
+    // 获取类
+    jclass ax_list_jclass = env->GetObjectClass(JavaVMObj::mediaCodec);
+    if(ax_list_jclass == NULL){
+        EyerLog("jclass is null \n");
+    }
+    // 获取方法
+    jmethodID listGetMe;
+    listGetMe = env->GetMethodID(ax_list_jclass, "start", "()V");
+    if(listGetMe == NULL){
+        EyerLog("jni jmethodID is null \n");
+    }
+    env->CallVoidMethod(mediaCodec, listGetMe);
+    /*if(env->ExceptionCheck()){
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+        EyerLog("cpp YaoMediaCodec::start call fail \n");
+    }*/
+    return 0;
+}
+

@@ -26,8 +26,10 @@ void YaoDecodeThread::run()
 	int frameCount = 0;
     Eyer::EyerAVBitstreamFilter bitstreamFilter(Eyer::EyerAVBitstreamFilterType::h264_mp4toannexb, *stream);
     if (type == YaoDecoderType::YAODECODER_TYPE_VIDEO) {
-        mediaCodec->init(*stream, JavaVMObj::surface);
-        EyerLog("run mediaCodec->init\n");
+        if(mediaCodec->mediaCodec == nullptr){
+            mediaCodec->init(*stream, JavaVMObj::surface);
+            EyerLog("run mediaCodec->init\n");
+        }
     }
 	while (!stopFlag) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
